@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "allowJs": false,
+    "esModuleInterop": true,
+    "types": ["vite/client"],
+    "lib": ["es5", "es6", "es2022", "dom", "dom.iterable"],
+    "paths": {
+      "@/*": ["src/*"],
+      "@core/*": ["src/core"],
+      "@types/*": ["src/types"]
+    }
+  }
+}

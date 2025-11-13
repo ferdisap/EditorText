@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🔲 Wrapper berisi semua group editor */
+.editor-group-wrapper {
+  @apply flex flex-row w-full h-full overflow-hidden transition-all duration-300;
+}
+
+/* 🧩 Tiap group punya lebar sama besar */
+.editor-group {
+  @apply flex flex-col h-full flex-1 border-r transition-colors duration-300;
+  border-color: var(--vscode-panel-border, #3c3c3c);
+  background-color: var(--vscode-editor-background, #1e1e1e);
+}
+
+/* 🌗 Tema gelap */
+.dark .editor-group {
+  border-color: var(--vscode-panel-border, #3c3c3c);
+  background-color: var(--vscode-editor-background, #1e1e1e);
+}
+
+/* ☀️ Tema terang */
+.editor-group {
+  border-color: var(--vscode-panel-border, #ccc);
+  background-color: var(--vscode-editor-background, #ffffff);
+}
+
+/* Area tempat editor berada */
+.editor-area {
+  @apply flex-1 relative overflow-hidden;
+  background-color: var(--vscode-editor-background, #1e1e1e);
+}
+/* dark mode untuk editor area */
+:root.dark .editor-area {
+  background-color: var(--vscode-editor-background, #1e1e1e);
+  color: var(--vscode-editor-foreground, #d4d4d4);
+}

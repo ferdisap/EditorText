@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Monaco Test</title>
+  <style>
+    html,
+    body,
+    #container {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <script src="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js"></script>
+  <script>
+    require.config({ paths: { vs: "https://unpkg.com/monaco-editor@0.45.0/min/vs" } });
+    require(["vs/editor/editor.main"], function () {
+      const model = monaco.editor.createModel('abc', '');
+
+      const container = document.getElementById("container");
+      let editor = monaco.editor.create(container, {
+        model,
+        theme: "vs-dark",
+      });
+
+      function reInstance(){
+        const previousViewState = editor?.saveViewState() ?? null;
+        const cursor = editor.getPosition(); // Simpan posisi kursor
+  
+        editor.dispose();
+        editor = monaco.editor.create(container, {
+          model,
+          theme: "vs",
+        });
+  
+        if (previousViewState) {
+          editor.restoreViewState(previousViewState);
+        }
+
+        if (cursor) {
+          editor.setPosition(cursor);
+        }
+  
+        editor.layout();
+        editor.focus();
+      }
+
+      top.reInstance = reInstance
+
+      setTimeout(() => {
+        reInstance()
+      }, 3000)
+
+
+      window.editor = editor;
+    });
+  </script>
+</head>
+
+<body>
+  <div id="container"></div>
+</body>
+
+</html>

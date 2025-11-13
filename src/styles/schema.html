@@ -1,0 +1,37 @@
+<div class="editor-workspace">
+  <div class="editor-group-wrapper">
+    <!-- div.editor-group may more than one ea by v-for attribute -->
+    <div class="editor-group">
+      <!-- group 1 -->
+       <div class="editor-tabs">
+        <div class="tab-item"> Tab 1</div>
+        <div class="tab-item"> Tab 2</div>
+       </div>
+       <div class="editor-area">
+        <!-- when change tab active, editor container inner html will change -->
+        <div class="editor-container">
+          <!-- .editor-main untuk menampilkan editor, isinya akan berganti ketika switch active editor disetiap group. -->
+          <div class="editor-main">
+            <!-- .editor-wrapper untuk membungkis .monaco-editor -->
+            <div class="editor-wrapper">
+              <div class="monaco-editor no-user-select  showUnused showDeprecated vs-dark">
+                Editor 1
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+    </div>
+  </div>
+  <div class="marker-wrapper">
+    <div class="marker-tabs">
+      <div class="tab-item active">
+        <span class="tab-name">Problems</span>
+      </div>
+    </div>
+    <div class="marker-container">
+      <!-- div.marker-panel-container may added future if any tab other -->
+      <div ref="errorMarkerContainer" class="marker-panel-container">
+    </div>
+  </div>
+</div>

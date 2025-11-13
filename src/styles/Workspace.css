@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.editor-workspace {
+  @apply flex flex-col w-full h-full transition-colors duration-300;
+  background-color: var(--vscode-editor-background, #1e1e1e);
+  color: var(--vscode-editor-foreground, #d4d4d4);
+}
+
+.dark .editor-workspace {
+  background-color: var(--vscode-editor-background, #1e1e1e);
+  color: var(--vscode-editor-foreground, #d4d4d4);
+}
+
+.editor-workspace {
+  background-color: var(--vscode-editor-background, #ffffff);
+  color: var(--vscode-editor-foreground, #333333);
+}
+
+.editor-group-wrapper {
+  @apply flex flex-1 w-full overflow-hidden;
+}
+
+
+/* tes saja */
+.editor-window {
+  @apply flex h-full w-full;
+}
+.sidebar-panel {
+  width: 100px
+}

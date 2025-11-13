@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.editor-container {
+  /* @apply flex flex-col w-full h-full transition-colors duration-300 overflow-auto; */
+  @apply flex flex-col h-full transition-colors duration-300 overflow-auto;
+  background-color: var(--vscode-editor-background, #ffffff);
+  color: var(--vscode-editor-foreground, #1e1e1e);
+}
+
+.editor-container {
+  background-color: var(--vscode-editor-background, #ffffff);
+  color: var(--vscode-editor-foreground, #333333);
+}
+
+/* 🌙 Dark mode */
+:root.dark .editor-container {
+  background-color: var(--vscode-editor-background, #1e1e1e);
+  color: var(--vscode-editor-foreground, #d4d4d4);
+}
+
+/* 🧠 Area tempat Monaco Editor dirender */
+.editor-main {
+  /* @apply flex-1 w-full h-full; */
+  @apply w-full h-full;
+  background-color: inherit;
+  color: inherit;
+  overflow: hidden;
+  /* ubah dari hidden ke auto */
+  /* overflow: auto;  */
+  /* @apply border-red-500 border-2; */
+}
+
+/* ← penting agar flex item bisa mengecil */
+/* .editor-group,
+.editor-area,
+.editor-container,
+.editor-main {
+  min-width: 0; 
+} */

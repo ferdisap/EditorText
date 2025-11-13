@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* 🌗 Container utama */
+.editor-tabs {
+  @apply flex items-center h-[30px] overflow-x-auto whitespace-nowrap select-none border-b transition-colors duration-300;
+  background-color: var(--vscode-tab-inactiveBackground, #2d2d2d);
+  border-color: var(--vscode-tab-border, #1e1e1e);
+  font-family: var(--vscode-font-family, Consolas, "Courier New", monospace);
+  font-size: 12px;
+  overflow: hidden
+}
+
+/* 🧩 Item tab */
+.tab-item {
+  @apply flex items-center px-2 h-full cursor-pointer transition-colors duration-150 border-r;
+  color: var(--vscode-tab-inactiveForeground, #999);
+  background-color: var(--vscode-tab-inactiveBackground, #2d2d2d);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tab-item:hover {
+  background-color: var(--vscode-tab-hoverBackground, #ddd);
+  color: var(--vscode-tab-hoverForeground, #000);
+}
+
+.tab-item.active {
+  color: var(--vscode-tab-activeForeground, #fff);
+  background-color: var(--vscode-tab-activeBackground, #1e1e1e);
+  font-weight: 500;
+}
+
+.tab-name {
+  @apply max-w-[150px] truncate;
+}
+
+/* 🧩 Tombol close */
+.tab-close {
+  @apply ml-1 opacity-0 text-[14px] transition-opacity duration-200 cursor-pointer;
+  color: var(--vscode-tab-unfocusedActiveForeground, #bbb);
+}
+
+.tab-item:hover .tab-close {
+  @apply opacity-100;
+}
+
+.tab-close:hover {
+  color: var(--vscode-tab-activeForeground, #fff);
+}
+
+
+/* ☀️ Tema terang */
+/* .editor-tabs {
+  background-color: var(--vscode-tab-inactiveBackground, #e7e7e7);
+  border-color: var(--vscode-tab-border, #ccc);
+}
+
+.tab-item {
+  color: var(--vscode-tab-inactiveForeground, #555);
+  background-color: var(--vscode-tab-inactiveBackground, #e7e7e7);
+}
+
+.tab-item.active {
+  background-color: var(--vscode-tab-activeBackground, #fff);
+  color: var(--vscode-tab-activeForeground, #111);
+}
+*/

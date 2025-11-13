@@ -1,0 +1,53 @@
+/* Import custom CSS */
+@import './styles/Workspace.css';
+@import './styles/Group.css';
+@import './styles/Tabs.css';
+@import './styles/Editor.css';
+@import './styles/Marker.css';
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *));
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+:root {
+  /* Default (light) theme colors */
+  --vscode-editor-background: #ffffff;
+  --vscode-editor-foreground: #1e1e1e;
+  --vscode-tab-activeBackground: #ffffff;
+  --vscode-tab-inactiveBackground: #f3f3f3;
+  --vscode-tab-border: #e5e5e5;
+  --vscode-tab-activeForeground: #333;
+  --vscode-tab-inactiveForeground: #666;
+  --vscode-editorGroupHeader-tabsBackground: #f3f3f3;
+  --vscode-panel-border: #e5e5e5;
+  --vscode-statusBar-background: #f3f3f3;
+  --vscode-statusBar-foreground: #333;
+  --vscode-panel-background: #f3f3f3;
+  --vscode-panel-foreground: #252526;
+}
+
+.dark {
+  --vscode-editor-background: #1e1e1e;
+  --vscode-editor-foreground: #d4d4d4;
+  --vscode-tab-activeBackground: #252526;
+  --vscode-tab-inactiveBackground: #2d2d2d;
+  --vscode-tab-border: #3c3c3c;
+  --vscode-tab-activeForeground: #ffffff;
+  --vscode-tab-inactiveForeground: #cccccc;
+  --vscode-editorGroupHeader-tabsBackground: #252526;
+  --vscode-panel-border: #3c3c3c;
+  --vscode-statusBar-background: #007acc;
+  --vscode-statusBar-foreground: #ffffff;
+  --vscode-panel-background: #252526;
+  --vscode-panel-foreground: #f3f3f3;
+}

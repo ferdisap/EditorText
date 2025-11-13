@@ -1,0 +1,28 @@
+src/
+ └─ core/
+     ├─ EditorInstance.ts
+     ├─ EditorTab.ts
+     ├─ EditorGroup.ts
+     ├─ Workspace.ts
+     ├─ ModelStore.ts
+     └─ types.ts
+ └─ types/
+     ├─ editor.ts
+     ├─ model.ts
+     └─ workspace.ts
+ └─ components/ 
+     ├─ EditorWorkspace.vue → menampilkan semua group 
+     ├─ EditorGroup.vue → menampilkan tab + container editor 
+     ├─ EditorTabs.vue → menampilkan daftar tab 
+     └─ EditorContainer.vue → tempat render Monaco atau editor lain
+ └─ composables/
+     ├─ useWorkspace.ts
+     └─ useModelStore.ts
+
+
+src/
+ └─ styles/
+     └─ EditorTabs.css
+ └─ index.css
+ └─ main.ts
+ └─ index.html
