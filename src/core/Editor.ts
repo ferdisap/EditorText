@@ -1,16 +1,14 @@
 import { useMarker } from "@/composables/useMarker";
 import { useModelStore } from "@/composables/useModelstore";
 import { useTheme } from "@/composables/useTheme";
-import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoDiffEditor, MonacoEditor, MonacoEditorDiff, MonacoEditorOptions, MonacoModel, MonacoTextModel } from "@/types/editor";
+import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoDiffEditor, MonacoDiffEditorOptions, MonacoEditor, MonacoEditorDiff, MonacoEditorOptions, MonacoModel, MonacoTextModel } from "@/types/editor";
 import * as monaco from "monaco-editor"
 import { init as initGeneral } from "./traits/editor/general.trait";
 import { init as initXml } from "./traits/editor/xml.trait";
 import { ModelLanguage } from "@/types/model";
 import { applyTraitOnInstanced } from "./traits/apply";
 import { hasMethod } from "@/util/function";
-import { getEditorContainer } from "@/composables/useEditorContainer";
-import { delay } from "@/util/time";
-import { isNumberInRange } from "@/util/number";
+import { isValidUri } from "@/util/string";
 
 // 🧩 id: "toggle-theme"
 // ➡️ Ini adalah identifier unik untuk action tersebut.
@@ -48,21 +46,46 @@ export function getLineContentAndCursorIndex(editorInstance: EditorClass) {
   return { lineContent, cursorIndex }
 }
 
-export function defOptionCreateEditor(): MonacoEditorOptions {
+function defOptionCreateEditor(): MonacoEditorOptions {
   const { isDark } = useTheme();
   const theme = isDark.value ? 'vs-dark' : 'vs';
-  return { theme }
+  const minimap = { enabled: false };
+  const automaticLayout = false;
+  const scrollBeyondLastLine = false;
+  return { theme, minimap, automaticLayout, scrollBeyondLastLine }
 }
 
-export function createEditor(container: HTMLDivElement, model: MonacoTextModel) {
-  const { theme } = defOptionCreateEditor();
-  return monaco.editor.create(container as HTMLDivElement, {
-    model,
-    theme,
-    // automaticLayout: true,
-    minimap: { enabled: false },
-    scrollBeyondLastLine: false,
+function defOptionCreateDiffEditor(): MonacoDiffEditorOptions {
+  const { isDark } = useTheme();
+  const theme = isDark.value ? 'vs-dark' : 'vs';
+  const minimap = { enabled: false };
+  const automaticLayout = false;
+  const scrollBeyondLastLine = false;
+  const renderSideBySide = true;
+  return { theme, minimap, automaticLayout, scrollBeyondLastLine, renderSideBySide }
+}
+
+function createEditor(container: HTMLDivElement, model: MonacoTextModel) {
+  const { theme, minimap, automaticLayout, scrollBeyondLastLine } = defOptionCreateEditor();
+  const editor = monaco.editor.create(container as HTMLDivElement, {
+    model, theme, minimap, automaticLayout, scrollBeyondLastLine
   });
+  console.log(top.editor = editor);
+  return editor;
+}
+
+function createDiffEditor(container: HTMLDivElement, originalModel: MonacoTextModel | string, modifiedModel: MonacoTextModel | string) {
+  const { theme, minimap, automaticLayout, scrollBeyondLastLine, renderSideBySide } = defOptionCreateDiffEditor();
+  const diffEditor = monaco.editor.createDiffEditor(container, {
+    theme, minimap, automaticLayout, scrollBeyondLastLine, renderSideBySide
+  });
+  originalModel = getModel(originalModel) as MonacoTextModel;
+  modifiedModel = getModel(modifiedModel) as MonacoTextModel;
+  diffEditor.setModel({
+    original: originalModel,
+    modified: modifiedModel,
+  });
+  return diffEditor;
 }
 
 // function watchEditorResize(container: HTMLElement, editor: MonacoCodeEditor) {
@@ -105,86 +128,94 @@ export function createEditor(container: HTMLDivElement, model: MonacoTextModel) 
 //   };
 // }
 
-function watchEditorResize(container: HTMLElement, editor: MonacoCodeEditor) {
-  const { simpleDebounce } = delay();
+// function watchEditorResize(container: HTMLElement, editor: MonacoCodeEditor) {
+//   const { simpleDebounce } = delay();
 
-  let prevWidth:number;
-  let prevHeight:number;
+//   let prevWidth:number;
+//   let prevHeight:number;
 
-  const { clientWidth, clientHeight } = container;
-  prevWidth = clientWidth
-  prevHeight = clientHeight;
-  const relayout = () => simpleDebounce(() => {
-    // console.log('aa');
-    const { clientWidth, clientHeight } = container;
-    // console.log(container, clientWidth);
-    // console.log(clientWidth);
-    // console.log(prevWidth, clientWidth, isNumberInRange(clientWidth, prevWidth - 5, prevWidth + 5));
-    if(
-      (!isNumberInRange(clientWidth, prevWidth - 5, prevWidth + 5)) || 
-      (!isNumberInRange(clientHeight, prevHeight - 5, prevHeight + 5))
-    ){
-      // console.log(clientWidth, clientHeight);
-      // console.log(prevHeight, clientHeight);
-      // console.log('client width-height change');
-      prevWidth = clientWidth
-      prevHeight = clientHeight;
-      editor.layout({ width: clientWidth, height: clientHeight });
+//   const { clientWidth, clientHeight } = container;
+//   prevWidth = clientWidth
+//   prevHeight = clientHeight;
+//   const relayout = () => simpleDebounce(() => {
+//     // console.log('aa');
+//     const { clientWidth, clientHeight } = container;
+//     if(
+//       (!isNumberInRange(clientWidth, prevWidth - 5, prevWidth + 5)) || 
+//       (!isNumberInRange(clientHeight, prevHeight - 5, prevHeight + 5))
+//     ){
+//       prevWidth = clientWidth
+//       prevHeight = clientHeight;
+//       editor.layout({ width: clientWidth, height: clientHeight });
+//     }
+//   }, 100)
+
+//   const observer = new ResizeObserver(() => relayout());
+//   observer.observe(container);
+//   return () => {
+//     observer.disconnect();
+//   }
+// }
+// cara pakai: watchEditorResize(container, _editor)
+
+/**
+ * @param model id, uri, or model it self
+ */
+function getModel(model: string | MonacoTextModel | undefined): MonacoModel {
+  const { modelStore } = useModelStore();
+  let _modelId: string;
+  // jika string
+  if (typeof model === 'string') {
+    // jika uri
+    if (isValidUri(model)) {
+      const uri = model;
+      model = modelStore.getModel(model);
+      // jika tidak didapatkan maka model dibikin baru
+      if (!model) {
+        _modelId = modelStore.createModel('','',uri)
+        model = modelStore.getModel(_modelId);
+      } else {
+        _modelId = (model as MonacoTextModel).id;
+      }
     }
-    // console.log(clientWidth, clientHeight);
-    // console.log(container, clientWidth, clientHeight);
-    // editor.layout({ width: clientWidth, height: clientHeight });
-    // editor.render(true);
-  }, 100)
-
-  const observer = new ResizeObserver(() => relayout());
-  observer.observe(container);
-  return () => {
-    observer.disconnect();
+    // jika bukan uri alias id
+    else {
+      _modelId = model;
+      model = modelStore.getModel(model);
+      if (!model) {
+        _modelId = modelStore.createModel()
+        model = modelStore.getModel(_modelId);
+      } else {
+        _modelId = (model as MonacoTextModel).id;
+      }
+    }
   }
+  return model as MonacoModel;
 }
 
-export function Editor(id: string, name: string, model: string | MonacoTextModel | undefined, container: HTMLDivElement): EditorClass {
+export function Editor(id: string, name: string, model: string | MonacoTextModel | [original: MonacoTextModel | string, modified: MonacoTextModel | string] | undefined, container: HTMLDivElement): EditorClass {
   const _id: string = id;
   const _name: string = name;
   let _modelId: string;
+  let _originalModelId: string | undefined = undefined;
   const _container: HTMLDivElement = container;
   let _editor: MonacoEditor;
   // let _dewatch: () => void;
 
   const { modelStore } = useModelStore();
-  // jika string
-  if (typeof model === 'string') {
-    // jika uri
-    if(monaco.Uri.isUri(model)){
-      model = modelStore.getModel(model);
-      // jika tidak didapatkan maka model dibikin baru
-      if(!model) {
-        _modelId = modelStore.createModel()
-        model = modelStore.getModel(_modelId);
-      } else {
-        _modelId = (model as MonacoTextModel).id;
-      }
-    } 
-    // jika bukan uri alias id
-    else {
-      _modelId = model;
-      model = modelStore.getModel(model);
-      if(!model) {
-        _modelId = modelStore.createModel()
-        model = modelStore.getModel(_modelId);
-      } else {
-        _modelId = (model as MonacoTextModel).id;
-      }
-    }
-  } 
-  // jika MonacoTextModel
-  else {
+  if (!Array.isArray(model)) {
+    model = getModel(model) as MonacoTextModel;
     _modelId = (model as MonacoTextModel).id;
+    _editor = createEditor(container, model as MonacoTextModel);
+    modelStore.mapModelAndEditor(_modelId, [_id]);
+  } else {
+    const [original, modified] = model;
+    _editor = createDiffEditor(container, original, modified);
+    _originalModelId = _editor.getOriginalEditor().getModel()?.id
+    _modelId = _editor.getModifiedEditor().getModel()?.id!
+    modelStore.mapModelAndEditor(_originalModelId!, [_id]);
+    modelStore.mapModelAndEditor(_modelId, [_id]);
   }
-  _editor = createEditor(container, model as MonacoTextModel);
-
-  // _dewatch = watchEditorResize(container, _editor)
 
   return {
     get id() {
@@ -195,6 +226,15 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
     },
     get modelId() {
       return _modelId;
+    },
+    get model(){
+      return getModel(_modelId) as MonacoTextModel;
+    },
+    get originalModelId() {
+      return _originalModelId;
+    },
+    get originalModel(){
+      return getModel(_originalModelId) as MonacoTextModel;
     },
     get container() {
       return _container;
@@ -223,7 +263,8 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
     },
     changeLanguage(lang: ModelLanguage) {
       if (!this.isCodeEditor) return;
-      const container = getEditorContainer(this);
+      // const container = getEditorContainer(this);
+      const container = this.editor.getContainerDomNode();;
       let editor = _editor;
 
       // change language model
@@ -241,6 +282,7 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
 
       // re create monaco editor
       editor = monaco.editor.create(container as HTMLDivElement, options);
+      console.log(top.editor = editor);
       editor.setModel(model);
 
       // restoring view editor
@@ -259,17 +301,27 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
 
       _editor = editor;
     },
+    focus(){
+      _editor.focus();
+    },
+    layout(){
+      _editor.layout();
+      console.log('fufuaa');
+    },
+    goto(position: monaco.IPosition){
+      _editor.revealPositionInCenter(position);
+      _editor.setPosition(position);
+    },
     /**
      * tidak seharusnya container di hapus karena desain applikasi satu container untuk semua editor di group yang sama
-     * @deprecated
      */
     destroy() {
+      const container = (this.editor).getContainerDomNode()!;
       if (this.isCodeEditor) {
-        const domNode = (this.editor as monaco.editor.IStandaloneCodeEditor).getDomNode()!;
-        if (domNode) domNode.remove();
         this.disposeModel;
         this.disposeEditor();
       } else {
+        // const domNode = (this.editor as MonacoEditor).getDomNode()!;
         // dispose original 
         const originalEditor: MonacoCodeEditor = (_editor as MonacoDiffEditor).getOriginalEditor() as MonacoCodeEditor;
         const originalModel: MonacoTextModel = originalEditor.getModel() as MonacoTextModel;
@@ -285,7 +337,8 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
         modifiedModel.dispose();
         modifiedEditor.dispose();
       }
-      _dewatch();
+      container.remove();
+      // _dewatch();
     },
 
     disposeEditor(): void {
@@ -299,7 +352,7 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
         const modifiedEditor: MonacoCodeEditor = (_editor as MonacoDiffEditor).getModifiedEditor() as MonacoCodeEditor;
         modifiedEditor.dispose();
       }
-      _dewatch();
+      // _dewatch();
     },
 
     disposeModel(): void {

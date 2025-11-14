@@ -7,6 +7,7 @@ import { useTheme } from "@/composables/useTheme";
 import { terminateWorker } from "@/composables/useWorker";
 import Marker from "./Marker.vue";
 import { GroupClass } from "@/types/editor";
+import CommandPalette from "./CommandPalette.vue";
 
 const { workspace } = useWorkspace();
 registerCompletionItemProvider(workspace);
@@ -22,7 +23,7 @@ const groupsData = computed(() => {
     // class: "editor-group",
     group,
     dimension: {
-      unit: '%',
+      unit: "%",
       width: 100 / totalGroup,
       // height: 100
     },
@@ -41,8 +42,17 @@ onMounted(() => {
     workspace.setActiveGroup(group1.id);
 
     setTimeout(() => {
-      group1.newFile();
-    })
+      // const uri = "http://localhost:5173/test/purchaseOrder.xml";
+      // fetch(uri).then(r => r.text()).then(text =>
+      // group1.newFile(text, 'xml', uri)
+      // )
+      // group1.newFile('', '', '')
+      // group1.newFile('', 'xml', 'http://localhost:5173/test/purchaseOrder.xml')
+      group1.newFile('', 'xml', 'http://localhost:5173/test/DMC-BRAKE-AAA-DA1-00-00-00AA-041A-A_003-00_EN-US.XML')
+      // group1.newFile('', '', '')
+      // group1.newFile('', '', 'http://localhost:5173/test/purchaseOrder_mod.xml')
+      // group1.compareFile("http://localhost:5173/test/purchaseOrder.xml", "http://localhost:5173/test/purchaseOrder_mod.xml");
+    });
   }
 });
 
@@ -63,4 +73,5 @@ onMounted(() => {
     </div>
     <Marker />
   </div>
+  <!-- <CommandPalette/> -->
 </template>

@@ -1,22 +1,22 @@
 import * as monaco from "monaco-editor";
 import { getCurrentParentElement } from "./element";
 import { AttributeDef } from "xsd-parser";
-import { Workspace } from "@/core";
-import { XmlEditorTrait } from "@/types/trait";
+import { WorkspaceObject } from "@/types/workspace";
+import { EditorXMLClass } from "@/types/editor";
 
 // 🧩 Tooltip (hover) untuk attribute
-export function tooltip(workspace: Workspace) {
+export function tooltip(workspace: WorkspaceObject) {
   monaco.languages.registerHoverProvider("xml", {
     provideHover: (model, position) => {
 
       // find activeGroup
-      const [activeGroup] = workspace.groups.value.filter((g) => g.id === workspace.activeGroupId.value);
+      const [activeGroup] = workspace.groups.filter((g) => g.id === workspace.activeGroupId);
       if (!activeGroup) return;
       // find active Tab
       const activeTab = activeGroup.activeTab;
       if (!activeTab) return;
       // get xmlEditor.
-      const xmlEditor = activeTab!.instance as unknown as XmlEditorTrait;
+      const xmlEditor = activeTab!.instance as EditorXMLClass;
       
       if(!xmlEditor.schema) return;
 

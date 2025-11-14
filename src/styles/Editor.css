@@ -2,20 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-.editor-container {
+.editor-wrapper {
   /* @apply flex flex-col w-full h-full transition-colors duration-300 overflow-auto; */
   @apply flex flex-col h-full transition-colors duration-300 overflow-auto;
   background-color: var(--vscode-editor-background, #ffffff);
   color: var(--vscode-editor-foreground, #1e1e1e);
 }
 
-.editor-container {
+.editor-wrapper {
   background-color: var(--vscode-editor-background, #ffffff);
   color: var(--vscode-editor-foreground, #333333);
 }
 
 /* 🌙 Dark mode */
-:root.dark .editor-container {
+:root.dark .editor-wrapper {
   background-color: var(--vscode-editor-background, #1e1e1e);
   color: var(--vscode-editor-foreground, #d4d4d4);
 }
@@ -35,7 +35,7 @@
 /* ← penting agar flex item bisa mengecil */
 /* .editor-group,
 .editor-area,
-.editor-container,
+.editor-wrapper,
 .editor-main {
   min-width: 0; 
 } */

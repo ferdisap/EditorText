@@ -1,8 +1,7 @@
-import { XmlEditorTrait } from "@/types/trait";
 import { delay } from "@/util/time";
 import { ExtractSchemaLocationPayload, MatchingAttrInfoPayload, SchemaUrl, WorkerResponse, useWorker } from "@/composables/useWorker";
 import { AttributeInfo } from "@/types/xml";
-import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoTextModel } from "@/types/editor";
+import { EditorXMLClass, MonacoCodeEditor, MonacoTextModel } from "@/types/editor";
 import { getLineContentAndCursorIndex } from "@/core/Editor";
 
 const { debounce } = delay();
@@ -10,9 +9,11 @@ export function detectAndSetSchema(xmlEditor: EditorXMLClass) {
   let lastAttrInside: string | null = null;
   const editor = xmlEditor.editor;
   const { postToWorker } = useWorker('xml');
-  // console.log('aaa');
   if(xmlEditor.isCodeEditor){
     const disposable = (editor as MonacoCodeEditor).onDidChangeCursorSelection((e) => {
+    // const disposable = (editor as MonacoCodeEditor).onDidChangeCursorPosition((e) => {
+      console.log('onDidChangeCursorSelection')
+      // console.log('onDidChangeCursorPosition')
       debounce(async () => {
         let wkPayload: ExtractSchemaLocationPayload | MatchingAttrInfoPayload;
         let wkResponse :WorkerResponse;

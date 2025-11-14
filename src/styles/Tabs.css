@@ -5,6 +5,7 @@
   @apply flex items-center h-[30px] overflow-x-auto whitespace-nowrap select-none border-b transition-colors duration-300;
   background-color: var(--vscode-tab-inactiveBackground, #2d2d2d);
   border-color: var(--vscode-tab-border, #1e1e1e);
+  border-bottom: none;
   font-family: var(--vscode-font-family, Consolas, "Courier New", monospace);
   font-size: 12px;
   overflow: hidden

@@ -1,6 +1,6 @@
 import { ExtractSchemaLocationPayload, MatchingAttrInfoPayload, ReadyPayload, SchemaUrl, ValidatePayload, WorkerResponse, WorkerResult } from "@/composables/useWorker";
 import { AttributeInfo } from "@/types/xml";
-import { extractSchemaLocation, validateXml, ValidationInfo } from "xml-xsd-validator-browser";
+import { extractSchemaLocation, validateXml, ValidationInfo, baseUri } from "xml-xsd-validator-browser";
 import { matchingAttrInfo } from "./fn_attribute";
 
 const payloadReady: ReadyPayload = {
@@ -26,7 +26,7 @@ self.onmessage = async (e: MessageEvent<WorkerResponse>) => {
       self.postMessage(data);
       break;
     case "validate":
-      // data.result = (await validate((e.data.payload as ValidatePayload).xmlText, (e.data.payload as ValidatePayload).schemaUrl)) ;
+      baseUri(e.data.payload.uri)
       try {
         await validateXml((e.data.payload as ValidatePayload).xmlText, (e.data.payload as ValidatePayload).schemaUrl)
         data.result = null;

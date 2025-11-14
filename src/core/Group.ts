@@ -1,3 +1,4 @@
+import * as monaco from "monaco-editor";
 import { GroupClass, TabClass } from "@/types/editor";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { getFilenameFromUri, randStr } from "@/util/string";
@@ -9,7 +10,7 @@ export function Group(name: string): GroupClass {
     id: randStr(10),
     name: name,
     tabs: <TabClass[]>[],
-    activeTabId: <string | null>null,
+    activeTabId: <string | undefined>undefined,
   });
   // const _id = randStr(10);
   // const _name = name;
@@ -30,11 +31,14 @@ export function Group(name: string): GroupClass {
     },
 
     get activeTabId() {
+      // console.trace();
       return state.activeTabId;
     },
 
     get activeTab() {
+      console.trace();
       return state.tabs.find((tab) => tab.id === state.activeTabId) as TabClass;
+      // return undefined;
     },
 
     addTab(tab: TabClass) {
@@ -55,7 +59,7 @@ export function Group(name: string): GroupClass {
       let closedTabsIndex: number = state.tabs.indexOf(tab);
       state.tabs.splice(closedTabsIndex, 1)
       if (state.activeTabId === tabId) {
-        state.activeTabId = state.tabs.at(-1)?.id ?? null;
+        state.activeTabId = state.tabs.at(-1)?.id ?? undefined;
       }
     },
 
@@ -63,7 +67,7 @@ export function Group(name: string): GroupClass {
       const { editorMainContainer, createEditorInstance, detachFromEl } = useEditorContainer(state.id);
       if (editorMainContainer.value) {
         // detach previous active editor
-        if (this.activeTab) detachFromEl(this.activeTab);
+        // if (this.activeTab) detachFromEl(this.activeTab);
 
         // create new editor and tab
         const tab = createEditorInstance(value, language, uri);
@@ -74,12 +78,11 @@ export function Group(name: string): GroupClass {
         this?.setActiveTab(tab.id);
 
         // layouting and focus
-        tab.instance.editor.layout();
-        tab.instance.editor.focus();
+        tab.instance.layout();
+        tab.instance.focus();
         return tab;
       }
     },
-
 
     splitFile(modelUri: string, name: string | null = null): TabClass | void {
       const { workspace } = useWorkspace();
@@ -97,19 +100,47 @@ export function Group(name: string): GroupClass {
           // detach previous active editor
           if (group.activeTab) detachFromEl(group.activeTab);
           // create new editor and tab
-          // const modelIndex = workspace.models.find((m) => m.uri === modelUri);
           if (!name) name = getFilenameFromUri(modelUri, 'Untitled');
           const tab = createEditorInstanceWithModel(modelUri, name);
+          if (!tab) return;
+          group!.addTab(tab);
+          // set new active tabpApp
+          group.setActiveTab(tab.id);
+          // layouting and focus
+          tab.instance.layout();
+          tab.instance.focus();
+          return tab;
+        }
+      }, 10);
+    },
+
+    compareFile(originalUri: string, modifiedUri: string): TabClass | void {
+      const { workspace } = useWorkspace();
+      const currentIndexGroup = workspace.groups.findIndex((group) => group === this);
+      let group: GroupClass | undefined;
+      // jika tidak bikin group baru, jika ada next group maka pakai group itu
+      if (!(group = workspace.groups[currentIndexGroup + 1])) {
+        group = workspace.addGroup();
+        workspace.setActiveGroup(group.id);
+      }
+
+      const { editorMainContainer, createDiffEditorInstance, detachFromEl } = useEditorContainer(group.id);
+      setTimeout(() => {
+        if (editorMainContainer.value) {
+          // detach previous active editor
+          if (group.activeTab) detachFromEl(group.activeTab);
+          // create new editor and tab
+          const tab = createDiffEditorInstance(originalUri, modifiedUri);
           if (!tab) return;
           group!.addTab(tab);
           // set new active tab
           group.setActiveTab(tab.id);
           // layouting and focus
-          tab.instance.editor.layout();
-          tab.instance.editor.focus();
+          tab.instance.layout();
+          tab.instance.focus();
           return tab;
         }
-      },10);
+      }, 10)
     },
 
     disposeAll() {

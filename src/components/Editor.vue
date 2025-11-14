@@ -4,12 +4,13 @@ import { useWorkspace } from "@/composables/useWorkspace";
 import { TabClass } from "@/types/editor";
 import {  nextTick, watch } from "vue";
 
-const props = defineProps<{ tab: TabClass | undefined; groupId: string }>();
+const props = defineProps<{ tab?: TabClass | undefined; groupId: string }>();
 const { editorMainContainer, attachToEl, detachFromEl } = useEditorContainer(
   props.groupId
 );
 
 const setActive = () => {
+  // return;
   const { workspace } = useWorkspace();
   workspace.setActiveGroup(props.groupId);
   // const group = workspace.activeGroup;
@@ -31,7 +32,7 @@ watch(
 </script>
 
 <template>
-  <div class="editor-container">
+  <div class="editor-wrapper">
     <!-- Area editor -->
     <div ref="editorMainContainer" :class="EDITOR_MAIN_CONTAINER_CSS_CLASS" @click="setActive" />    
   </div>

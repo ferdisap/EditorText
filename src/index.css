@@ -4,6 +4,8 @@
 @import './styles/Tabs.css';
 @import './styles/Editor.css';
 @import './styles/Marker.css';
+@import './styles/CommandPalette.css';
+@import './styles/Path.css';
 
 /* @tailwind base;
 @tailwind components;
@@ -34,6 +36,8 @@ html, body {
   --vscode-statusBar-foreground: #333;
   --vscode-panel-background: #f3f3f3;
   --vscode-panel-foreground: #252526;
+  --vscode-list-focusBackground : #007acc
+  
 }
 
 .dark {
@@ -50,4 +54,5 @@ html, body {
   --vscode-statusBar-foreground: #ffffff;
   --vscode-panel-background: #252526;
   --vscode-panel-foreground: #f3f3f3;
+  --vscode-list-focusBackground : #094771
 }

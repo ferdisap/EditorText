@@ -1,5 +1,6 @@
 import { useMarker } from "@/composables/useMarker";
 import { useWorker, ValidatePayload } from "@/composables/useWorker";
+import { MARKER_VALIDATION_NS } from "@/core/Marker";
 import { EditorClass, MonacoCodeEditor, MonacoTextModel, TabClass } from "@/types/editor";
 import { delay } from "@/util/time";
 import { ValidationInfo } from "xml-xsd-validator-browser";
@@ -88,14 +89,12 @@ function detectLanguageLogic(text: string): string {
  *
  * @param model Monaco ITextModel
  */
-export function detectLanguage(tab: TabClass, onDetected: (model: MonacoTextModel, lang: string) => void) {
-
-  
-  const editorInstance: EditorClass = tab.instance;
+export function detectLanguage(editorInstance: EditorClass, onDetected: (model: MonacoTextModel, lang: string) => void) {
   
   const { debounce } = delay();
   if(editorInstance.isCodeEditor){
     const disposable = (editorInstance.editor as MonacoCodeEditor).onDidChangeModelContent(() => {
+      // console.log('detectLanguage onDidChangeModelContent')
       debounce(
         () => {
           const model: MonacoTextModel = editorInstance.editor.getModel()! as MonacoTextModel;
@@ -131,7 +130,7 @@ export function detectErrorProcessor(editorInstance: EditorClass, beforeValidate
             schemaUrl
           } as ValidatePayload)
           .then(response => {
-            const { markerInfoMap } = useMarker();
+            const { markerInfoMap } = useMarker(MARKER_VALIDATION_NS);
             markerInfoMap.value.set(model.id, response.result as ValidationInfo[]);
           })
         } 

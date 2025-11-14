@@ -7,8 +7,8 @@ export type GroupClass = {
   id: string;
   name: string;
   tabs: TabClass[];
-  activeTabId: string | null;
-  activeTab: TabClass;
+  activeTabId: string | undefined;
+  activeTab: TabClass | undefined;
 
   addTab(tab: TabClass): void
   setActiveTab(tabId: string): void
@@ -16,6 +16,7 @@ export type GroupClass = {
 
   newFile(value?: string, language?: string, uri?: string): TabClass | void;
   splitFile(uri:string):TabClass | void;
+  compareFile(originalUri:string, modifiedUri:string) :TabClass | void 
   disposeAll(): void
 }
 
@@ -29,14 +30,25 @@ export type TabClass = {
 export type EditorClass = {
   id: string;
   name: string;
+  /**
+   * @returns string id or modified id if DiffEditor
+   */
   modelId: string;
-  editor: MonacoEditor;
+  /**
+   * @returns string | undefined modified id if DiffEditor
+   */
+  originalModelId: string | undefined;
+  editor: MonacoEditor; // untuk MonacoTextModel, bukan DiffEditor
   container: HTMLDivElement;
   language: ModelLanguage;
   isCodeEditor: boolean,
+  model:MonacoTextModel; // untuk MonacoTextModel, nukan DiffEditor
+  originalModel:MonacoTextModel; // untuk MonacoTextModel, nukan DiffEditor
   init(): void;
-  // changeMonacoEditor(editor:MonacoEditor):void;
   changeLanguage(language:ModelLanguage):void
+  focus():void;
+  layout():void;
+  goto(position: monaco.IPosition):void;
   destroy(): void;
   disposeEditor(): void
   disposeModel(): void
@@ -66,4 +78,20 @@ export type MonacoDiffModel = monaco.editor.IDiffEditorModel;
 export type MonacoEditorOptions = {
   theme?: EditorTheme,
   automaticLayout?: boolean
+  minimap? : {
+    enabled: boolean
+  },
+  scrollBeyondLastLine?: boolean,
+  autoDetectHighContrast?:boolean,
+}
+
+export type MonacoDiffEditorOptions = {
+  theme?: EditorTheme,
+  automaticLayout?: boolean
+  scrollBeyondLastLine?: boolean,
+  autoDetectHighContrast?:boolean,
+  minimap? : {
+    enabled: boolean
+  },
+  renderSideBySide?: boolean,
 }

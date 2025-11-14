@@ -51,3 +51,27 @@ export function getFilenameFromUri(uri:string, name:string|null = null) :string{
     return filenameFallback;
   }
 }
+
+/**
+ * Validasi apakah string adalah URI yang valid (RFC 3986 compliant)
+ * Contoh valid:
+ *   - foo://example.com:8042/over/there?name=ferret#nose
+ *   - https://example.org
+ *   - mailto:user@example.com
+ */
+export function isValidUri(str: string): boolean {
+  if (typeof str !== "string" || !str.trim()) return false;
+
+  // Pola RFC3986 (scheme://authority/path?query#fragment)
+  const uriRegex =
+    /^(?:[a-zA-Z][a-zA-Z0-9+.-]*):(?:\/\/([^/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?$/;
+
+  const match = str.match(uriRegex);
+  if (!match) return false;
+
+  // opsional: cek authority agar tidak kosong kalau ada "//"
+  const [, authority] = match;
+  if (str.includes("//") && authority === undefined) return false;
+
+  return true;
+}

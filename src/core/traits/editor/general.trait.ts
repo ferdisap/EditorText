@@ -1,24 +1,25 @@
-import { useTheme } from "@/composables/useTheme";
-import { Trait } from "@/types/trait";
 import * as monaco from "monaco-editor";
+import { useTheme } from "@/composables/useTheme";
 import { createEditorContainer, getEditorContainer } from "@/composables/useEditorContainer";
-import { EditorTab } from "@/core/EditorTab";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { EditorClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel, TabClass } from "@/types/editor";
+import { detectLanguage } from "@/languages/detection";
+import { applyTraitOnInstanced, removeTraitOnInstanced } from "../apply";
+import { ModelLanguage } from "@/types/model";
 
 const { toggleTheme } = useTheme();
 
-export function duplicateEditor(editor:monaco.editor.IStandaloneCodeEditor, lang:string | null = null) :monaco.editor.IStandaloneCodeEditor{
+export function duplicateEditor(editor: monaco.editor.IStandaloneCodeEditor, lang: string | null = null): monaco.editor.IStandaloneCodeEditor {
 
   // save old config
   const previousViewState = editor?.saveViewState() ?? null;
   const cursor = editor.getPosition(); // Simpan posisi kursor
-  const options = editor.getRawOptions(); 
+  const options = editor.getRawOptions();
 
   // create new editor
   editor = monaco.editor.create(createEditorContainer(), options); // tidak bisa pakai container yang lama, jika belum di dispose. Jika didispose dahulu sebelum duplicate element, maka model atau option juga hilang 
   const model = editor.getModel()!;
-  if(lang) monaco.editor.setModelLanguage(model!, lang);
+  if (lang) monaco.editor.setModelLanguage(model!, lang);
   editor.setModel(model);
 
   // restoring view editor
@@ -45,20 +46,20 @@ export function duplicateEditor(editor:monaco.editor.IStandaloneCodeEditor, lang
  */
 export function changeLanguage(tab: TabClass, lang: string) {
   const editorInstance = tab.instance;
-  if(!editorInstance.isCodeEditor) return;
+  if (!editorInstance.isCodeEditor) return;
   const container = getEditorContainer(editorInstance);
-  let editor :MonacoCodeEditor = editorInstance.editor as MonacoCodeEditor;
+  let editor: MonacoCodeEditor = editorInstance.editor as MonacoCodeEditor;
 
   // change language model
-  const model :MonacoTextModel = editorInstance.editor.getModel() as MonacoTextModel;
+  const model: MonacoTextModel = editorInstance.editor.getModel() as MonacoTextModel;
   monaco.editor.setModelLanguage(model!, lang);
-  
+
   // save old config
   const previousViewState = editor?.saveViewState() ?? null;
   const cursor = editor.getPosition(); // Simpan posisi kursor
-  const options = editor.getRawOptions(); 
+  const options = editor.getRawOptions();
   // options.theme = 'vs-dark'
-  
+
   // dispose only monaco editor
   editor.dispose();
 
@@ -85,7 +86,7 @@ export function changeLanguage(tab: TabClass, lang: string) {
   // tab.instance.changeMonacoEditor(editor);
 }
 
-function actionThemeContextMenu(editor: MonacoEditor ) {
+function actionThemeContextMenu(editor: MonacoEditor) {
   editor.addAction({
     id: "toggle-theme",
     label: `Switch Theme ☀️ or 🌙`,
@@ -106,13 +107,13 @@ function actionNewTabContextMenu(editor: MonacoEditor) {
     run: () => {
       const { workspace } = useWorkspace();
       const group = workspace.activeGroup!;
-      group.newFile('','','');
+      group.newFile('', '', '');
     },
   })
 }
 
-function actionSplitEditor(editor: MonacoCodeEditor){
-    editor.addAction({
+function actionSplitEditor(editor: MonacoCodeEditor) {
+  editor.addAction({
     id: "split-tab",
     label: `Split`,
     contextMenuGroupId: "navigation", // atau "custom" sesuai selera
@@ -125,27 +126,82 @@ function actionSplitEditor(editor: MonacoCodeEditor){
   })
 }
 
-const registeredGeneralAction: WeakMap<(editor: any) => void, boolean> = new WeakMap();
-const additionalGeneralAction: Record<string, (editor: any) => void> = {};
+// function removeCommandPaletteItem(editor: MonacoEditor) {
+// console.log(top.editor = editor)
+// setTimeout(() => {
+//   editor.trigger(null, 'editor.action.quickCommand', null);
+// },1000)
+// editor.addCommand()
+// editor.addAction({
+//   id: "my-custom-action",
+//   label: "My Custom Action",
+//   keybindings: [
+//     // Optional: Add a keybinding for your action
+//     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyM, // Ctrl/Cmd + M
+//   ],
+//   run: function (editor) {
+//     // Define the logic to execute when the action is triggered
+//     alert("Custom action executed!");
+//   },
+// })
 
-export function registerGeneralAction(name:string, action: (editor: any) => void){
-  additionalGeneralAction[name] = action;
-}
+// editor.addAction({
+//   id: "editor.action.showCommands",
+//   label: "Command Palette...",
+//   contextMenuGroupId: "cutcopypaste",
+//   run: () => { }, // override dengan aksi kosong
+// });
+// Akses internal registry context menu (hacky tapi umum digunakan)
+// const menuItems = (editor as any)._contextMenuService?._menuRegistry?.menuItems;
+
+// if (menuItems) {
+//   // Filter semua group dan hapus item Command Palette
+//   for (const [menuId, items] of menuItems) {
+//     // cari menu bawaan editor
+//     if (menuId?.id === "EditorContext") {
+//       const filtered = items.filter(
+//         (item: any) => !item.command?.id?.includes("editor.action.showCommands")
+//       );
+//       menuItems.set(menuId, filtered);
+//     }
+//   }
+// }
+
+// console.log("✅ Command Palette context menu item removed");
+// }
+
+
+// const registeredGeneralAction: WeakMap<(editor: MonacoEditor) => void, boolean> = new WeakMap();
+// const additionalGeneralAction: Record<string, (editor: any) => void> = {};
+
+// export function registerGeneralAction(name: string, action: (editor: any) => void) {
+//   additionalGeneralAction[name] = action;
+// }
 
 export function init(this: EditorClass) {
+  // removeCommandPaletteItem(this.editor);
+  // registeredGeneralAction.set(removeCommandPaletteItem, true)
   actionThemeContextMenu(this.editor);
-  registeredGeneralAction.set(actionThemeContextMenu, true)
+  // registeredGeneralAction.set(actionThemeContextMenu, true)
   actionNewTabContextMenu(this.editor)
-  registeredGeneralAction.set(actionNewTabContextMenu, true)
-  if(this.isCodeEditor){
+  // registeredGeneralAction.set(actionNewTabContextMenu, true)
+  if (this.isCodeEditor) {
     actionSplitEditor(this.editor as MonacoCodeEditor)
-    registeredGeneralAction.set(actionSplitEditor, true)
+    // registeredGeneralAction.set(actionSplitEditor, true)
   }
 
-  for(const name of Object.keys(additionalGeneralAction)){
-    if(!registeredGeneralAction.has(additionalGeneralAction[name])){
-      additionalGeneralAction[name](this.editor);
-      registeredGeneralAction.set(additionalGeneralAction[name], true);
-    }
-  }
+  // for (const name of Object.keys(additionalGeneralAction)) {
+  //   if (!registeredGeneralAction.has(additionalGeneralAction[name])) {
+  //     additionalGeneralAction[name](this.editor);
+  //     registeredGeneralAction.set(additionalGeneralAction[name], true);
+  //   }
+  // }
+
+  detectLanguage(this, (model, lang) => {
+    // changeLanguage(myTab, lang);
+    this.changeLanguage(lang as ModelLanguage);
+    removeTraitOnInstanced(this);
+    applyTraitOnInstanced(this);
+    this.init();
+  });
 }

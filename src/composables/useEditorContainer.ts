@@ -8,21 +8,20 @@ import { Editor } from "@/core/Editor";
 import { MapModelEditor } from "@/types/model";
 
 // 1. Define Golbal Worker management
-const EditorMainContainerMap: Map<string, Ref<HTMLDivElement|null>> = new Map();
-// const EditorMainContainerMap: Map<string, Ref<VNode>> = new Map();
-
-// const editorMainContainer = ref<HTMLDivElement | null>(null);
-// const editorMainContainer = {value: null}
-// const EDITOR_CONTAINER_CSS_CLASS = 'editor-container';
-const EDITOR_CONTAINER_CSS_CLASS = 'editor-wrapper';
+const EditorMainContainerMap: Map<string, Ref<HTMLDivElement | null>> = new Map();
+const EDITOR_CONTAINER_CSS_CLASS = 'editor-container';
 export const EDITOR_MAIN_CONTAINER_CSS_CLASS = 'editor-main';
 
+/**
+ * @deprecated pakai editor.getContainerDomNode() saja
+ * @param editor 
+ * @returns 
+ */
 export function getEditorContainer(editor: EditorClass | monaco.editor.IStandaloneCodeEditor): HTMLElement | null {
   let domNode: HTMLElement | null;
   if ((editor as EditorClass).id) {
     domNode = ((editor as EditorClass).editor as monaco.editor.IStandaloneCodeEditor).getDomNode();
   } else {
-    console.log((editor as monaco.editor.IStandaloneCodeEditor).getDomNode());
     domNode = (editor as monaco.editor.IStandaloneCodeEditor).getDomNode();
   }
   if (domNode) {
@@ -40,12 +39,6 @@ export function createEditorContainer(): HTMLDivElement {
   return div
 }
 
-// function createEditorMainContainer(): HTMLDivElement {
-//   const div = document.createElement('div');
-//   div.classList.add(EDITOR_MAIN_CONTAINER_CSS_CLASS)
-//   return div
-// }
-
 export function useEditorContainer(groupId: string) {
   if (!EditorMainContainerMap.has(groupId)) {
     EditorMainContainerMap.set(groupId, ref(null));
@@ -54,73 +47,95 @@ export function useEditorContainer(groupId: string) {
   const edMainContainer = ref(EditorMainContainerMap.get(groupId)!);
 
   function createEditorInstance(value: string = '', language: string = 'plaintext', uri: string = ''): TabClass | void {
-    const { modelStore } = useModelStore();
+    // if (!edMainContainer) return;
+    // const div = createEditorContainer();
+    // edMainContainer.value!.innerHTML = '';
+    // edMainContainer.value!.appendChild(div);
+    // const { modelStore } = useModelStore();
+    // const modelId = modelStore.createModel(value, language, uri);
+    // const model = modelStore.getModel(modelId);
+    // const editorInstance = {
+    //   id: 'fufufuafa',
+    //   editor: monaco.editor.create(div, {
+    //     model
+    //   })
+    // }
+    // top.editor = editorInstance.editor
+    // return Tab(editorInstance);
+
     if (!edMainContainer) return;
     // create div container
     const div = createEditorContainer();
     edMainContainer.value!.innerHTML = '';
     edMainContainer.value!.appendChild(div);
     // create editorInstance
+    const { modelStore } = useModelStore();
     const modelId = modelStore.createModel(value, language, uri);
     const editorId = randStr(10);
     const name = getFilenameFromUri(uri, "Untitled");
     const editorInstance = Editor(editorId, name, modelId, div);
+    // const editorInstance = Editor(editorId, name, modelId, edMainContainer.value);
+    editorInstance.init();
+    // create Tab
+    return Tab(editorInstance);
+  }
+
+  function createEditorInstanceWithModel(modelOrUriOrId: string | MonacoTextModel, name: string | null = null): TabClass | void {
+    if (!edMainContainer) return;
+    // create div container
+    const div = createEditorContainer();
+    edMainContainer.value!.innerHTML = '';
+    edMainContainer.value!.appendChild(div);
+    // create editorInstance    
+    let model: MonacoTextModel;
+    const { modelStore } = useModelStore();
+    if (typeof modelOrUriOrId === 'string') {
+      model = modelStore.getModel(modelOrUriOrId) as MonacoTextModel;
+    } else model = modelOrUriOrId;
+    const editorId = randStr(10);
+    if (!name) name = getFilenameFromUri(modelOrUriOrId as string, 'Untitled');
+    const editorInstance = Editor(editorId, name, model, div);
     // store map editor and id
-    modelStore.mapModelAndEditor(modelId, [editorId]) as Array<MapModelEditor>;
+    // modelStore.mapModelAndEditor(model.id, [editorId]) as Array<MapModelEditor>;
     // init general and apply trait
     editorInstance.init();
     // create Tab
-    const tab = Tab(editorInstance);
-    return tab;
+    return Tab(editorInstance);
   }
 
-  function createEditorInstanceWithModel(modelOrUriOrId:string|MonacoTextModel, name:string|null = null): TabClass | void {
-    // console.log(modelOrUriOrId);
-    const { modelStore } = useModelStore();
+  function createDiffEditorInstance(originalUri: string, modifiedUri: string) {
     if (!edMainContainer) return;
     // create div container
     const div = createEditorContainer();
     edMainContainer.value!.innerHTML = '';
     edMainContainer.value!.appendChild(div);
     // create editorInstance
-    
-    let model: MonacoTextModel;
-    if(typeof modelOrUriOrId === 'string'){
-      model = modelStore.getModel(modelOrUriOrId) as MonacoTextModel;
-    } else model = modelOrUriOrId;
     const editorId = randStr(10);
-    if(!name) name = getFilenameFromUri(modelOrUriOrId as string, 'Untitled');
-    const editorInstance = Editor(editorId, name, model, div);
+    const oriName = getFilenameFromUri(originalUri, 'ori');
+    const modName = getFilenameFromUri(modifiedUri, 'mod');
+    const name = "DIFF: " + oriName + ` ———> [${modName}]`;
+    const editorInstance = Editor(editorId, name, [originalUri, modifiedUri], div);
     // store map editor and id
-    modelStore.mapModelAndEditor(model.id, [editorId]) as Array<MapModelEditor>;
-    console.log(model.uri.toString())
-    // init general and apply trait
     editorInstance.init();
     // create Tab
-    const tab = Tab(editorInstance);
-    return tab;
+    return Tab(editorInstance);
   }
 
   function attachToEl(tab: TabClass | null) {
     if (!tab) return;
-    const editorContainer = getEditorContainer(tab.instance)
-    if (editorContainer) {
-      editorContainer.classList.add(EDITOR_CONTAINER_CSS_CLASS);
-      edMainContainer.value?.appendChild(editorContainer);
-      // tab.instance.editor.layout();
-    }
+    // const editorContainer = getEditorContainer(tab.instance)
+    const editorContainer = tab.instance.editor.getContainerDomNode();
+    editorContainer.classList.add(EDITOR_CONTAINER_CSS_CLASS);
+    edMainContainer.value?.appendChild(editorContainer);
+    // tab.instance.editor.layout();
   }
   function detachFromEl(tab: TabClass | null) {
     if (!tab) return;
-    const editorInstance = tab.instance;
-    const domNode = (editorInstance.editor as MonacoCodeEditor).getDomNode();
-    if (domNode && edMainContainer.value?.children) {
-      edMainContainer.value.innerHTML = ''
-    }
+    edMainContainer.value!.innerHTML = ''
   }
 
   return {
-    createEditorInstanceWithModel, createEditorInstance, attachToEl, detachFromEl,
+    createEditorInstanceWithModel, createEditorInstance, createDiffEditorInstance, attachToEl, detachFromEl,
     get editorMainContainer() {
       return edMainContainer;
     }

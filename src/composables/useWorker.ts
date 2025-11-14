@@ -22,25 +22,29 @@ export type WorkerMessageType = "validate" | "suggest" | "match-attr-info" | 'ex
 // if error, there are any wrong or faultness in worker process
 export type WorkerStatus = "working" | "done" | "error"
 
-export interface ValidatePayload {
+export interface BasePayload {
+  uri?:string;
+}
+
+export interface ValidatePayload extends BasePayload{
   xmlText: string;
   schemaUrl: string;
 }
 
-export interface SuggestPayload {
+export interface SuggestPayload extends BasePayload{
   context: string;
 }
 
-export interface MatchingAttrInfoPayload {
+export interface MatchingAttrInfoPayload extends BasePayload{
   lineContent: string; // monaco, Get the text for a certain line.
   cursorIndex: number; // monaco, editor.getPosition().column - 1
 }
 
-export interface ExtractSchemaLocationPayload {
+export interface ExtractSchemaLocationPayload extends BasePayload{
   xmlText: string;
 }
 
-export interface ReadyPayload {
+export interface ReadyPayload extends BasePayload{
   ready: boolean;
 }
 
@@ -179,6 +183,7 @@ export function useWorker(
 
       if (isReady()) {
         const status: WorkerStatus = "working";
+        if(!payload.uri) payload.uri = window.location.href;
         const message: WorkerResponse = { id, status, type, payload };
         worker.postMessage(message);
         const timer = setTimeout(() => {

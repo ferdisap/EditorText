@@ -1,14 +1,16 @@
 import { detectLanguage } from "@/languages/detection";
-import { EditorClass, TabClass } from "@/types/editor";
+import { EditorClass, MonacoDiffEditor, MonacoTextModel, TabClass } from "@/types/editor";
 import { changeLanguage } from "./traits/editor/general.trait";
 import { applyTraitOnInstanced, removeTraitOnInstanced } from "./traits/apply";
 import { ModelLanguage } from "@/types/model";
+import { useModelStore } from "@/composables/useModelstore";
+import { terminateWorker } from "@/composables/useWorker";
 
 export function Tab(instace: EditorClass): TabClass {
   const _id: string = instace.id;
   let _instance = instace;
 
-  const myTab =  {
+  return {
     get id() {
       return _id;
     },
@@ -19,32 +21,48 @@ export function Tab(instace: EditorClass): TabClass {
       return _instance.name;
     },
     close() {
-      // const model = _instance.editor.getModel()!;
-      // // console.log(model)
-      // const { modelStore } = useModelStore()
-      // const { editorsInstancesId } = modelStore.value.mapModelAndEditor(model.id)[0];
+      const { modelStore } = useModelStore()
+      if(_instance.isCodeEditor){
+        const model = _instance.editor.getModel()!;
+        const { editorsInstancesId } = modelStore.mapModelAndEditor((model as MonacoTextModel).id, [_instance.id])[0];
+        // jika model ini hanya dipakai di satu editor dispose model dan editor (destroy juga containernya)
+        const isUsedOnlyOneEditor: boolean = editorsInstancesId.length <= 1 && _id === editorsInstancesId[0];
+        if (isUsedOnlyOneEditor) {
+          // clearing worker
+          terminateWorker((model as MonacoTextModel).getLanguageId());
+          // dispose model and editor and domNode div.monaco-editor
+          _instance.destroy();
+        } else {
+          // dispose editor saja karena model masih digunakan
+          _instance.disposeEditor();
+        }
+      }
+      else {
+        const container = (_instance.editor as MonacoDiffEditor).getContainerDomNode();
+        // disposing original model
+        const oriEditor = (_instance.editor as MonacoDiffEditor).getOriginalEditor();
+        const oriModel = oriEditor.getModel()!;
+        let map = modelStore.mapModelAndEditor(oriModel.id, null)[0];
+        let editorsInstancesId = map.editorsInstancesId;
+        const isOriModelUsedOnlyOneEditor: boolean = editorsInstancesId.length <= 1;
+        if(isOriModelUsedOnlyOneEditor){
+          oriModel.dispose();
+        }
+        // disposing modified model
+        const modEditor = (_instance.editor as MonacoDiffEditor).getModifiedEditor();
+        const modModel = modEditor.getModel()!;
+        map = modelStore.mapModelAndEditor(modModel.id, null)[0];
+        editorsInstancesId = map.editorsInstancesId;
+        const isModModelUsedOnlyOneEditor: boolean = editorsInstancesId.length <= 1;
+        if(isModModelUsedOnlyOneEditor){
+          modModel.dispose()
+        }
 
-      // // jika model ini hanya dipakai di satu editor dispose model dan editor (destroy juga containernya)
-      // const isUsedOnlyOneEditor: boolean = editorsInstancesId.length <= 1 && _id === editorsInstancesId[0];
+        (_instance.editor as MonacoDiffEditor).dispose();
+        container.remove();
+      }
 
-      // if (isUsedOnlyOneEditor) {
-      //   model.dispose();
 
-      //   // clearing worker
-      //   terminateWorker(model.getLanguageId())
-      // }
-      // // jika model ini dipakai semua maka cukup hancurkan saja editornya
-      // // _instance.destroy();
-      // _instance.disposeEditor()
     }
   }
-
-  detectLanguage(myTab, (model, lang) => {
-    // changeLanguage(myTab, lang);
-    myTab.instance.changeLanguage(lang as ModelLanguage);
-    removeTraitOnInstanced(_instance);
-    applyTraitOnInstanced(_instance);
-    _instance.init();
-  });
-  return myTab;
 }

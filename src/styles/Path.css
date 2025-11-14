@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* 🌗 Container utama */
+.editor-path {
+  @apply py-0 px-2 overflow-x-auto whitespace-nowrap transition-colors duration-300;
+  /* background-color: var(--vscode-tab-inactiveBackground, #2d2d2d); */
+  background-color: var(--vscode-tab-activeBackground, #1e1e1e);
+  /* border-color: var(--vscode-tab-border, #1e1e1e); */
+  border: none;
+  font-family: var(--vscode-font-family, Consolas, "Courier New", monospace);
+  font-size: 12px;
+  overflow: hidden
+}
+
+.editor-path .path-uri {
+  @apply text-xs
+}

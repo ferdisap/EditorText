@@ -7,8 +7,11 @@ const props = defineProps<{ group: GroupClass }>();
 
 const close = (tabId:string) => {
   const { workspace } = useWorkspace();
-  if(workspace.groups.filter(group => group.tabs.length).length > 1){
+  if(workspace.groups.length > 1 || props.group.tabs.length > 1){
     props.group.closeTab(tabId);
+    if(props.group.tabs.length === 0){
+      workspace.closeGroup(props.group.id);
+    }
   }
 }
 
@@ -40,7 +43,7 @@ const select = (tabId:string) => {
       @click="select(tab.id)"
     >
       <span class="tab-name">{{ tab.name }}</span>
-      <span class="tab-uri">&nbsp;{{ tab.instance.editor.getModel()?.uri }}</span>
+      <!-- <span class="tab-uri">&nbsp;{{ tab.instance.editor.getModel()?.uri }}</span> -->
       <button
         class="tab-close"
         @click.stop="close(tab.id)"
