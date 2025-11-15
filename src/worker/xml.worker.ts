@@ -1,6 +1,6 @@
-import { ExtractSchemaLocationPayload, MatchingAttrInfoPayload, ReadyPayload, SchemaUrl, ValidatePayload, WorkerResponse, WorkerResult } from "@/composables/useWorker";
+import { DetectSchemaLocationPayload, MatchingAttrInfoPayload, ReadyPayload, SchemaUrl, ValidatePayload, WorkerResponse, WorkerResult } from "@/composables/useWorker";
 import { AttributeInfo } from "@/types/xml";
-import { extractSchemaLocation, validateXml, ValidationInfo, baseUri } from "xml-xsd-validator-browser";
+import { detectSchemaLocation, validateXml, ValidationInfo, baseUri } from "xml-xsd-validator-browser";
 import { matchingAttrInfo } from "./fn_attribute";
 
 const payloadReady: ReadyPayload = {
@@ -16,8 +16,8 @@ self.postMessage(responseReady);
 self.onmessage = async (e: MessageEvent<WorkerResponse>) => {
   const data = e.data as WorkerResponse;
   switch (data.type) {
-    case "extract-schema-location":
-      const schemas = extractSchemaLocation((data.payload as ExtractSchemaLocationPayload).xmlText);
+    case "detect-schema-location":
+      const schemas = detectSchemaLocation((data.payload as DetectSchemaLocationPayload).xmlText);
       data.result = schemas[0] ? schemas[0].filename as SchemaUrl : null;
       self.postMessage(data);
       break;

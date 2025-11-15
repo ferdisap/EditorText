@@ -17,7 +17,7 @@ import { ValidationInfo } from "xml-xsd-validator-browser";
    0️⃣ DEFINISI INTERFACE DAN TYPE
 ---------------------------------------------------------- */
 
-export type WorkerMessageType = "validate" | "suggest" | "match-attr-info" | 'extract-schema-location' | "init" | "other";
+export type WorkerMessageType = "validate" | "suggest" | "match-attr-info" | 'detect-schema-location' | "init" | "other";
 
 // if error, there are any wrong or faultness in worker process
 export type WorkerStatus = "working" | "done" | "error"
@@ -40,7 +40,7 @@ export interface MatchingAttrInfoPayload extends BasePayload{
   cursorIndex: number; // monaco, editor.getPosition().column - 1
 }
 
-export interface ExtractSchemaLocationPayload extends BasePayload{
+export interface DetectSchemaLocationPayload extends BasePayload{
   xmlText: string;
 }
 
@@ -54,7 +54,7 @@ export interface WorkerResponse {
   type: WorkerMessageType,
   status: WorkerStatus;
   message?: string;
-  payload: ValidatePayload | SuggestPayload | ReadyPayload | MatchingAttrInfoPayload | ExtractSchemaLocationPayload;
+  payload: ValidatePayload | SuggestPayload | ReadyPayload | MatchingAttrInfoPayload | DetectSchemaLocationPayload;
   // payload: TPayload
   result?: WorkerResult | null;
 }

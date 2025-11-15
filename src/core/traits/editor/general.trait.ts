@@ -4,8 +4,10 @@ import { createEditorContainer, getEditorContainer } from "@/composables/useEdit
 import { useWorkspace } from "@/composables/useWorkspace";
 import { EditorClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel, TabClass } from "@/types/editor";
 import { detectLanguage } from "@/languages/detection";
-import { applyTraitOnInstanced, removeTraitOnInstanced } from "../apply";
+import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "../apply";
 import { ModelLanguage } from "@/types/model";
+import { applyAction, deApplyAction, registerAction } from "@/plugins/action.plugin";
+import { applyPluginOnDidChangeModelContent, deApplyPluginOnDidChangeModelContent, registerPluginOnDidChangeModelContent } from "@/plugins/onDidChangeModelContent.plugin";
 
 const { toggleTheme } = useTheme();
 
@@ -47,7 +49,8 @@ export function duplicateEditor(editor: monaco.editor.IStandaloneCodeEditor, lan
 export function changeLanguage(tab: TabClass, lang: string) {
   const editorInstance = tab.instance;
   if (!editorInstance.isCodeEditor) return;
-  const container = getEditorContainer(editorInstance);
+  // const container = getEditorContainer(editorInstance);
+  const container = editorInstance.editor.getContainerDomNode();
   let editor: MonacoCodeEditor = editorInstance.editor as MonacoCodeEditor;
 
   // change language model
@@ -86,9 +89,9 @@ export function changeLanguage(tab: TabClass, lang: string) {
   // tab.instance.changeMonacoEditor(editor);
 }
 
-function actionThemeContextMenu(editor: MonacoEditor) {
-  editor.addAction({
-    id: "toggle-theme",
+function actionThemeContextMenu(editorInstance: EditorClass) {
+  return editorInstance.editor.addAction({
+    id: "toggle.theme",
     label: `Switch Theme ☀️ or 🌙`,
     contextMenuGroupId: "6_configuration", // atau "custom" sesuai selera
     contextMenuOrder: 1.1,
@@ -98,9 +101,9 @@ function actionThemeContextMenu(editor: MonacoEditor) {
   })
 }
 
-function actionNewTabContextMenu(editor: MonacoEditor) {
-  editor.addAction({
-    id: "new-tab",
+function actionNewTabContextMenu(editorInstance: EditorClass) {
+  return editorInstance.editor.addAction({
+    id: "new.tab",
     label: `New File`,
     contextMenuGroupId: "navigation", // atau "custom" sesuai selera
     contextMenuOrder: 1.1,
@@ -112,21 +115,23 @@ function actionNewTabContextMenu(editor: MonacoEditor) {
   })
 }
 
-function actionSplitEditor(editor: MonacoCodeEditor) {
-  editor.addAction({
-    id: "split-tab",
-    label: `Split`,
-    contextMenuGroupId: "navigation", // atau "custom" sesuai selera
-    contextMenuOrder: 1.2,
-    run: () => {
-      const { workspace } = useWorkspace();
-      const group = workspace.activeGroup!;
-      group.splitFile(editor.getModel()!.uri.toString());
-    },
-  })
+function actionSplitEditor(editorInstance: EditorClass) {
+  if (editorInstance.isCodeEditor) {
+    return editorInstance.editor.addAction({
+      id: "split.tab",
+      label: `Split`,
+      contextMenuGroupId: "navigation", // atau "custom" sesuai selera
+      contextMenuOrder: 1.2,
+      run: () => {
+        const { workspace } = useWorkspace();
+        const group = workspace.activeGroup!;
+        group.splitFile((editorInstance.editor as MonacoCodeEditor).getModel()!.uri.toString());
+      },
+    })
+  }
 }
 
-// function removeCommandPaletteItem(editor: MonacoEditor) {
+// function removeCommandPaletteItem(editor: EditorClass) {
 // console.log(top.editor = editor)
 // setTimeout(() => {
 //   editor.trigger(null, 'editor.action.quickCommand', null);
@@ -170,38 +175,58 @@ function actionSplitEditor(editor: MonacoCodeEditor) {
 // console.log("✅ Command Palette context menu item removed");
 // }
 
-
-// const registeredGeneralAction: WeakMap<(editor: MonacoEditor) => void, boolean> = new WeakMap();
-// const additionalGeneralAction: Record<string, (editor: any) => void> = {};
-
-// export function registerGeneralAction(name: string, action: (editor: any) => void) {
+// export function registerAction(name: string, action: (editor: any) => void) {
 //   additionalGeneralAction[name] = action;
 // }
 
+registerAction('toggle.theme', actionThemeContextMenu);
+registerAction('new.tab', actionNewTabContextMenu);
+registerAction('split.tab', actionSplitEditor);
+
+// registerPluginOnDidChangeModelContent('detect.language', () => {
+//   return detectLanguage(this, (model, lang) => {
+//     console.log('detect language')
+//     // changeLanguage(myTab, lang);
+//     this.changeLanguage(lang as ModelLanguage);
+//     deApplyTraitOnInstanced(this);
+//     applyTraitOnInstanced(this);
+//     this.init();
+//   });
+// })
+
+// registerPluginOnDidChangeModelContent('detect.language', function (this: EditorClass) {
+//   console.log(this);
+//   return detectLanguage(this, (model, lang) => {
+//     console.log('detect language')
+//     // changeLanguage(myTab, lang);
+//     this.changeLanguage(lang as ModelLanguage);
+//     deApplyTraitOnInstanced(this);
+//     applyTraitOnInstanced(this);
+//     this.init();
+//   });
+// })
+
 export function init(this: EditorClass) {
-  // removeCommandPaletteItem(this.editor);
-  // registeredGeneralAction.set(removeCommandPaletteItem, true)
-  actionThemeContextMenu(this.editor);
-  // registeredGeneralAction.set(actionThemeContextMenu, true)
-  actionNewTabContextMenu(this.editor)
-  // registeredGeneralAction.set(actionNewTabContextMenu, true)
-  if (this.isCodeEditor) {
-    actionSplitEditor(this.editor as MonacoCodeEditor)
-    // registeredGeneralAction.set(actionSplitEditor, true)
-  }
+  applyAction.apply(this);
 
-  // for (const name of Object.keys(additionalGeneralAction)) {
-  //   if (!registeredGeneralAction.has(additionalGeneralAction[name])) {
-  //     additionalGeneralAction[name](this.editor);
-  //     registeredGeneralAction.set(additionalGeneralAction[name], true);
-  //   }
-  // }
+  const namespacePlugin = `detect.language.${this.id}`;
+  registerPluginOnDidChangeModelContent(namespacePlugin, () => {
+    return detectLanguage(this, (model, lang) => {
+      // changeLanguage(myTab, lang);
+      this.changeLanguage(lang as ModelLanguage);
+      deApplyTraitOnInstanced(this);
+      applyTraitOnInstanced(this);
+      this.init();
+    });
+  })
 
-  detectLanguage(this, (model, lang) => {
-    // changeLanguage(myTab, lang);
-    this.changeLanguage(lang as ModelLanguage);
-    removeTraitOnInstanced(this);
-    applyTraitOnInstanced(this);
-    this.init();
-  });
+  applyPluginOnDidChangeModelContent.apply(this)
+}
+
+export function deInit(this: EditorClass) {
+
+  deApplyAction.apply(this, [null, true])
+  
+  const namespacePlugin = `detect.language.${this.id}`;
+  deApplyPluginOnDidChangeModelContent.apply(this, [namespacePlugin, true])
 }

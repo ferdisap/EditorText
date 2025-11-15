@@ -1,5 +1,5 @@
 import { delay } from "@/util/time";
-import { ExtractSchemaLocationPayload, MatchingAttrInfoPayload, SchemaUrl, WorkerResponse, useWorker } from "@/composables/useWorker";
+import { DetectSchemaLocationPayload, MatchingAttrInfoPayload, SchemaUrl, WorkerResponse, useWorker } from "@/composables/useWorker";
 import { AttributeInfo } from "@/types/xml";
 import { EditorXMLClass, MonacoCodeEditor, MonacoTextModel } from "@/types/editor";
 import { getLineContentAndCursorIndex } from "@/core/Editor";
@@ -12,15 +12,15 @@ export function detectAndSetSchema(xmlEditor: EditorXMLClass) {
   if(xmlEditor.isCodeEditor){
     const disposable = (editor as MonacoCodeEditor).onDidChangeCursorSelection((e) => {
     // const disposable = (editor as MonacoCodeEditor).onDidChangeCursorPosition((e) => {
-      console.log('onDidChangeCursorSelection')
+      // console.log('onDidChangeCursorSelection')
       // console.log('onDidChangeCursorPosition')
       debounce(async () => {
-        let wkPayload: ExtractSchemaLocationPayload | MatchingAttrInfoPayload;
+        let wkPayload: DetectSchemaLocationPayload | MatchingAttrInfoPayload;
         let wkResponse :WorkerResponse;
         
         // get schema by all xmlText
         wkPayload = { xmlText: (xmlEditor.editor.getModel() as MonacoTextModel)!.getValue() }
-        wkResponse = await postToWorker("extract-schema-location", wkPayload);
+        wkResponse = await postToWorker("detect-schema-location", wkPayload);
         let schemaUrl:SchemaUrl | null | undefined = wkResponse.result as SchemaUrl;
         if(schemaUrl && (schemaUrl.endsWith('.xsd')) && (xmlEditor.schemaUrl !== schemaUrl)){
           xmlEditor.setSchemaByUrl(schemaUrl);

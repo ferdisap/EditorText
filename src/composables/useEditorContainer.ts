@@ -47,22 +47,6 @@ export function useEditorContainer(groupId: string) {
   const edMainContainer = ref(EditorMainContainerMap.get(groupId)!);
 
   function createEditorInstance(value: string = '', language: string = 'plaintext', uri: string = ''): TabClass | void {
-    // if (!edMainContainer) return;
-    // const div = createEditorContainer();
-    // edMainContainer.value!.innerHTML = '';
-    // edMainContainer.value!.appendChild(div);
-    // const { modelStore } = useModelStore();
-    // const modelId = modelStore.createModel(value, language, uri);
-    // const model = modelStore.getModel(modelId);
-    // const editorInstance = {
-    //   id: 'fufufuafa',
-    //   editor: monaco.editor.create(div, {
-    //     model
-    //   })
-    // }
-    // top.editor = editorInstance.editor
-    // return Tab(editorInstance);
-
     if (!edMainContainer) return;
     // create div container
     const div = createEditorContainer();

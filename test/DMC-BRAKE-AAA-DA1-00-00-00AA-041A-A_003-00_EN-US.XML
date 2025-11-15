@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE dmodule  [
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dmodule [
   <!ENTITY ICN-C0419-S1000D0379-001-01 SYSTEM "ICN-C0419-S1000D0379-001-01.CGM" NDATA cgm >
-  <!ENTITY ICN-C0419-S1000D0380-001-01 SYSTEM "ICN-C0419-S1000D0380-001-01.CGM" NDATA cgm >
+  <!-- <!ENTITY ICN-C0419-S1000D0380-001-01 SYSTEM "ICN-C0419-S1000D0380-001-01.CGM" NDATA cgm > -->
   <!ENTITY ICN-C0419-S1000D0381-001-01 SYSTEM "ICN-C0419-S1000D0381-001-01.CGM" NDATA cgm >
-  <!NOTATION cgm PUBLIC "-//USA-DOD//NOTATION Computer Graphics Metafile//EN" >
+  <!NOTATION cgm PUBLIC "-//sUSA-DOD//NOTATION Computer Graphics Metafile//EN" >
 ]>
 <dmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://www.purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:noNamespaceSchemaLocation="https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/descript.xsd">
    <identAndStatusSection>

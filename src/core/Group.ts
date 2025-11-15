@@ -36,7 +36,7 @@ export function Group(name: string): GroupClass {
     },
 
     get activeTab() {
-      console.trace();
+      // console.trace();
       return state.tabs.find((tab) => tab.id === state.activeTabId) as TabClass;
       // return undefined;
     },

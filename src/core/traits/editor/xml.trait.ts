@@ -35,3 +35,7 @@ export function init(this: EditorClass): void {
   detectAttValueAfterInsertAttName(this as EditorXMLClass)
   detectErrorProcessor(this, (xmlText):Record<string, any> => ({schemaUrl: (this as EditorXMLClass).schemaUrl}))
 }
+
+export function deInit(this: EditorClass) :void {
+  
+}

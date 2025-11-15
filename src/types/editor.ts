@@ -45,6 +45,7 @@ export type EditorClass = {
   model:MonacoTextModel; // untuk MonacoTextModel, nukan DiffEditor
   originalModel:MonacoTextModel; // untuk MonacoTextModel, nukan DiffEditor
   init(): void;
+  deInit():void;
   changeLanguage(language:ModelLanguage):void
   focus():void;
   layout():void;
@@ -63,7 +64,7 @@ export interface EditorXMLClass extends EditorClass {
 
 export type EditorTheme = monaco.editor.BuiltinTheme
 
-export type MonacoEditor = monaco.editor.IStandaloneCodeEditor | monaco.editor.IStandaloneDiffEditor;
+export type MonacoEditor = MonacoCodeEditor | MonacoDiffEditor;
 
 export type MonacoCodeEditor = monaco.editor.IStandaloneCodeEditor;
 

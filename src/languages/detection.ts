@@ -109,9 +109,8 @@ export function detectLanguage(editorInstance: EditorClass, onDetected: (model: 
         }, 500
       )();
     })
+    return disposable;
   }
-
-  // disposable.dispose()
 }
 
 export function detectErrorProcessor(editorInstance: EditorClass, beforeValidate: (textContent: string) => Record<string, any>) {

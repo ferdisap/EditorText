@@ -1,15 +1,12 @@
-import { EditorInstance } from "./EditorInstance";
-import { XmlEditorTrait } from "@/types/trait";
-import { setSchemaByUrl, init as InitXml, validateToSchema, validateWellForm } from "./editor/xml.trait";
-import { init as initPlaintext } from "./traits/editor/plaintext.trait"
+import { setSchemaByUrl } from "./editor/xml.trait";
 import { EditorClass } from "@/types/editor";
 import { ModelLanguage } from "@/types/model";
 
-function ifLanguageXml(): XmlEditorTrait {
+function ifLanguageXml() {
   // const { schemaUrl, root, schema } = setSchemaByUrl(null);
   return {
     setSchemaByUrl
-  } as XmlEditorTrait
+  }
 }
 
 function ifLanguagePlaintext() {
@@ -30,7 +27,7 @@ export function applyTraitOnInstanced(targetClassInstanced: EditorClass) {
     mapAppliedTraitOnInstance.set(targetClassInstanced, language);
   }
 }
-export function removeTraitOnInstanced(targetClassInstanced: EditorClass) {
+export function deApplyTraitOnInstanced(targetClassInstanced: EditorClass) {
   const language = targetClassInstanced.language;
   if(language && mapAppliedTraitOnInstance.has(targetClassInstanced)){
     let props: Record<string, any>;

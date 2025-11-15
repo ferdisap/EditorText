@@ -1,14 +1,15 @@
 import { useMarker } from "@/composables/useMarker";
 import { useModelStore } from "@/composables/useModelstore";
 import { useTheme } from "@/composables/useTheme";
-import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoDiffEditor, MonacoDiffEditorOptions, MonacoEditor, MonacoEditorDiff, MonacoEditorOptions, MonacoModel, MonacoTextModel } from "@/types/editor";
+import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoDiffEditor, MonacoDiffEditorOptions, MonacoEditor, MonacoEditorOptions, MonacoModel, MonacoTextModel } from "@/types/editor";
 import * as monaco from "monaco-editor"
-import { init as initGeneral } from "./traits/editor/general.trait";
-import { init as initXml } from "./traits/editor/xml.trait";
+import { init as initGeneral , deInit as deInitGeneral} from "./traits/editor/general.trait";
+import { init as initXml, deInit as deInitXml } from "./traits/editor/xml.trait";
 import { ModelLanguage } from "@/types/model";
-import { applyTraitOnInstanced } from "./traits/apply";
+import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "./traits/apply";
 import { hasMethod } from "@/util/function";
 import { isValidUri } from "@/util/string";
+import { MARKER_VALIDATION_NS } from "./Marker";
 
 // 🧩 id: "toggle-theme"
 // ➡️ Ini adalah identifier unik untuk action tersebut.
@@ -70,7 +71,7 @@ function createEditor(container: HTMLDivElement, model: MonacoTextModel) {
   const editor = monaco.editor.create(container as HTMLDivElement, {
     model, theme, minimap, automaticLayout, scrollBeyondLastLine
   });
-  console.log(top.editor = editor);
+  // console.log(top.editor = editor);
   return editor;
 }
 
@@ -172,7 +173,7 @@ function getModel(model: string | MonacoTextModel | undefined): MonacoModel {
       model = modelStore.getModel(model);
       // jika tidak didapatkan maka model dibikin baru
       if (!model) {
-        _modelId = modelStore.createModel('','',uri)
+        _modelId = modelStore.createModel('', '', uri)
         model = modelStore.getModel(_modelId);
       } else {
         _modelId = (model as MonacoTextModel).id;
@@ -227,13 +228,13 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
     get modelId() {
       return _modelId;
     },
-    get model(){
+    get model() {
       return getModel(_modelId) as MonacoTextModel;
     },
     get originalModelId() {
       return _originalModelId;
     },
-    get originalModel(){
+    get originalModel() {
       return getModel(_originalModelId) as MonacoTextModel;
     },
     get container() {
@@ -255,9 +256,22 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
       applyTraitOnInstanced(this);
       switch (lang) {
         case 'xml':
-          initXml.apply(this as EditorXMLClass);
+          initXml.apply(this);
         default:
           initGeneral.apply(this);
+          break;
+      }
+    },
+    deInit() {
+      if (!this.isCodeEditor) return;
+      const lang = (_editor.getModel() as MonacoTextModel)?.getLanguageId();
+      if (!lang) return;
+      deApplyTraitOnInstanced(this);
+      switch (lang) {
+        case 'xml':
+          deInitXml.apply(this);
+        default:
+          deInitGeneral.apply(this);
           break;
       }
     },
@@ -282,7 +296,7 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
 
       // re create monaco editor
       editor = monaco.editor.create(container as HTMLDivElement, options);
-      console.log(top.editor = editor);
+      // console.log(top.editor = editor);
       editor.setModel(model);
 
       // restoring view editor
@@ -301,14 +315,14 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
 
       _editor = editor;
     },
-    focus(){
+    focus() {
       _editor.focus();
     },
-    layout(){
+    layout() {
       _editor.layout();
-      console.log('fufuaa');
+      // console.log('fufuaa');
     },
-    goto(position: monaco.IPosition){
+    goto(position: monaco.IPosition) {
       _editor.revealPositionInCenter(position);
       _editor.setPosition(position);
     },
@@ -360,7 +374,7 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
         const model: MonacoTextModel = _editor.getModel() as MonacoTextModel;
         if (model) {
           // hapus marker
-          const { markerInfoMap } = useMarker();
+          const { markerInfoMap } = useMarker(MARKER_VALIDATION_NS);
           const modelId = model.id
           markerInfoMap.value.delete(modelId);
           // dispose model

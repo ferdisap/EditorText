@@ -1,8 +1,4 @@
-import { detectLanguage } from "@/languages/detection";
 import { EditorClass, MonacoDiffEditor, MonacoTextModel, TabClass } from "@/types/editor";
-import { changeLanguage } from "./traits/editor/general.trait";
-import { applyTraitOnInstanced, removeTraitOnInstanced } from "./traits/apply";
-import { ModelLanguage } from "@/types/model";
 import { useModelStore } from "@/composables/useModelstore";
 import { terminateWorker } from "@/composables/useWorker";
 
@@ -62,7 +58,7 @@ export function Tab(instace: EditorClass): TabClass {
         container.remove();
       }
 
-
+      this.instance.deInit();
     }
   }
 }
