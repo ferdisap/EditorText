@@ -4,16 +4,13 @@ import { AttributeInfo } from "@/types/xml";
 import { EditorXMLClass, MonacoCodeEditor, MonacoTextModel } from "@/types/editor";
 import { getLineContentAndCursorIndex } from "@/core/Editor";
 
-const { debounce } = delay();
 export function detectAndSetSchema(xmlEditor: EditorXMLClass) {
+  const { postToWorker } = useWorker('xml');
+  const { debounce } = delay();
   let lastAttrInside: string | null = null;
   const editor = xmlEditor.editor;
-  const { postToWorker } = useWorker('xml');
   if(xmlEditor.isCodeEditor){
     const disposable = (editor as MonacoCodeEditor).onDidChangeCursorSelection((e) => {
-    // const disposable = (editor as MonacoCodeEditor).onDidChangeCursorPosition((e) => {
-      // console.log('onDidChangeCursorSelection')
-      // console.log('onDidChangeCursorPosition')
       debounce(async () => {
         let wkPayload: DetectSchemaLocationPayload | MatchingAttrInfoPayload;
         let wkResponse :WorkerResponse;
@@ -50,6 +47,7 @@ export function detectAndSetSchema(xmlEditor: EditorXMLClass) {
         }
       }, 500)()
     })
+    return disposable;
   }
 
   // menghapus event

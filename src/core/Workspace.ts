@@ -5,14 +5,11 @@ import { GroupClass, TabClass } from "@/types/editor";
 import { reactive } from "vue";
 
 export function Workspace(): WorkspaceObject {
-  // const _groups: Ref<Array<GroupClass>> = ref([]);
-  // const _activeGroupId: Ref<string | null> = ref<string | null>(null);
-  // let _groups: GroupClass[] = ([]);
-  // let _activeGroupId: string | null = (null);
   const state = reactive({
     groups: <GroupClass[]>[],
     activeGroupId: <string | null> null,
   });
+
   return {
     get groups() {
       return state.groups;
@@ -41,26 +38,9 @@ export function Workspace(): WorkspaceObject {
       const group = Group(name);
       state.groups.push(group);
       state.activeGroupId = group.id;
-      return group;
-    },
-    // 🧩 Tambah tab ke group
-    addTabToGroup(groupId: string, tab: TabClass) {
-      const group = state.groups.find((g) => g.id === groupId);
-      if (!group) throw new Error(`Group not found: ${groupId}`);
-
-      const exists = group.tabs.find((t) => t.id === tab.id);
-      if (!exists) group.tabs.push(tab);
-      group.activeTabId = tab.id;
-    },
-    // 🧭 Set tab aktif di group
-    /**
-     * @deprecated seharusnya ada di groupclass
-     * @param groupId 
-     * @param tabId 
-     */
-    setActiveTab(groupId: string, tabId: string) {
-      const group = state.groups.find((g) => g.id === groupId);
-      if (group) group.activeTabId = tabId;
+      // console.log(group === this.activeGroup!) // false
+      // return group;
+      return this.activeGroup!;
     },
     // 🧭 Set group aktif
     setActiveGroup(groupId: string) {

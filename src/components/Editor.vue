@@ -10,12 +10,8 @@ const { editorMainContainer, attachToEl, detachFromEl } = useEditorContainer(
 );
 
 const setActive = () => {
-  // return;
   const { workspace } = useWorkspace();
   workspace.setActiveGroup(props.groupId);
-  // const group = workspace.activeGroup;
-  // group!.setActiveTab(props.tab!.id);
-  // props.tab!.instance.editor.layout();
 };
 
 // Ganti editor yang aktif sesuai tab
@@ -25,7 +21,7 @@ watch(
     if(oldVal) detachFromEl(oldVal);
     if(newVal) attachToEl(newVal);
     nextTick(() => {
-      setTimeout(() => newVal?.instance.editor.focus(), 10)
+      newVal?.instance.editor.focus()
     });
   }
 );

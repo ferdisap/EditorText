@@ -5,8 +5,8 @@
 /* dark and light */
 .marker-wrapper {
   @apply flex flex-col border-t transition-colors duration-300;
-  border-color: var(--vscode-panel-border, #ccc);
   background-color: var(--vscode-panel-background, #f3f3f3);
+  border-color: var(--vscode-panel-border, #ccc);
   color: var(--vscode-editor-foreground, #333);
   font-family: var(--vscode-font-family, Consolas, "Courier New", monospace);
   font-size: 12px;
@@ -16,23 +16,31 @@
   @apply flex items-center h-[30px] overflow-x-auto whitespace-nowrap select-none border-b transition-colors duration-300;
   background-color: var(--vscode-tab-inactiveBackground, #2d2d2d);
   border-color: var(--vscode-tab-border, #1e1e1e);
+  border-bottom: none;
   font-family: var(--vscode-font-family, Consolas, "Courier New", monospace);
   font-size: 12px;
+}
+
+.marker-container {
+  border-color: var(--vscode-panel-border, #ccc);
+  border: none;
+  /* kalau dark harusnya bgini */
+  /* border-color: var(--vscode-panel-border, #3f3f46); */
+}
+
+.dark .marker-container {
 }
 
 /* ⚠️ Error Panel (bagian bawah editor) */
 .marker-validate-panel-container {
   @apply h-[150px] overflow-y-auto border-t text-xs font-mono;
   background-color: var(--vscode-panel-background, #f3f3f3);
-  border-color: var(--vscode-panel-border, #ccc);
   color: var(--vscode-panel-foreground, #333);
-}
+  border: none;
 
-/* 🌙 Dark mode untuk error panel */
-.dark .marker-validate-panel-container {
-  background-color: var(--vscode-panel-background, #252526);
-  border-color: var(--vscode-panel-border, #3f3f46);
-  color: var(--vscode-panel-foreground, #d4d4d4);
+  /* kalau dark harusnya begini*/
+  /* background-color: var(--vscode-panel-background, #252526);
+  color: var(--vscode-panel-foreground, #d4d4d4); */
 }
 
 /* ✨ Scrollbar mirip VSCode */

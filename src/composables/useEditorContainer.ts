@@ -6,6 +6,7 @@ import { EditorClass, MonacoCodeEditor, MonacoTextModel, TabClass } from "@/type
 import { Tab } from "@/core/Tab";
 import { Editor } from "@/core/Editor";
 import { MapModelEditor } from "@/types/model";
+import { useWorkspace } from "./useWorkspace";
 
 // 1. Define Golbal Worker management
 const EditorMainContainerMap: Map<string, Ref<HTMLDivElement | null>> = new Map();
@@ -60,8 +61,26 @@ export function useEditorContainer(groupId: string) {
     const editorInstance = Editor(editorId, name, modelId, div);
     // const editorInstance = Editor(editorId, name, modelId, edMainContainer.value);
     editorInstance.init();
-    // create Tab
+
     return Tab(editorInstance);
+
+    // top.ED = top.ED ? top.ED : [];
+    // top.ED.push(editorInstance)
+    
+    // // create Tab
+    // const tab = Tab(editorInstance);
+
+    // top.TAB = top.TAB ? top.TAB : [];
+    // top.TAB.push(tab)
+    
+    // console.log(ED[0].model === TAB[0].instance.model)
+    // setTimeout(() => {
+    //   console.log(ED[0].model === TAB[0].instance.model)
+    // },1000)
+    // const { workspace } = useWorkspace()
+    // console.log(workspace.activeGroup.activeTab.instance.model === TAB[0].instance.model)
+    // console.log(workspace.activeGroup.activeTab)
+    // return tab;
   }
 
   function createEditorInstanceWithModel(modelOrUriOrId: string | MonacoTextModel, name: string | null = null): TabClass | void {

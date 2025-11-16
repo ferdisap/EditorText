@@ -6,13 +6,13 @@ import { isProxy, toRaw } from "vue";
 /** key is string namespace */
 const MapAdditionalPlugin: Map<string, (editor: EditorClass) => IDisposable | void> = new Map();
 /** SHOULD EXPORT TO index.ts */
-export function registerPluginOnDidChangeModelContent(namespace: string, action: (editor: EditorClass) => IDisposable | void) {
+export function registerPluginOnDidChangeCursorSelection(namespace: string, action: (editor: EditorClass) => IDisposable | void) {
   if (!MapAdditionalPlugin.has(namespace)) MapAdditionalPlugin.set(namespace, action);
 }
-export function unregisterPluginOnDidChangeModelContent(namespace: string) {
+export function unregisterPluginOnDidChangeCursorSelection(namespace: string) {
   MapAdditionalPlugin.delete(namespace)
 }
-function getPluginOnDidChangeModelContent(namespace: string) {
+function getPluginOnDidChangeCursorSelection(namespace: string) {
   return MapAdditionalPlugin.get(namespace)
 }
 
@@ -21,13 +21,13 @@ function getPluginOnDidChangeModelContent(namespace: string) {
 /** key is Editor Class instanced, value is ID */
 const WmDisposeAbleRecord: WeakMap<EditorClass, Array<IDisposableRecord>> = new WeakMap();
 /** apply action on init editor class */
-export function applyPluginOnDidChangeModelContent(this: EditorClass) {
+export function applyPluginOnDidChangeCursorSelection(this: EditorClass) {
   const editorInstance = isProxy(this) ? toRaw(this) : this;
   if (!WmDisposeAbleRecord.has(editorInstance)) WmDisposeAbleRecord.set(editorInstance, []);
   for (const namespace of MapAdditionalPlugin.keys()) {
     // check if action has not marked, then action must be applied
     if (!WmDisposeAbleRecord.get(editorInstance)?.find(record => record.namespace === namespace)) {
-      const disposeAble = getPluginOnDidChangeModelContent(namespace)!.apply(editorInstance, [editorInstance]);
+      const disposeAble = getPluginOnDidChangeCursorSelection(namespace)!.apply(editorInstance, [editorInstance]);
       if (disposeAble) {
         // mapping disposeAble action
         WmDisposeAbleRecord.get(editorInstance)!.push({ namespace, disposeAble })
@@ -36,7 +36,7 @@ export function applyPluginOnDidChangeModelContent(this: EditorClass) {
   }
 }
 /** dispose all applied action */
-export function deApplyPluginOnDidChangeModelContent(this: EditorClass, namespace: string | null, unreg: boolean) {
+export function deApplyPluginOnDidChangeCursorSelection(this: EditorClass, namespace: string | null, unreg: boolean) {
   const editorInstance = isProxy(this) ? toRaw(this) : this;
   const disposeableRecords = WmDisposeAbleRecord.get(editorInstance);
   if (disposeableRecords) {
@@ -46,12 +46,12 @@ export function deApplyPluginOnDidChangeModelContent(this: EditorClass, namespac
       disposeAble.dispose();
       // 2. unregister the action
       const namespace = disposeableRecord.namespace;
-      if (unreg) unregisterPluginOnDidChangeModelContent(namespace);
+      if (unreg) unregisterPluginOnDidChangeCursorSelection(namespace);
       // 3. remove the disposeable  the disposeable record
-      // const index_disposeAble = WmDisposeAbleRecord.get(editorInstance)!.indexOf(
-      //   WmDisposeAbleRecord.get(editorInstance)!.find((record) => record.namespace === namespace)!
+      // const index_disposeAble = WmDisposeAbleActionRecord.get(editorInstance)!.indexOf(
+      //   WmDisposeAbleActionRecord.get(editorInstance)!.find((record) => record.namespace === namespace)!
       // );
-      // WmDisposeAbleRecord.get(editorInstance)!.splice(index_disposeAble, 1);
+      // WmDisposeAbleActionRecord.get(editorInstance)!.splice(index_disposeAble, 1);
     }
     // jika namespace tidak di state spesifik maka akan dispose semuanya
     if (!namespace) {

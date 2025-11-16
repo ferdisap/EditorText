@@ -47,7 +47,7 @@ export function getFilenameFromUri(uri:string, name:string|null = null) :string{
 
     // Then get the last part
     const filenameFallback = cleanString.substring(cleanString.lastIndexOf('/') + 1);
-
+    
     return filenameFallback;
   }
 }

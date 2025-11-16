@@ -12,12 +12,7 @@ export function Group(name: string): GroupClass {
     tabs: <TabClass[]>[],
     activeTabId: <string | undefined>undefined,
   });
-  // const _id = randStr(10);
-  // const _name = name;
-  // const _tabs: Array<EditorTabClass> = [];
-  // let _activeTabId: string | null = null
   return {
-
     get id() {
       return state.id
     },
@@ -31,14 +26,11 @@ export function Group(name: string): GroupClass {
     },
 
     get activeTabId() {
-      // console.trace();
       return state.activeTabId;
     },
 
     get activeTab() {
-      // console.trace();
       return state.tabs.find((tab) => tab.id === state.activeTabId) as TabClass;
-      // return undefined;
     },
 
     addTab(tab: TabClass) {
@@ -67,7 +59,7 @@ export function Group(name: string): GroupClass {
       const { editorMainContainer, createEditorInstance, detachFromEl } = useEditorContainer(state.id);
       if (editorMainContainer.value) {
         // detach previous active editor
-        // if (this.activeTab) detachFromEl(this.activeTab);
+        if (this.activeTab) detachFromEl(this.activeTab);
 
         // create new editor and tab
         const tab = createEditorInstance(value, language, uri);
@@ -95,12 +87,18 @@ export function Group(name: string): GroupClass {
       }
 
       const { editorMainContainer, createEditorInstanceWithModel, detachFromEl } = useEditorContainer(group.id);
+      // pakai setTimeout karena vue butuh render
       setTimeout(() => {
         if (editorMainContainer.value) {
           // detach previous active editor
           if (group.activeTab) detachFromEl(group.activeTab);
           // create new editor and tab
-          if (!name) name = getFilenameFromUri(modelUri, 'Untitled');
+          if (!name) {
+            name = getFilenameFromUri(modelUri, 'Untitled');
+            if(!isNaN(Number(name))){
+              name = 'Untitled'
+            }
+          };
           const tab = createEditorInstanceWithModel(modelUri, name);
           if (!tab) return;
           group!.addTab(tab);

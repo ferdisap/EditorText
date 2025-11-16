@@ -190,7 +190,7 @@ export function detectAttValueAfterInsertAttName(xmlEditor: EditorXMLClass) {
   const editor = xmlEditor.editor;
   const { postToWorker } = useWorker('xml');
   if(xmlEditor.isCodeEditor){
-    (editor as MonacoCodeEditor).onDidChangeCursorSelection((e) => {
+    return (editor as MonacoCodeEditor).onDidChangeCursorSelection((e) => {
       if (!(xmlEditor.hasOwnProperty('schema'))) return;
       simpleDebounce(async () => {
         const model = (editor as MonacoCodeEditor).getModel();

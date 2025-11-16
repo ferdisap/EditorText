@@ -90,19 +90,19 @@ function detectLanguageLogic(text: string): string {
  * @param model Monaco ITextModel
  */
 export function detectLanguage(editorInstance: EditorClass, onDetected: (model: MonacoTextModel, lang: string) => void) {
-  
+
   const { debounce } = delay();
-  if(editorInstance.isCodeEditor){
+  if (editorInstance.isCodeEditor) {
     const disposable = (editorInstance.editor as MonacoCodeEditor).onDidChangeModelContent(() => {
       // console.log('detectLanguage onDidChangeModelContent')
       debounce(
         () => {
           const model: MonacoTextModel = editorInstance.editor.getModel()! as MonacoTextModel;
-  
+
           const text = model.getValue().slice(0, 1000);
           const detected = detectLanguageLogic(text);
           const current = model.getLanguageId();
-  
+
           if (current !== detected) {
             onDetected(model, detected);
           }
@@ -115,26 +115,29 @@ export function detectLanguage(editorInstance: EditorClass, onDetected: (model: 
 
 export function detectErrorProcessor(editorInstance: EditorClass, beforeValidate: (textContent: string) => Record<string, any>) {
   const { simpleDebounce } = delay();
-  if(!editorInstance.isCodeEditor) return;
-  const disposable = (editorInstance.editor as MonacoCodeEditor).onDidChangeModelContent(() => {
+  if (!editorInstance.isCodeEditor) return;
+  return (editorInstance.editor as MonacoCodeEditor).onDidChangeModelContent(() => {
     simpleDebounce(
       async () => {
-        const model:MonacoTextModel = editorInstance.editor.getModel()! as MonacoTextModel;
+        const model: MonacoTextModel = editorInstance.editor.getModel()! as MonacoTextModel;
         const language = model.getLanguageId(); // ← deteksi bahasa aktif        
-        if(language === 'xml'){
+        if (language === 'xml') {
           const { schemaUrl } = beforeValidate(model.getValue());
           const { postToWorker } = useWorker(language);
           postToWorker("validate", {
             xmlText: model.getValue(),
             schemaUrl
           } as ValidatePayload)
-          .then(response => {
-            const { markerInfoMap } = useMarker(MARKER_VALIDATION_NS);
-            markerInfoMap.value.set(model.id, response.result as ValidationInfo[]);
-          })
-        } 
+            .then(response => {
+              const lang = model.getLanguageId();
+              // jika language nya masih sama
+              if(lang === language){
+                const { markerInfoMap } = useMarker(MARKER_VALIDATION_NS);
+                markerInfoMap.value.set(model.id, response.result as ValidationInfo[]);
+              }
+            })
+        }
       }, 500
     )
   })
-  // disposable.dispose()
 }

@@ -29,7 +29,6 @@ export function unregisterMarker(namespace:string){
 export function useMarker(namespace:string){
   const markerdata = marker.list.find(data => data.namespace == namespace);
   const markerInfo :MarkerInfo = marker.map.get(namespace) as MarkerInfo;
-  // console.log(namespace);
   if((!markerdata) || (!markerInfo)) throw new Error('There is no such marker with namespace: ' + namespace);
 
   // set container map. Jika markerdata container nya null, maka diisi null
@@ -48,10 +47,19 @@ export function useMarker(namespace:string){
   if(!infoMap.has(markerInfo)) infoMap.set(markerInfo, map);
 
   // clear function
-  const clear = () => {
-    markerInfo.clear();
-    infoMap.delete(markerInfo);
-    containerMap.delete(markerdata.namespace);
+  const clear = (modelId: string | null = null) => {
+    if(modelId) {
+      // delete specific namespace and spesific modelId
+      map.value.delete(modelId);
+    }
+    else {
+      // delete the marker for specific namespace, but for all modelId
+      markerInfo.clear();
+      // karena markernfo sudah di clear, hapus juga yang ada di composable ini
+      infoMap.delete(markerInfo);
+      // jika tidak ada model id, container juga dihapus. Kalau ada tidak dihapus
+      containerMap.delete(markerdata.namespace);
+    }
   }
 
   // return 
@@ -61,6 +69,8 @@ export function useMarker(namespace:string){
     clear,
   }
 }
+
+top.useMarker = useMarker
 
 export function goto(modelId: string, line: number, col: number) {
   const { modelStore } = useModelStore();

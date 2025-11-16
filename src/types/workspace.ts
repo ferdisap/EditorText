@@ -6,11 +6,11 @@ export type WorkspaceObject = {
   activeGroupId: string | null;
   activeGroup: GroupClass | null;
   addGroup(name?: string): GroupClass;
-  addTabToGroup(groupId: string, tab: TabClass): void;
+  // addTabToGroup(groupId: string, tab: TabClass): void;
   setActiveGroup(groupId: string): void;
   closeGroup(groupId: string): void
 
-  setActiveTab(groupId: string, tabId: string): void
+  // setActiveTab(groupId: string, tabId: string): void
   models: { uri: string, name: string, id: string }[]
 }
 

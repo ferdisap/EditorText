@@ -3,7 +3,7 @@ import { useModelStore } from "@/composables/useModelstore";
 import { useTheme } from "@/composables/useTheme";
 import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoDiffEditor, MonacoDiffEditorOptions, MonacoEditor, MonacoEditorOptions, MonacoModel, MonacoTextModel } from "@/types/editor";
 import * as monaco from "monaco-editor"
-import { init as initGeneral , deInit as deInitGeneral} from "./traits/editor/general.trait";
+import { init as initGeneral, deInit as deInitGeneral } from "./traits/editor/general.trait";
 import { init as initXml, deInit as deInitXml } from "./traits/editor/xml.trait";
 import { ModelLanguage } from "@/types/model";
 import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "./traits/apply";
@@ -277,44 +277,66 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
     },
     changeLanguage(lang: ModelLanguage) {
       if (!this.isCodeEditor) return;
-      // const container = getEditorContainer(this);
-      const container = this.editor.getContainerDomNode();;
       let editor = _editor;
+
+      // remove all applied listener
+      this.deInit();
 
       // change language model
       const model: MonacoTextModel = editor.getModel() as MonacoTextModel;
       monaco.editor.setModelLanguage(model!, lang);
 
-      // save old config
-      const previousViewState = editor?.saveViewState() ?? null;
-      const cursor = editor.getPosition(); // Simpan posisi kursor
-      const options = (editor as MonacoCodeEditor).getRawOptions();
-      // options.theme = 'vs-dark'
+      // remove marker map if any
+      const { markerInfoMap, clear } = useMarker(MARKER_VALIDATION_NS);
+      const modelId = this.model.id
+      clear(modelId);
 
-      // dispose only monaco editor
-      editor.dispose();
-
-      // re create monaco editor
-      editor = monaco.editor.create(container as HTMLDivElement, options);
-      // console.log(top.editor = editor);
-      editor.setModel(model);
-
-      // restoring view editor
-      if (previousViewState) {
-        editor.restoreViewState(previousViewState as monaco.editor.ICodeEditorViewState);
-      }
-
-      // set last cursor position
-      if (cursor) {
-        editor.setPosition(cursor);
-      }
+      // install new listener
+      this.init();
 
       // layouting and make editor focus again
       editor.layout();
       editor.focus();
-
-      _editor = editor;
     },
+    // changeLanguage(lang: ModelLanguage) {
+    //   if (!this.isCodeEditor) return;
+    //   const container = this.editor.getContainerDomNode();;
+    //   let editor = _editor;
+
+    //   // change language model
+    //   const model: MonacoTextModel = editor.getModel() as MonacoTextModel;
+    //   monaco.editor.setModelLanguage(model!, lang);
+
+    //   // save old config
+    //   const previousViewState = editor?.saveViewState() ?? null;
+    //   const cursor = editor.getPosition(); // Simpan posisi kursor
+    //   const options = (editor as MonacoCodeEditor).getRawOptions();
+    //   // options.theme = 'vs-dark'
+
+    //   // dispose only monaco editor
+    //   editor.dispose();
+
+    //   // re create monaco editor
+    //   editor = monaco.editor.create(container as HTMLDivElement, options);
+    //   // console.log(top.editor = editor);
+    //   editor.setModel(model);
+
+    //   // restoring view editor
+    //   if (previousViewState) {
+    //     editor.restoreViewState(previousViewState as monaco.editor.ICodeEditorViewState);
+    //   }
+
+    //   // set last cursor position
+    //   if (cursor) {
+    //     editor.setPosition(cursor);
+    //   }
+
+    //   // layouting and make editor focus again
+    //   editor.layout();
+    //   editor.focus();
+
+    //   _editor = editor;
+    // },
     focus() {
       _editor.focus();
     },
@@ -332,7 +354,7 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
     destroy() {
       const container = (this.editor).getContainerDomNode()!;
       if (this.isCodeEditor) {
-        this.disposeModel;
+        this.disposeModel();
         this.disposeEditor();
       } else {
         // const domNode = (this.editor as MonacoEditor).getDomNode()!;
@@ -374,9 +396,9 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
         const model: MonacoTextModel = _editor.getModel() as MonacoTextModel;
         if (model) {
           // hapus marker
-          const { markerInfoMap } = useMarker(MARKER_VALIDATION_NS);
-          const modelId = model.id
-          markerInfoMap.value.delete(modelId);
+          const { clear } = useMarker(MARKER_VALIDATION_NS);
+          const modelId = model.id;
+          clear(modelId);
           // dispose model
           model.dispose();
         }

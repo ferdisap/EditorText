@@ -5,6 +5,7 @@ export const MARKER_VALIDATION_NS = "marker.validate.panel.container";
 
 export function Marker() :MarkerClass {
   const state = reactive({
+    /** key:string is namespace. value MarkerInfo is a Map<modelId, Result[]> */
     map: new Map<string, MarkerInfo>(),
     list: new Array<MarkerData>(),
   })

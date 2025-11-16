@@ -29,7 +29,6 @@ const toggleMarker = () => {
   for(const group of workspace.groups){
     nextTick(()=> group.activeTab?.instance.layout());
   }
-  console.log('showMarkerContainer', show.value)
 }
 
 onBeforeUnmount(() => {

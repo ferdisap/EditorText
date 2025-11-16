@@ -11,83 +11,33 @@ import { applyPluginOnDidChangeModelContent, deApplyPluginOnDidChangeModelConten
 
 const { toggleTheme } = useTheme();
 
-export function duplicateEditor(editor: monaco.editor.IStandaloneCodeEditor, lang: string | null = null): monaco.editor.IStandaloneCodeEditor {
+// export function duplicateEditor(editor: monaco.editor.IStandaloneCodeEditor, lang: string | null = null): monaco.editor.IStandaloneCodeEditor {
+//   // save old config
+//   const previousViewState = editor?.saveViewState() ?? null;
+//   const cursor = editor.getPosition(); // Simpan posisi kursor
+//   const options = editor.getRawOptions();
 
-  // save old config
-  const previousViewState = editor?.saveViewState() ?? null;
-  const cursor = editor.getPosition(); // Simpan posisi kursor
-  const options = editor.getRawOptions();
+//   // create new editor
+//   editor = monaco.editor.create(createEditorContainer(), options); // tidak bisa pakai container yang lama, jika belum di dispose. Jika didispose dahulu sebelum duplicate element, maka model atau option juga hilang 
+//   const model = editor.getModel()!;
+//   if (lang) monaco.editor.setModelLanguage(model!, lang);
+//   editor.setModel(model);
 
-  // create new editor
-  editor = monaco.editor.create(createEditorContainer(), options); // tidak bisa pakai container yang lama, jika belum di dispose. Jika didispose dahulu sebelum duplicate element, maka model atau option juga hilang 
-  const model = editor.getModel()!;
-  if (lang) monaco.editor.setModelLanguage(model!, lang);
-  editor.setModel(model);
+//   // restoring view editor
+//   if (previousViewState) {
+//     editor.restoreViewState(previousViewState);
+//   }
 
-  // restoring view editor
-  if (previousViewState) {
-    editor.restoreViewState(previousViewState);
-  }
+//   // set last cursor position
+//   if (cursor) {
+//     editor.setPosition(cursor);
+//   }
 
-  // set last cursor position
-  if (cursor) {
-    editor.setPosition(cursor);
-  }
-
-  // layouting and make editor focus again
-  editor.layout();
-  editor.focus();
-  return editor
-}
-
-/**
- * @deprecated, pindah ke Editor.ts
- * @param tab 
- * @param lang 
- * @returns 
- */
-export function changeLanguage(tab: TabClass, lang: string) {
-  const editorInstance = tab.instance;
-  if (!editorInstance.isCodeEditor) return;
-  // const container = getEditorContainer(editorInstance);
-  const container = editorInstance.editor.getContainerDomNode();
-  let editor: MonacoCodeEditor = editorInstance.editor as MonacoCodeEditor;
-
-  // change language model
-  const model: MonacoTextModel = editorInstance.editor.getModel() as MonacoTextModel;
-  monaco.editor.setModelLanguage(model!, lang);
-
-  // save old config
-  const previousViewState = editor?.saveViewState() ?? null;
-  const cursor = editor.getPosition(); // Simpan posisi kursor
-  const options = editor.getRawOptions();
-  // options.theme = 'vs-dark'
-
-  // dispose only monaco editor
-  editor.dispose();
-
-  // re create monaco editor
-  editor = monaco.editor.create(container as HTMLDivElement, options);
-  editor.setModel(model);
-  // const neweditor = duplicateEditor(container, editor, lang);
-
-  // restoring view editor
-  if (previousViewState) {
-    editor.restoreViewState(previousViewState);
-  }
-
-  // set last cursor position
-  if (cursor) {
-    editor.setPosition(cursor);
-  }
-
-  // layouting and make editor focus again
-  editor.layout();
-  editor.focus();
-
-  tab.instance.editor = editor
-  // tab.instance.changeMonacoEditor(editor);
-}
+//   // layouting and make editor focus again
+//   editor.layout();
+//   editor.focus();
+//   return editor
+// }
 
 function actionThemeContextMenu(editorInstance: EditorClass) {
   return editorInstance.editor.addAction({
@@ -131,102 +81,31 @@ function actionSplitEditor(editorInstance: EditorClass) {
   }
 }
 
-// function removeCommandPaletteItem(editor: EditorClass) {
-// console.log(top.editor = editor)
-// setTimeout(() => {
-//   editor.trigger(null, 'editor.action.quickCommand', null);
-// },1000)
-// editor.addCommand()
-// editor.addAction({
-//   id: "my-custom-action",
-//   label: "My Custom Action",
-//   keybindings: [
-//     // Optional: Add a keybinding for your action
-//     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyM, // Ctrl/Cmd + M
-//   ],
-//   run: function (editor) {
-//     // Define the logic to execute when the action is triggered
-//     alert("Custom action executed!");
-//   },
-// })
-
-// editor.addAction({
-//   id: "editor.action.showCommands",
-//   label: "Command Palette...",
-//   contextMenuGroupId: "cutcopypaste",
-//   run: () => { }, // override dengan aksi kosong
-// });
-// Akses internal registry context menu (hacky tapi umum digunakan)
-// const menuItems = (editor as any)._contextMenuService?._menuRegistry?.menuItems;
-
-// if (menuItems) {
-//   // Filter semua group dan hapus item Command Palette
-//   for (const [menuId, items] of menuItems) {
-//     // cari menu bawaan editor
-//     if (menuId?.id === "EditorContext") {
-//       const filtered = items.filter(
-//         (item: any) => !item.command?.id?.includes("editor.action.showCommands")
-//       );
-//       menuItems.set(menuId, filtered);
-//     }
-//   }
-// }
-
-// console.log("✅ Command Palette context menu item removed");
-// }
-
-// export function registerAction(name: string, action: (editor: any) => void) {
-//   additionalGeneralAction[name] = action;
-// }
-
 registerAction('toggle.theme', actionThemeContextMenu);
 registerAction('new.tab', actionNewTabContextMenu);
 registerAction('split.tab', actionSplitEditor);
 
-// registerPluginOnDidChangeModelContent('detect.language', () => {
-//   return detectLanguage(this, (model, lang) => {
-//     console.log('detect language')
-//     // changeLanguage(myTab, lang);
-//     this.changeLanguage(lang as ModelLanguage);
-//     deApplyTraitOnInstanced(this);
-//     applyTraitOnInstanced(this);
-//     this.init();
-//   });
-// })
-
-// registerPluginOnDidChangeModelContent('detect.language', function (this: EditorClass) {
-//   console.log(this);
-//   return detectLanguage(this, (model, lang) => {
-//     console.log('detect language')
-//     // changeLanguage(myTab, lang);
-//     this.changeLanguage(lang as ModelLanguage);
-//     deApplyTraitOnInstanced(this);
-//     applyTraitOnInstanced(this);
-//     this.init();
-//   });
-// })
-
 export function init(this: EditorClass) {
   applyAction.apply(this);
-
+  
   const namespacePlugin = `detect.language.${this.id}`;
+  // console.log(namespacePlugin);
   registerPluginOnDidChangeModelContent(namespacePlugin, () => {
     return detectLanguage(this, (model, lang) => {
+      deApplyTraitOnInstanced(this);
       // changeLanguage(myTab, lang);
       this.changeLanguage(lang as ModelLanguage);
-      deApplyTraitOnInstanced(this);
       applyTraitOnInstanced(this);
-      this.init();
+      // this.init();
     });
   })
-
   applyPluginOnDidChangeModelContent.apply(this)
+
 }
 
 export function deInit(this: EditorClass) {
+  deApplyAction.apply(this, [null, false]);
 
-  deApplyAction.apply(this, [null, true])
-  
   const namespacePlugin = `detect.language.${this.id}`;
   deApplyPluginOnDidChangeModelContent.apply(this, [namespacePlugin, true])
 }

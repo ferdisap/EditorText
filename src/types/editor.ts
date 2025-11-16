@@ -42,7 +42,7 @@ export type EditorClass = {
   container: HTMLDivElement;
   language: ModelLanguage;
   isCodeEditor: boolean,
-  model:MonacoTextModel; // untuk MonacoTextModel, nukan DiffEditor
+  model:MonacoTextModel; // untuk MonacoTextModel, bukan DiffEditor
   originalModel:MonacoTextModel; // untuk MonacoTextModel, nukan DiffEditor
   init(): void;
   deInit():void;

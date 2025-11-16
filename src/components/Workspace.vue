@@ -46,9 +46,11 @@ onMounted(() => {
       // fetch(uri).then(r => r.text()).then(text =>
       // group1.newFile(text, 'xml', uri)
       // )
-      group1.newFile('', '', '')
+      // group1.newFile('', '', '')
+      // workspace.activeGroup!.newFile('', '', '')
       // group1.newFile('', 'xml', 'http://localhost:5173/test/purchaseOrder.xml')
-      // group1.newFile('', 'xml', 'http://localhost:5173/test/DMC-BRAKE-AAA-DA1-00-00-00AA-041A-A_003-00_EN-US.XML')
+      group1.newFile('', 'xml', 'http://localhost:5173/test/DMC-BRAKE-AAA-DA1-00-00-00AA-041A-A_003-00_EN-US.XML')
+      group1.newFile('', 'xml', 'http://localhost:5173/test/purchaseOrder.xml')
       // group1.newFile('', '', '')
       // group1.newFile('', '', 'http://localhost:5173/test/purchaseOrder_mod.xml')
       // group1.compareFile("http://localhost:5173/test/purchaseOrder.xml", "http://localhost:5173/test/purchaseOrder_mod.xml");

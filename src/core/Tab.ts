@@ -18,10 +18,12 @@ export function Tab(instace: EditorClass): TabClass {
     },
     close() {
       const { modelStore } = useModelStore()
+      this.instance.deInit();
+
       if(_instance.isCodeEditor){
         const model = _instance.editor.getModel()!;
         const { editorsInstancesId } = modelStore.mapModelAndEditor((model as MonacoTextModel).id, [_instance.id])[0];
-        // jika model ini hanya dipakai di satu editor dispose model dan editor (destroy juga containernya)
+        // jika model ini hanya dipakai di satu editor maka dispose model dan editor (destroy juga containernya)
         const isUsedOnlyOneEditor: boolean = editorsInstancesId.length <= 1 && _id === editorsInstancesId[0];
         if (isUsedOnlyOneEditor) {
           // clearing worker
@@ -57,8 +59,6 @@ export function Tab(instace: EditorClass): TabClass {
         (_instance.editor as MonacoDiffEditor).dispose();
         container.remove();
       }
-
-      this.instance.deInit();
     }
   }
 }
