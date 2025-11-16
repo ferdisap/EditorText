@@ -4,6 +4,7 @@ import { useWorkspace } from "@/composables/useWorkspace";
 import { getFilenameFromUri, randStr } from "@/util/string";
 import { useEditorContainer } from "@/composables/useEditorContainer";
 import { reactive } from "vue";
+import { usePrompt } from "@/composables/usePrompt";
 
 export function Group(name: string): GroupClass {
   const state = reactive({
@@ -113,26 +114,17 @@ export function Group(name: string): GroupClass {
     },
 
     compareFile(originalUri: string, modifiedUri: string): TabClass | void {
-      const { workspace } = useWorkspace();
-      const currentIndexGroup = workspace.groups.findIndex((group) => group === this);
-      let group: GroupClass | undefined;
-      // jika tidak bikin group baru, jika ada next group maka pakai group itu
-      if (!(group = workspace.groups[currentIndexGroup + 1])) {
-        group = workspace.addGroup();
-        workspace.setActiveGroup(group.id);
-      }
-
-      const { editorMainContainer, createDiffEditorInstance, detachFromEl } = useEditorContainer(group.id);
+      const { editorMainContainer, createDiffEditorInstance, detachFromEl } = useEditorContainer(this.id);
       setTimeout(() => {
         if (editorMainContainer.value) {
           // detach previous active editor
-          if (group.activeTab) detachFromEl(group.activeTab);
+          if (this.activeTab) detachFromEl(this.activeTab);
           // create new editor and tab
           const tab = createDiffEditorInstance(originalUri, modifiedUri);
           if (!tab) return;
-          group!.addTab(tab);
+          this.addTab(tab);
           // set new active tab
-          group.setActiveTab(tab.id);
+          this.setActiveTab(tab.id);
           // layouting and focus
           tab.instance.layout();
           tab.instance.focus();

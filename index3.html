@@ -25,16 +25,16 @@
         theme: "vs-dark",
       });
 
-      function reInstance(){
+      function reInstance() {
         const previousViewState = editor?.saveViewState() ?? null;
         const cursor = editor.getPosition(); // Simpan posisi kursor
-  
+
         editor.dispose();
         editor = monaco.editor.create(container, {
           model,
           theme: "vs",
         });
-  
+
         if (previousViewState) {
           editor.restoreViewState(previousViewState);
         }
@@ -42,7 +42,7 @@
         if (cursor) {
           editor.setPosition(cursor);
         }
-  
+
         editor.layout();
         editor.focus();
       }
@@ -50,9 +50,16 @@
       top.reInstance = reInstance
       top.editor = editor
 
-      setTimeout(() => {
-        reInstance()
-      }, 3000)
+      editor.onKeyDown((e) => {
+        console.log(e);
+        if (e.ctrlKey && e.code === "KeyN") {
+          e.preventDefault(); // penting!
+        }
+      });
+
+      // setTimeout(() => {
+      //   reInstance()
+      // }, 3000)
 
 
       window.editor = editor;

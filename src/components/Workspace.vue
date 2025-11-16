@@ -8,6 +8,8 @@ import { terminateWorker } from "@/composables/useWorker";
 import Marker from "./Marker.vue";
 import { GroupClass } from "@/types/editor";
 import CommandPalette from "./CommandPalette.vue";
+import Prompt from "./Prompt.vue";
+import { usePrompt } from "@/composables/usePrompt";
 
 const { workspace } = useWorkspace();
 registerCompletionItemProvider(workspace);
@@ -49,10 +51,10 @@ onMounted(() => {
       // group1.newFile('', '', '')
       // workspace.activeGroup!.newFile('', '', '')
       // group1.newFile('', 'xml', 'http://localhost:5173/test/purchaseOrder.xml')
-      group1.newFile('', 'xml', 'http://localhost:5173/test/DMC-BRAKE-AAA-DA1-00-00-00AA-041A-A_003-00_EN-US.XML')
-      group1.newFile('', 'xml', 'http://localhost:5173/test/purchaseOrder.xml')
+      // group1.newFile('', 'xml', 'http://localhost:5173/test/purchaseOrder.xml')
+      // group1.newFile('', 'xml', 'http://localhost:5173/test/DMC-BRAKE-AAA-DA1-00-00-00AA-041A-A_003-00_EN-US.XML')
       // group1.newFile('', '', '')
-      // group1.newFile('', '', 'http://localhost:5173/test/purchaseOrder_mod.xml')
+      group1.newFile('', '', 'http://localhost:5173/test/purchaseOrder_mod.xml')
       // group1.compareFile("http://localhost:5173/test/purchaseOrder.xml", "http://localhost:5173/test/purchaseOrder_mod.xml");
     });
   }
@@ -61,6 +63,8 @@ onMounted(() => {
 // top.addg = () => workspace.value.addGroup("Second Group");
 // top.addg = () => workspace.addGroup("Second Group");
 // top.ws = workspace
+
+const { isOpen } = usePrompt();
 </script>
 
 <template>
@@ -76,4 +80,5 @@ onMounted(() => {
     <Marker />
   </div>
   <!-- <CommandPalette/> -->
+  <Prompt v-if="isOpen"/>
 </template>

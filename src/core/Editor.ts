@@ -277,6 +277,9 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
     },
     changeLanguage(lang: ModelLanguage) {
       if (!this.isCodeEditor) return;
+      // remove old trait
+      deApplyTraitOnInstanced(this);
+
       let editor = _editor;
 
       // remove all applied listener
@@ -297,6 +300,9 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
       // layouting and make editor focus again
       editor.layout();
       editor.focus();
+
+      // apply new trait
+      applyTraitOnInstanced(this);
     },
     // changeLanguage(lang: ModelLanguage) {
     //   if (!this.isCodeEditor) return;

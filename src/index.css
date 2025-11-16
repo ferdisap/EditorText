@@ -4,7 +4,7 @@
 @import './styles/Tabs.css';
 @import './styles/Editor.css';
 @import './styles/Marker.css';
-@import './styles/CommandPalette.css';
+/* @import './styles/CommandPalette.css'; */
 @import './styles/Path.css';
 
 /* @tailwind base;

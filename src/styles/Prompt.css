@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.prompt-item {
+  @apply px-4 py-2 cursor-pointer text-sm flex items-center justify-between;
+}
+
+.prompt-item:hover,
+.prompt-item.active {
+  background-color: var(--vscode-list-focusBackground, #094771);
+  color: var(--vscode-list-focusForeground, #ffffff);
+}
