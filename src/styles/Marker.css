@@ -28,11 +28,8 @@
   /* border-color: var(--vscode-panel-border, #3f3f46); */
 }
 
-.dark .marker-container {
-}
-
 /* ⚠️ Error Panel (bagian bawah editor) */
-.marker-validate-panel-container {
+.marker-panel-wrapper {
   @apply h-[150px] overflow-y-auto border-t text-xs font-mono;
   background-color: var(--vscode-panel-background, #f3f3f3);
   color: var(--vscode-panel-foreground, #333);
@@ -44,15 +41,15 @@
 }
 
 /* ✨ Scrollbar mirip VSCode */
-.marker-validate-panel-container::-webkit-scrollbar {
+.marker-panel-wrapper::-webkit-scrollbar {
   height: 6px;
   width: 6px;
 }
-.marker-validate-panel-container::-webkit-scrollbar-thumb {
+.marker-panel-wrapper::-webkit-scrollbar-thumb {
   background-color: rgba(120, 120, 120, 0.3);
   border-radius: 3px;
 }
-.marker-validate-panel-container::-webkit-scrollbar-thumb:hover {
+.marker-panel-wrapper::-webkit-scrollbar-thumb:hover {
   background-color: rgba(120, 120, 120, 0.5);
 }
 
@@ -96,4 +93,9 @@
 
 .info .loc {
   @apply text-xs text-[#57606a] dark:text-[#8b949e] ml-3;
+}
+
+/* untuk detail.vue */
+.info td:nth-child(1) {
+  width: 100px;
 }

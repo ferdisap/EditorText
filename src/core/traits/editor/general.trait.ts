@@ -3,7 +3,7 @@ import { useTheme } from "@/composables/useTheme";
 import { createEditorContainer, getEditorContainer } from "@/composables/useEditorContainer";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { EditorClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel, TabClass } from "@/types/editor";
-import { detectLanguage } from "@/languages/detection";
+import { detectDetailModel, detectLanguage } from "@/languages/detection";
 import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "../apply";
 import { ModelLanguage } from "@/types/model";
 import { applyAction, deApplyAction, registerAction } from "@/plugins/action.plugin";
@@ -11,37 +11,9 @@ import { applyPluginOnDidChangeModelContent, deApplyPluginOnDidChangeModelConten
 import { getShortCut } from "@/config/shortcut";
 import { usePrompt } from "@/composables/usePrompt";
 
-const { toggleTheme } = useTheme();
-
-// export function duplicateEditor(editor: monaco.editor.IStandaloneCodeEditor, lang: string | null = null): monaco.editor.IStandaloneCodeEditor {
-//   // save old config
-//   const previousViewState = editor?.saveViewState() ?? null;
-//   const cursor = editor.getPosition(); // Simpan posisi kursor
-//   const options = editor.getRawOptions();
-
-//   // create new editor
-//   editor = monaco.editor.create(createEditorContainer(), options); // tidak bisa pakai container yang lama, jika belum di dispose. Jika didispose dahulu sebelum duplicate element, maka model atau option juga hilang 
-//   const model = editor.getModel()!;
-//   if (lang) monaco.editor.setModelLanguage(model!, lang);
-//   editor.setModel(model);
-
-//   // restoring view editor
-//   if (previousViewState) {
-//     editor.restoreViewState(previousViewState);
-//   }
-
-//   // set last cursor position
-//   if (cursor) {
-//     editor.setPosition(cursor);
-//   }
-
-//   // layouting and make editor focus again
-//   editor.layout();
-//   editor.focus();
-//   return editor
-// }
 
 function actionThemeContextMenu(editorInstance: EditorClass) {
+  const { toggleTheme } = useTheme();
   return editorInstance.editor.addAction({
     id: "toggle.theme",
     label: `Switch Theme ☀️ or 🌙`,
@@ -139,41 +111,24 @@ registerAction('compare.model', compareModel);
 export function init(this: EditorClass) {
   applyAction.apply(this);
 
-  const namespacePlugin = `detect.language.${this.id}`;
-  registerPluginOnDidChangeModelContent(namespacePlugin, () => {
+  const namespacePluginDetectLang = `detect.language.${this.id}`;
+  registerPluginOnDidChangeModelContent(namespacePluginDetectLang, () => {
     return detectLanguage(this, (model, lang) => {
       this.changeLanguage(lang as ModelLanguage);
     });
   })
+
+  const namespacePluginDetectDetail = `detect.detail.${this.id}`;
+  registerPluginOnDidChangeModelContent(namespacePluginDetectDetail, () => {
+    return detectDetailModel(this);
+  })
+
   applyPluginOnDidChangeModelContent.apply(this);
-
-  // top.okd = (this.editor as MonacoCodeEditor).onKeyDown(() => console.log("keydown"));
-
-  // (this.editor as MonacoCodeEditor).onKeyDown((e) => {
-  //   if (e.ctrlKey && e.code === "KeyN") {
-  //     e.preventDefault(); // penting!
-  //   }
-  // });
-
-  // this.editor.addAction({
-  //   id: "jump-to-root",
-  //   label: "Jump to Root Tag",
-  // keybindings: [
-  //   monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyJ
-  // ],
-  //   contextMenuGroupId: "navigation",
-  //   contextMenuOrder: 1.5,
-  //   run(ed) {
-  //     ed.setPosition({ lineNumber: 1, column: 1 });
-  //     ed.revealLineInCenter(1);
-  //   }
-  // });
-
 }
 
 export function deInit(this: EditorClass) {
   deApplyAction.apply(this, [null, false]);
 
-  const namespacePlugin = `detect.language.${this.id}`;
-  deApplyPluginOnDidChangeModelContent.apply(this, [namespacePlugin, true])
+  const namespacePluginDetectLang = `detect.language.${this.id}`;
+  deApplyPluginOnDidChangeModelContent.apply(this, [namespacePluginDetectLang, true])
 }

@@ -1,4 +1,4 @@
-import { useMarker } from "@/composables/useMarker";
+// import { useMarker } from "@/composables/useMarker";
 import { useModelStore } from "@/composables/useModelstore";
 import { useTheme } from "@/composables/useTheme";
 import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoDiffEditor, MonacoDiffEditorOptions, MonacoEditor, MonacoEditorOptions, MonacoModel, MonacoTextModel } from "@/types/editor";
@@ -9,7 +9,8 @@ import { ModelLanguage } from "@/types/model";
 import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "./traits/apply";
 import { hasMethod } from "@/util/function";
 import { isValidUri } from "@/util/string";
-import { MARKER_VALIDATION_NS } from "./Marker";
+import { useMarkerPanel } from "@/composables/useMarkerPanel";
+import { MARKER_VALIDATION_NS } from "./panel/Problem";
 
 // 🧩 id: "toggle-theme"
 // ➡️ Ini adalah identifier unik untuk action tersebut.
@@ -290,9 +291,8 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
       monaco.editor.setModelLanguage(model!, lang);
 
       // remove marker map if any
-      const { markerInfoMap, clear } = useMarker(MARKER_VALIDATION_NS);
-      const modelId = this.model.id
-      clear(modelId);
+      const { clear } = useMarkerPanel();
+      clear(this.modelId)
 
       // install new listener
       this.init();
@@ -304,45 +304,6 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
       // apply new trait
       applyTraitOnInstanced(this);
     },
-    // changeLanguage(lang: ModelLanguage) {
-    //   if (!this.isCodeEditor) return;
-    //   const container = this.editor.getContainerDomNode();;
-    //   let editor = _editor;
-
-    //   // change language model
-    //   const model: MonacoTextModel = editor.getModel() as MonacoTextModel;
-    //   monaco.editor.setModelLanguage(model!, lang);
-
-    //   // save old config
-    //   const previousViewState = editor?.saveViewState() ?? null;
-    //   const cursor = editor.getPosition(); // Simpan posisi kursor
-    //   const options = (editor as MonacoCodeEditor).getRawOptions();
-    //   // options.theme = 'vs-dark'
-
-    //   // dispose only monaco editor
-    //   editor.dispose();
-
-    //   // re create monaco editor
-    //   editor = monaco.editor.create(container as HTMLDivElement, options);
-    //   // console.log(top.editor = editor);
-    //   editor.setModel(model);
-
-    //   // restoring view editor
-    //   if (previousViewState) {
-    //     editor.restoreViewState(previousViewState as monaco.editor.ICodeEditorViewState);
-    //   }
-
-    //   // set last cursor position
-    //   if (cursor) {
-    //     editor.setPosition(cursor);
-    //   }
-
-    //   // layouting and make editor focus again
-    //   editor.layout();
-    //   editor.focus();
-
-    //   _editor = editor;
-    // },
     focus() {
       _editor.focus();
     },
@@ -402,10 +363,8 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
         const model: MonacoTextModel = _editor.getModel() as MonacoTextModel;
         if (model) {
           // hapus marker
-          const { clear } = useMarker(MARKER_VALIDATION_NS);
-          const modelId = model.id;
-          clear(modelId);
-          // dispose model
+          const { clear } = useMarkerPanel();
+          clear(model.id)
           model.dispose();
         }
       } else {

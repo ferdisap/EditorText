@@ -1,10 +1,18 @@
 import { ValidationInfo } from "xml-xsd-validator-browser";
+import { MonacoModel, MonacoTextModel } from "./editor";
 
 export type MarkerResult = ValidationInfo;
 
-/** key: editor model id */
+/**
+ * @deprecated 
+ * key: editor model id 
+ */
 export type MarkerInfo = Map<string, MarkerResult[]>
 
+/**
+ * @deprecated 
+ * key: editor model id 
+ */
 export type MarkerData = {
   /** unique namespace */
   namespace:string;
@@ -12,11 +20,29 @@ export type MarkerData = {
   action?(result:MarkerResult): void;
 }
 
-export type MarkerClass = {
+/**
+ * @deprecated 
+ * key: editor model id 
+ */
+export interface MarkerClass {
   /** key: unique namespace */
   map: Map<string, MarkerInfo>; 
   /** contain registered marker */
   list: MarkerData[];
   register(data:MarkerData):boolean;
   unregister(namespace:string):boolean;
+}
+
+// baru
+export interface IMarkerInfo<T>{
+  data: T;
+};
+
+/** di instance sekali saja diawal */
+export interface IMarkerPanel<T> {
+  // container: HTMLElement;  
+  namespace: string;  
+  map: WeakMap<MonacoTextModel, IMarkerInfo<T>>;
+  name(name:string|null):string;
+  clear(modelId:string) :void
 }

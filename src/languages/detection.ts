@@ -1,6 +1,7 @@
-import { useMarker } from "@/composables/useMarker";
+import { useMarkerPanel } from "@/composables/useMarkerPanel";
 import { useWorker, ValidatePayload } from "@/composables/useWorker";
-import { MARKER_VALIDATION_NS } from "@/core/Marker";
+import { DetailResult, MARKER_DETAIL_NS } from "@/core/panel/Detail";
+import { MARKER_VALIDATION_NS } from "@/core/panel/Problem";
 import { EditorClass, MonacoCodeEditor, MonacoTextModel, TabClass } from "@/types/editor";
 import { delay } from "@/util/time";
 import { ValidationInfo } from "xml-xsd-validator-browser";
@@ -131,13 +132,40 @@ export function detectErrorProcessor(editorInstance: EditorClass, beforeValidate
             .then(response => {
               const lang = model.getLanguageId();
               // jika language nya masih sama
-              if(lang === language){
-                const { markerInfoMap } = useMarker(MARKER_VALIDATION_NS);
-                markerInfoMap.value.set(model.id, response.result as ValidationInfo[]);
+              if (lang === language) {
+                // const { markerInfoMap } = useMarker(MARKER_VALIDATION_NS);
+                // markerInfoMap.value.set(model.id, response.result as ValidationInfo[]);
+
+                const { panel } = useMarkerPanel();
+                const model = editorInstance.model;
+                const data = response.result as ValidationInfo[]
+                panel(MARKER_VALIDATION_NS).map.set(model, { data });
+                // markerInfoMap.value.set(model.id, response.result as ValidationInfo[]);
               }
             })
         }
       }, 500
     )
   })
+}
+
+export function detectDetailModel(editorInstance: EditorClass) {
+
+  const { debounce } = delay();
+  if (editorInstance.isCodeEditor) {
+    const disposable = (editorInstance.editor as MonacoCodeEditor).onDidChangeModelContent(() => {
+      debounce(
+        () => {
+          const uri = editorInstance.model.uri.toString();
+          const lang = editorInstance.language;
+          const detailResult: DetailResult = {
+            uri, language: lang
+          }
+          const { panel } = useMarkerPanel();
+          panel(MARKER_DETAIL_NS).map.set(editorInstance.model, { data: detailResult });
+        }, 500
+      )();
+    })
+    return disposable;
+  }
 }

@@ -1,26 +1,15 @@
 <script setup lang="ts">
-import { goto, registerMarker, useMarker } from "@/composables/useMarker";
-import { useModelStore } from "@/composables/useModelstore";
 import { useWorkspace } from "@/composables/useWorkspace";
-import { MARKER_VALIDATION_NS } from "@/core/Marker";
-import { computed, nextTick, onBeforeUnmount, ref } from "vue";
+import { nextTick, ref } from "vue";
+import TabProblem from "./Marker/TabProblem.vue";
+import Problem from "./Marker/Problem.vue";
+import { MARKER_VALIDATION_NS } from "@/core/panel/Problem";
+import TabDetail from "./Marker/TabDetail.vue";
+import Detail from "./Marker/Detail.vue";
+import { MARKER_DETAIL_NS } from "@/core/panel/Detail";
 
-
-registerMarker({
-  "namespace": MARKER_VALIDATION_NS,
-  "container": null
-});
-const { markerContainer, markerInfoMap, clear } = useMarker(MARKER_VALIDATION_NS);
-
-const { workspace } = useWorkspace();
-
-const getModelUri = (modelId: string) => {
-  return workspace.models.find((model) => model.id === modelId)?.uri;
-};
-const getModelName = (modelId: string) => {
-  return workspace.models.find((model) => model.id === modelId)
-    ?.name;
-};
+// let activeMarkerNamespace = ref(MARKER_VALIDATION_NS);
+let activeMarkerNamespace = ref(MARKER_DETAIL_NS);
 
 let show = ref(true);
 const toggleMarker = () => {
@@ -31,44 +20,24 @@ const toggleMarker = () => {
   }
 }
 
-onBeforeUnmount(() => {
-  clear();
-})
+const setActive = (namespace:string) => {
+  if(activeMarkerNamespace.value !== namespace) activeMarkerNamespace.value = namespace
+  else {
+    toggleMarker();
+  }
+}
 
 </script>
 <template>
   <!-- Panel error -->
   <div class="marker-wrapper">
     <div class="marker-tabs">
-      <div class="tab-item active" @click.stop="toggleMarker">
-        <span class="tab-name">Problems</span>
-      </div>
+      <TabProblem @active="setActive"/>
+      <TabDetail @active="setActive"/>
     </div>
-    <div class="marker-container" v-if="show">
-      <div ref="markerContainer" class="marker-validate-panel-container">
-        <!-- untuk per model -->
-        <div
-          v-for="[key, modelValidationInfos] of markerInfoMap.entries()"
-          :id="key"
-          class="marker"
-        >
-        <div v-if="modelValidationInfos.length > 0">
-          <div class="model-ident">
-            <span class="tab-name">{{ getModelName(key) }}</span>
-            &nbsp;
-            <span class="model-uri">{{ getModelUri(key) }}</span>
-          </div>
-          <div v-for="info in modelValidationInfos" class="info" @click.stop="goto(key, info.detail.line, info.detail.col)">
-            <span class="message">{{ info.detail.message }}</span>
-            <span class="loc"
-              >[Ln&nbsp;<span class="line">{{ info.detail.line }}</span
-              >,&nbsp;Col&nbsp;<span class="col">{{ info.detail.col }}</span
-              >]</span
-            >
-          </div>
-        </div>
-        </div>
-      </div>
+    <div class="marker-container" v-show="show">
+      <Problem :active="activeMarkerNamespace"/>
+      <Detail :active="activeMarkerNamespace"/>
     </div>
   </div>
 </template>
