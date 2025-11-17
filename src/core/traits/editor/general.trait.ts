@@ -3,13 +3,15 @@ import { useTheme } from "@/composables/useTheme";
 import { createEditorContainer, getEditorContainer } from "@/composables/useEditorContainer";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { EditorClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel, TabClass } from "@/types/editor";
-import { detectDetailModel, detectLanguage } from "@/languages/detection";
+import { detectLanguage } from "@/languages/detection";
 import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "../apply";
 import { ModelLanguage } from "@/types/model";
 import { applyAction, deApplyAction, registerAction } from "@/plugins/action.plugin";
 import { applyPluginOnDidChangeModelContent, deApplyPluginOnDidChangeModelContent, registerPluginOnDidChangeModelContent } from "@/plugins/onDidChangeModelContent.plugin";
 import { getShortCut } from "@/config/shortcut";
 import { usePrompt } from "@/composables/usePrompt";
+import { DetailResult, MARKER_DETAIL_NS } from "@/core/panel/Detail";
+import { useMarkerPanel } from "@/composables/useMarkerPanel";
 
 
 function actionThemeContextMenu(editorInstance: EditorClass) {
@@ -108,7 +110,21 @@ registerAction('toggle.theme', actionThemeContextMenu);
 registerAction('split.tab', actionSplitEditor);
 registerAction('compare.model', compareModel);
 
+export function detectDetailModel(editorInstance: EditorClass) {
+  const uri = editorInstance.model.uri.toString();
+  const lang = editorInstance.language;
+  const detailResult: DetailResult = {
+    uri, language: lang
+  }
+  setTimeout(() => {
+    const { panel } = useMarkerPanel();
+    panel(MARKER_DETAIL_NS).map.set(editorInstance.model, { data: detailResult });
+  },1000)
+}
+
 export function init(this: EditorClass) {
+  detectDetailModel(this);
+
   applyAction.apply(this);
 
   const namespacePluginDetectLang = `detect.language.${this.id}`;

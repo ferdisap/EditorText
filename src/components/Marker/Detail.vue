@@ -8,7 +8,10 @@ import {
   MarkerDetail,
 } from "@/core/panel/Detail";
 import { registerMarkerPanel } from "@/plugins/marker.plugin";
-import { computed } from "vue";
+import { onBeforeDisposeModel } from "@/plugins/model.plugin";
+import { MonacoModel } from "@/types/editor";
+import { ModelIndex } from "@/types/workspace";
+import { computed, reactive, watch } from "vue";
 
 defineProps<{ active: string }>();
 registerMarkerPanel(new MarkerDetail(MARKER_DETAIL_NS));
@@ -16,7 +19,6 @@ registerMarkerPanel(new MarkerDetail(MARKER_DETAIL_NS));
 const { panel } = useMarkerPanel<DetailResult, MarkerDetail>();
 
 const { workspace } = useWorkspace();
-const models = computed(() => workspace.models);
 const panelDetail = computed(() => panel(MARKER_DETAIL_NS));
 
 const { modelStore } = useModelStore();
@@ -29,6 +31,34 @@ function getModelUri(modelId: string) {
 function getModelName(modelId: string) {
   return workspace.models.find((model) => model.id === modelId)?.name;
 }
+
+// const mapShowHideResult = reactive(new WeakMap<ModelIndex, boolean>());
+/** key:string is modelId */
+const mapShowHideResult = reactive(new Map<string, boolean>());
+const models = computed(() => {
+  const models = workspace.models;
+  for (const model of models) {
+    if (!mapShowHideResult.has(model.id)) {
+      mapShowHideResult.set(model.id, false);
+    }
+    const modelEditor = modelStore.getModel(model.id);
+    onBeforeDisposeModel(modelEditor!, () => {
+      console.log('fufuafa')
+      mapShowHideResult.delete(model.id)
+    })
+  }
+  return models;
+});
+function toggleResult(modelId: string) {
+  let oldState: boolean;
+  if (mapShowHideResult.has(modelId)) {
+    oldState = Boolean(mapShowHideResult.get(modelId));
+  } else {
+    oldState = false;
+    mapShowHideResult.set(modelId, oldState);
+  }
+  mapShowHideResult.set(modelId, !oldState);
+}
 </script>
 
 <template>
@@ -36,29 +66,21 @@ function getModelName(modelId: string) {
     <!-- untuk per model -->
     <div v-for="model in models" class="marker">
       <div v-if="getDetailResult(model.id)">
-        <div class="model-ident">
+        <div class="model-ident" @click.stop="toggleResult(model.id)">
           <span class="tab-name">{{ getModelName(model.id) }}</span>
           &nbsp;
           <span class="model-uri">{{ getModelUri(model.id) }}</span>
         </div>
-        <div class="info">
+        <div class="info" v-show="mapShowHideResult.get(model.id)">
           <table>
             <tbody>
-              <tr>
-                <td>URI</td>
-                <td>:{{ getDetailResult(model.id)?.uri }}</td>
-              </tr>
-              <tr>
-                <td>Language</td>
-                <td>:{{ getDetailResult(model.id)?.language }}</td>
+              <tr v-for="[key, value] in Object.entries(model)">
+                <td>{{ key }}</td>
+                <td>:{{ value || "-" }}</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <!-- <div v-for="info in getDetailResult(model.id)?.data" class="info">
-          {{ info }}
-            uri: {{ info }}
-        </div> -->
       </div>
     </div>
   </div>

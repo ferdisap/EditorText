@@ -14,8 +14,10 @@ export type WorkspaceObject = {
   models: { uri: string, name: string, id: string }[]
 }
 
-export type ModelIndex = { 
-  uri: string, 
-  name: string, 
-  id: string 
+export type ModelIndex = {
+  uri: string,
+  originalUri?: string,
+  name: string,
+  id: string,
+  originalId?: string,
 }

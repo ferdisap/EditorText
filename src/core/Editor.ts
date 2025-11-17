@@ -11,6 +11,7 @@ import { hasMethod } from "@/util/function";
 import { isValidUri } from "@/util/string";
 import { useMarkerPanel } from "@/composables/useMarkerPanel";
 import { MARKER_VALIDATION_NS } from "./panel/Problem";
+import { executeOnBeforeDisposeModel } from "@/plugins/model.plugin";
 
 // 🧩 id: "toggle-theme"
 // ➡️ Ini adalah identifier unik untuk action tersebut.
@@ -236,7 +237,7 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
       return _originalModelId;
     },
     get originalModel() {
-      return getModel(_originalModelId) as MonacoTextModel;
+      return _originalModelId ? (getModel(_originalModelId) as MonacoTextModel) : undefined;
     },
     get container() {
       return _container;
@@ -248,32 +249,42 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
       return !(hasMethod(_editor, 'getOriginalEditor'));
     },
     get language() {
-      return ((_editor.getModel() as MonacoTextModel)?.getLanguageId() || '') as ModelLanguage;
+      return (this.isCodeEditor ? 
+        (((_editor.getModel() as MonacoTextModel)?.getLanguageId() || '') as ModelLanguage) :
+        ((this.originalModel as MonacoTextModel)?.getLanguageId() || '' as ModelLanguage)) as ModelLanguage;
     },
     init() {
-      if (!this.isCodeEditor) return;
-      const lang = (_editor.getModel() as MonacoTextModel)?.getLanguageId();
-      if (!lang) return;
-      applyTraitOnInstanced(this);
-      switch (lang) {
-        case 'xml':
-          initXml.apply(this);
-        default:
-          initGeneral.apply(this);
-          break;
+      if (!this.isCodeEditor) {
+        initGeneral.apply(this);
+      } 
+      else {
+        const lang = (_editor.getModel() as MonacoTextModel)?.getLanguageId();
+        if (!lang) return;
+        applyTraitOnInstanced(this);
+        switch (lang) {
+          case 'xml':
+            initXml.apply(this);
+          default:
+            initGeneral.apply(this);
+            break;
+        }
       }
     },
     deInit() {
-      if (!this.isCodeEditor) return;
-      const lang = (_editor.getModel() as MonacoTextModel)?.getLanguageId();
-      if (!lang) return;
-      deApplyTraitOnInstanced(this);
-      switch (lang) {
-        case 'xml':
-          deInitXml.apply(this);
-        default:
-          deInitGeneral.apply(this);
-          break;
+      if (!this.isCodeEditor) {
+        deInitGeneral.apply(this);
+      }
+      else {
+        const lang = (_editor.getModel() as MonacoTextModel)?.getLanguageId();
+        if (!lang) return;
+        deApplyTraitOnInstanced(this);
+        switch (lang) {
+          case 'xml':
+            deInitXml.apply(this);
+          default:
+            deInitGeneral.apply(this);
+            break;
+        }
       }
     },
     changeLanguage(lang: ModelLanguage) {
@@ -321,11 +332,13 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
     destroy() {
       const container = (this.editor).getContainerDomNode()!;
       if (this.isCodeEditor) {
+        executeOnBeforeDisposeModel(this.model);
         this.disposeModel();
         this.disposeEditor();
       } else {
         // const domNode = (this.editor as MonacoEditor).getDomNode()!;
         // dispose original 
+        executeOnBeforeDisposeModel(this.originalModel!);
         const originalEditor: MonacoCodeEditor = (_editor as MonacoDiffEditor).getOriginalEditor() as MonacoCodeEditor;
         const originalModel: MonacoTextModel = originalEditor.getModel() as MonacoTextModel;
         const originalDomNode = (originalEditor as monaco.editor.IStandaloneCodeEditor).getDomNode()!;
@@ -333,6 +346,7 @@ export function Editor(id: string, name: string, model: string | MonacoTextModel
         originalModel.dispose();
         originalEditor.dispose();
         // dispose modified
+        executeOnBeforeDisposeModel(this.model);
         const modifiedEditor: MonacoCodeEditor = (_editor as MonacoDiffEditor).getModifiedEditor() as MonacoCodeEditor;
         const modifiedModel: MonacoTextModel = modifiedEditor.getModel() as MonacoTextModel;
         const modifiedDomNode = (originalEditor as monaco.editor.IStandaloneCodeEditor).getDomNode()!;

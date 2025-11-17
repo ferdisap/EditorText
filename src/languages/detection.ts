@@ -1,6 +1,6 @@
+import * as monaco from "monaco-editor";
 import { useMarkerPanel } from "@/composables/useMarkerPanel";
 import { useWorker, ValidatePayload } from "@/composables/useWorker";
-import { DetailResult, MARKER_DETAIL_NS } from "@/core/panel/Detail";
 import { MARKER_VALIDATION_NS } from "@/core/panel/Problem";
 import { EditorClass, MonacoCodeEditor, MonacoTextModel, TabClass } from "@/types/editor";
 import { delay } from "@/util/time";
@@ -140,32 +140,20 @@ export function detectErrorProcessor(editorInstance: EditorClass, beforeValidate
                 const model = editorInstance.model;
                 const data = response.result as ValidationInfo[]
                 panel(MARKER_VALIDATION_NS).map.set(model, { data });
-                // markerInfoMap.value.set(model.id, response.result as ValidationInfo[]);
+
+                const imarkerDatas: monaco.editor.IMarkerData[] = data.map((info) => ({
+                  message: info.detail.message,
+                  severity: monaco.MarkerSeverity["Error"],
+                  startColumn: info.detail.col,
+                  endColumn: info.detail.col + 1,
+                  startLineNumber: info.detail.line,
+                  endLineNumber: info.detail.line,
+                }) as monaco.editor.IMarkerData)
+                monaco.editor.setModelMarkers(model, 'xml-validator', imarkerDatas);
               }
             })
         }
       }, 500
     )
   })
-}
-
-export function detectDetailModel(editorInstance: EditorClass) {
-
-  const { debounce } = delay();
-  if (editorInstance.isCodeEditor) {
-    const disposable = (editorInstance.editor as MonacoCodeEditor).onDidChangeModelContent(() => {
-      debounce(
-        () => {
-          const uri = editorInstance.model.uri.toString();
-          const lang = editorInstance.language;
-          const detailResult: DetailResult = {
-            uri, language: lang
-          }
-          const { panel } = useMarkerPanel();
-          panel(MARKER_DETAIL_NS).map.set(editorInstance.model, { data: detailResult });
-        }, 500
-      )();
-    })
-    return disposable;
-  }
 }

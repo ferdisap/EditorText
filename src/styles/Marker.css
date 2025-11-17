@@ -83,9 +83,9 @@
 .info:hover {
   background-color: var(--vscode-list-focusBackground, #007acc);
 }
-.dark .info:hover {
+/* .dark .info:hover {
   background-color: var(--vscode-list-focusBackground, #094771);
-}
+} */
 
 .info .message {
   @apply flex-1 truncate text-[#cf222e] dark:text-[#ff7b72];
@@ -98,4 +98,11 @@
 /* untuk detail.vue */
 .info td:nth-child(1) {
   width: 100px;
+}
+
+.marker {
+  cursor: pointer;
+}
+.marker:hover {
+  background-color: var(--vscode-list-focusBackground-main, #007acc);
 }

@@ -7,7 +7,7 @@ import { reactive } from "vue";
 export function Workspace(): WorkspaceObject {
   const state = reactive({
     groups: <GroupClass[]>[],
-    activeGroupId: <string | null> null,
+    activeGroupId: <string | null>null,
   });
 
   return {
@@ -25,9 +25,11 @@ export function Workspace(): WorkspaceObject {
         const tabs = group.tabs
         return tabs.map(tab => {
           return {
-            uri: (tab.instance.editor.getModel()! as monaco.editor.ITextModel).uri.toString() || "",
+            uri: tab.instance.model.uri.toString(),
+            originalUri: tab.instance.originalModel?.uri.toString(),
             name: tab.instance.name,
-            id: (tab.instance.editor.getModel()! as monaco.editor.ITextModel).id || ""
+            id: (tab.instance.model as monaco.editor.ITextModel).id || "",
+            originalId: (tab.instance.originalModel)?.id || "",
           }
         })
       }).flat()

@@ -1,6 +1,7 @@
 import { EditorClass, MonacoDiffEditor, MonacoTextModel, TabClass } from "@/types/editor";
 import { useModelStore } from "@/composables/useModelstore";
 import { terminateWorker } from "@/composables/useWorker";
+import { executeOnBeforeCloseEditor } from "@/plugins/editor.plugin";
 
 export function Tab(instace: EditorClass): TabClass {
   const _id: string = instace.id;
@@ -17,10 +18,10 @@ export function Tab(instace: EditorClass): TabClass {
       return _instance.name;
     },
     close() {
-      const { modelStore } = useModelStore()
-      this.instance.deInit();
-
+      const { modelStore } = useModelStore()      
       if(_instance.isCodeEditor){
+        executeOnBeforeCloseEditor(this.instance);
+        this.instance.deInit();
         const model = _instance.editor.getModel()!;
         const { editorsInstancesId } = modelStore.mapModelAndEditor((model as MonacoTextModel).id, [_instance.id])[0];
         // jika model ini hanya dipakai di satu editor maka dispose model dan editor (destroy juga containernya)
@@ -36,6 +37,8 @@ export function Tab(instace: EditorClass): TabClass {
         }
       }
       else {
+        executeOnBeforeCloseEditor(this.instance);
+        this.instance.deInit();
         const container = (_instance.editor as MonacoDiffEditor).getContainerDomNode();
         // disposing original model
         const oriEditor = (_instance.editor as MonacoDiffEditor).getOriginalEditor();

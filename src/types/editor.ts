@@ -43,7 +43,7 @@ export type EditorClass = {
   language: ModelLanguage;
   isCodeEditor: boolean,
   model:MonacoTextModel; // untuk MonacoTextModel, bukan DiffEditor
-  originalModel:MonacoTextModel; // untuk MonacoTextModel, nukan DiffEditor
+  originalModel:MonacoTextModel | undefined; // untuk MonacoTextModel, nukan DiffEditor
   init(): void;
   deInit():void;
   changeLanguage(language:ModelLanguage):void
