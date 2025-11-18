@@ -61,6 +61,7 @@ function toggleResult(modelId: string) {
 }
 </script>
 <template>
+  <!-- {{ workspace.models }} -->
   <div class="marker-panel-wrapper" v-show="activeNs === MARKER_VALIDATION_NS">
     <!-- untuk per model -->
     <div v-for="model of models" class="marker">
