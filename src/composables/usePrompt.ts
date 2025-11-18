@@ -51,7 +51,7 @@ function post(option:IDefOption = defOption) : Promise<string>{
 
 export function usePrompt(){
   return {
-    isOpen,
+    isOpenPrompt: isOpen,
     vmodel,
     input,
     placeholder,

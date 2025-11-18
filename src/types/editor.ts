@@ -3,20 +3,30 @@ import { ParseContext } from "xsd-parser";
 import { ModelLanguage } from "./model";
 import { SchemaUrl } from "@/composables/useWorker";
 
+export type Dimension = {
+  unit: string,
+  size: number
+}
+
 export type GroupClass = {
   id: string;
   name: string;
   tabs: TabClass[];
   activeTabId: string | undefined;
   activeTab: TabClass | undefined;
+  dimension: {
+    width: Dimension;
+    height: Dimension;
+  }
 
   addTab(tab: TabClass): void
   setActiveTab(tabId: string): void
   closeTab(tabId: string): void
+  layout(width?:Dimension, height?:Dimension): void
 
   newFile(value?: string, language?: string, uri?: string): TabClass | void;
-  splitFile(uri:string):TabClass | void;
-  compareFile(originalUri:string, modifiedUri:string) :TabClass | void 
+  splitFile(uri: string): TabClass | void;
+  compareFile(originalUri: string, modifiedUri: string): TabClass | void
   disposeAll(): void
 }
 
@@ -42,14 +52,14 @@ export type EditorClass = {
   container: HTMLDivElement;
   language: ModelLanguage;
   isCodeEditor: boolean,
-  model:MonacoTextModel; // untuk MonacoTextModel, bukan DiffEditor
-  originalModel:MonacoTextModel | undefined; // untuk MonacoTextModel, nukan DiffEditor
+  model: MonacoTextModel; // untuk MonacoTextModel, bukan DiffEditor
+  originalModel: MonacoTextModel | undefined; // untuk MonacoTextModel, nukan DiffEditor
   init(): void;
-  deInit():void;
-  changeLanguage(language:ModelLanguage):void
-  focus():void;
-  layout():void;
-  goto(position: monaco.IPosition):void;
+  deInit(): void;
+  changeLanguage(language: ModelLanguage): void
+  focus(): void;
+  layout(): void;
+  goto(position: monaco.IPosition): void;
   destroy(): void;
   disposeEditor(): void
   disposeModel(): void
@@ -79,19 +89,19 @@ export type MonacoDiffModel = monaco.editor.IDiffEditorModel;
 export type MonacoEditorOptions = {
   theme?: EditorTheme,
   automaticLayout?: boolean
-  minimap? : {
+  minimap?: {
     enabled: boolean
   },
   scrollBeyondLastLine?: boolean,
-  autoDetectHighContrast?:boolean,
+  autoDetectHighContrast?: boolean,
 }
 
 export type MonacoDiffEditorOptions = {
   theme?: EditorTheme,
   automaticLayout?: boolean
   scrollBeyondLastLine?: boolean,
-  autoDetectHighContrast?:boolean,
-  minimap? : {
+  autoDetectHighContrast?: boolean,
+  minimap?: {
     enabled: boolean
   },
   renderSideBySide?: boolean,

@@ -1,23 +1,41 @@
 import * as monaco from "monaco-editor";
-import { GroupClass, TabClass } from "@/types/editor";
+import { GroupClass, TabClass, Dimension } from "@/types/editor";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { getFilenameFromUri, randStr } from "@/util/string";
 import { useEditorContainer } from "@/composables/useEditorContainer";
 import { reactive } from "vue";
 import { usePrompt } from "@/composables/usePrompt";
 
+function calcDimension(totalGroupQty = 1, max = 100) :number{
+  return (1 / totalGroupQty) * max;
+}
+
 export function Group(name: string): GroupClass {
+  const { workspace } = useWorkspace();
+  const totalGroupQty = workspace.groups.length | 1;
   const state = reactive({
     id: randStr(10),
     name: name,
     tabs: <TabClass[]>[],
     activeTabId: <string | undefined>undefined,
+    dimension: {
+      width: {
+        size: calcDimension(totalGroupQty),
+        unit: "%",
+      },
+      height: {
+        size: calcDimension(totalGroupQty),
+        unit: "%",
+      },
+    }
   });
   return {
     get id() {
       return state.id
     },
-
+    get dimension(){
+      return state.dimension
+    },
     get name() {
       return state.name;
     },
@@ -32,6 +50,21 @@ export function Group(name: string): GroupClass {
 
     get activeTab() {
       return state.tabs.find((tab) => tab.id === state.activeTabId) as TabClass;
+    },
+
+    /** set the maximum dimension on option */
+    layout(width?: Dimension, height?:Dimension){
+      const { workspace } = useWorkspace();
+      const totalGroupQty = workspace.groups.length || 1;
+      if(width){
+        state.dimension.width.unit = width.unit;
+        state.dimension.width.size = calcDimension(totalGroupQty, width.size);
+        console.log(totalGroupQty, state.dimension.width.size, state.dimension.width.unit);
+      }
+      if(height){
+        state.dimension.height.unit = height.unit;
+        state.dimension.height.size = calcDimension(totalGroupQty, height.size);
+      }
     },
 
     addTab(tab: TabClass) {

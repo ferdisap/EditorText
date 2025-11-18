@@ -63,24 +63,6 @@ export function useEditorContainer(groupId: string) {
     editorInstance.init();
 
     return Tab(editorInstance);
-
-    // top.ED = top.ED ? top.ED : [];
-    // top.ED.push(editorInstance)
-    
-    // // create Tab
-    // const tab = Tab(editorInstance);
-
-    // top.TAB = top.TAB ? top.TAB : [];
-    // top.TAB.push(tab)
-    
-    // console.log(ED[0].model === TAB[0].instance.model)
-    // setTimeout(() => {
-    //   console.log(ED[0].model === TAB[0].instance.model)
-    // },1000)
-    // const { workspace } = useWorkspace()
-    // console.log(workspace.activeGroup.activeTab.instance.model === TAB[0].instance.model)
-    // console.log(workspace.activeGroup.activeTab)
-    // return tab;
   }
 
   function createEditorInstanceWithModel(modelOrUriOrId: string | MonacoTextModel, name: string | null = null): TabClass | void {

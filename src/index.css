@@ -4,8 +4,8 @@
 @import './styles/Tabs.css';
 @import './styles/Editor.css';
 @import './styles/Marker.css';
-/* @import './styles/CommandPalette.css'; */
 @import './styles/Path.css';
+@import './styles/Sidebar.css';
 
 /* @tailwind base;
 @tailwind components;

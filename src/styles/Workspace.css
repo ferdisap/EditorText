@@ -2,24 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
-.editor-workspace {
+
+/* WRAPPER UTAMA */
+.workspace {
+  @apply flex w-full h-full overflow-hidden bg-[var(--vscode-editor-background)];
+  color: var(--vscode-editor-foreground);
+}
+
+/* ===========================
+    LEFT NAVIGATION WRAPPER
+   =========================== */
+.workspace-nav {
+  @apply h-full flex flex-col;
+}
+
+/* SIDEBAR UTAMA (icon bar + panel) */
+.main-nav {
+  @apply flex h-full;
+  background-color: var(--vscode-sideBar-background, #252526);
+  color: var(--vscode-sideBar-foreground, #ccc);
+}
+
+/* ===========================
+      NAVIGATION ICON BAR (vertical)
+   =========================== */
+.nav-menu {
+  @apply flex flex-col items-center py-2 gap-2
+         w-[48px] min-w-[48px] border-r
+         transition-colors duration-300;
+  border-color: var(--vscode-sideBar-border, #3c3c3c);
+  background-color: var(--vscode-activityBar-background, #333333);
+}
+
+.nav-menu-item {
+  @apply w-10 h-10 flex items-center justify-center
+         rounded-md cursor-pointer transition-colors duration-200;
+  color: var(--vscode-activityBar-foreground, #eee);
+}
+
+.nav-menu-item:hover {
+  background-color: var(--vscode-activityBar-hoverBackground, #444);
+}
+
+/* ACTIVE state (optional class) */
+.nav-menu-item.active {
+  @apply bg-[var(--vscode-activityBar-activeBackground,#555)]
+         text-[var(--vscode-activityBar-activeForeground,#fff)];
+}
+
+/* ===========================
+         PANEL CONTENT
+   =========================== */
+.nav-content {
+  @apply w-[260px] min-w-[200px] max-w-[400px]
+         h-full overflow-auto border-r transition-all duration-300;
+  background-color: var(--vscode-sideBar-background, #1e1e1e);
+  border-color: var(--vscode-sideBar-border, #3c3c3c);
+  color: var(--vscode-sideBar-foreground, #ccc);
+}
+
+/* Scrollbar mirip VS Code */
+.nav-content::-webkit-scrollbar {
+  width: 6px;
+}
+.nav-content::-webkit-scrollbar-thumb {
+  background: rgba(120,120,120,0.3);
+}
+.nav-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(120,120,120,0.5);
+}
+
+
+/* ===========================
+         WORKSPACE EDITOR
+   =========================== */
+.workspace-editor {
   @apply flex flex-col w-full h-full transition-colors duration-300;
   background-color: var(--vscode-editor-background, #1e1e1e);
   color: var(--vscode-editor-foreground, #d4d4d4);
 }
 
-.dark .editor-workspace {
+/* .dark .workspace-editor {
   background-color: var(--vscode-editor-background, #1e1e1e);
   color: var(--vscode-editor-foreground, #d4d4d4);
-}
+} */
 
-.editor-workspace {
+.workspace-editor {
   background-color: var(--vscode-editor-background, #ffffff);
   color: var(--vscode-editor-foreground, #333333);
 }
 
 .editor-group-wrapper {
-  @apply flex flex-1 w-full overflow-hidden;
+  /* @apply flex flex-1 w-full overflow-hidden; */
+  @apply w-full overflow-hidden;
 }
 
 
@@ -30,3 +105,30 @@
 .sidebar-panel {
   width: 100px
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===========================
+         DARK THEME
+   =========================== */
+/* .dark .main-nav {
+  background-color: var(--vscode-sideBar-background, #252526);
+}
+.dark .nav-menu {
+  background-color: var(--vscode-activityBar-background, #333);
+}
+.dark .nav-content {
+  background-color: var(--vscode-sideBar-background, #252526);
+  border-color: var(--vscode-sideBar-border, #3c3c3c);
+} */

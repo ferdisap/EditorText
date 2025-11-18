@@ -7,12 +7,14 @@ import { useWorkspace } from "@/composables/useWorkspace";
 import Path from "./Path.vue";
 
 const props = defineProps<{ 
-  group: GroupClass,
-  width: string,
+  group: GroupClass
  }>();
 const activeTab = computed(() => props.group.activeTab);
 
-const style = computed(() => `width: ${props.width}`)
+const style = computed(() => {
+  const width = props.group.dimension.width.size + props.group.dimension.width.unit;
+  return `width: ${width}`;
+})
 
 </script>
 

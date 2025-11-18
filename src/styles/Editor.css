@@ -2,17 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.editor-group {
+  width: 100%;
+}
+.editor-area {
+  width: 100%;
+}
+
 .editor-wrapper {
   /* @apply flex flex-col w-full h-full transition-colors duration-300 overflow-auto; */
-  @apply flex flex-col h-full transition-colors duration-300 overflow-auto;
+  /* @apply flex flex-col h-full transition-colors duration-300 overflow-auto; */
+  @apply flex flex-col h-full overflow-auto;
   background-color: var(--vscode-editor-background, #ffffff);
   color: var(--vscode-editor-foreground, #1e1e1e);
+  width: 100%;
 }
 
 .editor-wrapper {
   background-color: var(--vscode-editor-background, #ffffff);
   color: var(--vscode-editor-foreground, #333333);
 }
+
+.editor-container {
+  width: 100%;
+}
+
 
 /* 🌙 Dark mode */
 :root.dark .editor-wrapper {

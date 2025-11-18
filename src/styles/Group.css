@@ -4,12 +4,14 @@
 
 /* 🔲 Wrapper berisi semua group editor */
 .editor-group-wrapper {
-  @apply flex flex-row w-full h-full overflow-hidden transition-all duration-300;
+  /* @apply flex flex-row w-full h-full overflow-hidden transition-all duration-300; */
+  @apply flex flex-row w-full h-full overflow-hidden;
 }
 
 /* 🧩 Tiap group punya lebar sama besar */
 .editor-group {
-  @apply flex flex-col h-full flex-1 border-r transition-colors duration-300;
+  /* @apply flex flex-col h-full flex-1 border-r transition-colors duration-300; */
+  @apply flex flex-col h-full flex-1 border-r;
   border-color: var(--vscode-panel-border, #3c3c3c);
   background-color: var(--vscode-editor-background, #1e1e1e);
 }

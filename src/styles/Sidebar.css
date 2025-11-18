@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.workspace-nav {
+  @apply flex-none h-full z-20;
+}
+
+.main-nav {
+  @apply flex h-full;
+}
+
+
+.nav-menu {
+  @apply flex flex-col items-center py-2 gap-2 w-[48px] min-w-[48px] border-r;
+  background-color: var(--vscode-activityBar-background, #333);
+}
+
+.nav-menu-item {
+  /* @apply w-10 h-10 flex items-center justify-center rounded-md cursor-pointer transition-colors duration-200; */
+  @apply w-10 h-10 flex items-center justify-center rounded-md cursor-pointer;
+  color: var(--vscode-activityBar-foreground, #ddd);
+}
+
+.nav-menu-item:hover {
+  background-color: var(--vscode-activityBar-hoverBackground, #444);
+}
+
+.nav-menu-item.active {
+  @apply text-white;
+  background-color: var(--vscode-activityBar-activeBackground, #555);
+}
+
+.nav-content {
+  @apply w-[260px] min-w-[200px] max-w-[480px] h-full;
+  background-color: var(--vscode-sideBar-background, #252526);
+  color: var(--vscode-sideBar-foreground, #ccc);
+}
+
+.nav-content.hidden {
+  /* @apply w-0 overflow-hidden transition-all duration-200; */
+  /* @apply hidden overflow-hidden transition-all duration-200; */
+  @apply hidden overflow-hidden;
+}
+
+.resize-handle {
+  @apply px-2 cursor-col-resize text-sm text-neutral-400;
+}
+
+.panel-header {
+  border-color: var(--vscode-sideBar-border, #3c3c3c);
+}
+
+/* Explorer tree styles */
+.explorer-tree .tree-node {
+  @apply text-sm;
+  color: var(--vscode-sideBar-foreground, #ccc);
+}
+
+.explorer-tree .tree-node:hover {
+  background-color: color-mix(in srgb, white 6%, transparent);
+}
+
+.explorer-tree {
+  @apply text-sm font-mono;
+}
+
+.tree-node {
+  @apply flex items-center gap-2 p-1 cursor-pointer hover:bg-gray-100/5 rounded;
+}
+
+.tree-node-child {
+  @apply p-1 cursor-pointer hover:bg-gray-100/3 rounded;
+}
+
+/* Search styles */
+.icon-btn {
+  @apply w-7 h-7 flex items-center justify-center rounded hover:bg-[var(--vscode-toolbar-hoverBackground)];
+  font-size: 16px;
+}
+
+.search-pane {
+  background: var(--vscode-sideBar-background);
+  color: var(--vscode-sideBar-foreground);
+}
+
+.result-item {
+  border-color: var(--vscode-sideBarSectionHeader-border);
+}
