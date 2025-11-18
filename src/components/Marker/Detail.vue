@@ -32,7 +32,6 @@ function getModelName(modelId: string) {
   return workspace.models.find((model) => model.id === modelId)?.name;
 }
 
-// const mapShowHideResult = reactive(new WeakMap<ModelIndex, boolean>());
 /** key:string is modelId */
 const mapShowHideResult = reactive(new Map<string, boolean>());
 const models = computed(() => {

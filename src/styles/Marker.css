@@ -100,9 +100,9 @@
   width: 100px;
 }
 
-.marker {
-  cursor: pointer;
+.marker .model-ident {
+  @apply cursor-pointer transition-colors duration-150 px-4 py-[3px] rounded-md
 }
-.marker:hover {
+.marker .model-ident:hover {
   background-color: var(--vscode-list-focusBackground-main, #007acc);
 }
