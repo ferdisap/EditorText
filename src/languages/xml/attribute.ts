@@ -7,15 +7,42 @@ import { matchingAttrInfo } from "@/worker/fn_attribute";
 import { useWorker } from "@/composables/useWorker";
 import { delay } from "@/util/time";
 import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoEditor, MonacoModel, MonacoTextModel } from "@/types/editor";
-import { WorkspaceObject } from "@/types/workspace";
+import { WorkspaceClass } from "@/types/workspace";
 import { getLineContentAndCursorIndex } from "@/core/Editor";
 
+
 // 🧩 Suggestion attribute (nama attribute)
-export function suggestAttributeName(workspace: WorkspaceObject) {
+export function suggestAttributeName(workspace: WorkspaceClass) {
+  monaco.editor.registerCommand("insert.attribute.name", (accessor, attr: AttributeDef) => {
+    // cara ini tidak bisa mengirim payload attribute ke provider
+    const editor = workspace.activeGroup?.activeTab?.instance.editor!;
+    editor.trigger("suggest", "editor.action.triggerSuggest", attr);
+    // cara lain mengirim attr
+    /**
+     class MySuggestionController {
+        payload = null;
+
+        setPayload(p) {
+          this.payload = p;
+        }
+      }
+      // register contributer (di plugin bisa)
+      editor.addContribution("mySuggestionCtrl", new MySuggestionController());
+      // panggil
+      const ctrl = editor.getContribution("mySuggestionCtrl");
+      ctrl.setPayload({ type: "attrValue", name: "class" });
+      editor.trigger("manual", "suggest", null);
+      // kemudian di provider
+      const ctrl = editor.getContribution("mySuggestionCtrl");
+      console.log(ctrl.payload);
+
+     */
+
+  })
+
   monaco.languages.registerCompletionItemProvider("xml", {
     triggerCharacters: [" "],
     provideCompletionItems: (model, position) => {
-
       // find activeGroup
       const [activeGroup] = workspace.groups.filter((g) => g.id === workspace.activeGroupId);
       if (!activeGroup) return;
@@ -23,7 +50,7 @@ export function suggestAttributeName(workspace: WorkspaceObject) {
       const activeTab = activeGroup.activeTab;
       if (!activeTab) return;
       // get xmlEditor. If no schmea return no suggestion
-      const xmlEditor = activeTab!.instance as unknown as XmlEditorTrait;
+      const xmlEditor = activeTab!.instance as EditorXMLClass;
       if (!xmlEditor.schema) return { suggestions: [] } as monaco.languages.CompletionList;
 
       const textBefore = model.getValueInRange({
@@ -50,6 +77,11 @@ export function suggestAttributeName(workspace: WorkspaceObject) {
         label: attr.name,
         kind: monaco.languages.CompletionItemKind.Field,
         insertText: `${attr.name}="$0"`,
+        command: {
+          "id": "insert.attribute.name",
+          "title": "Melacak suggestion attribute name",
+          arguments: [attr],
+        },
         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
         documentation: `Attribute of <${elementName}>`,
         detail: attr.origin?.startsWith("ref:")
@@ -63,9 +95,10 @@ export function suggestAttributeName(workspace: WorkspaceObject) {
 }
 
 // 🧩 Suggestion untuk nilai attribute (value suggestion)
-export function suggestAttributeValue(workspace: WorkspaceObject) {
+export function suggestAttributeValue(workspace: WorkspaceClass) {
   monaco.languages.registerCompletionItemProvider("xml", {
-    triggerCharacters: [" ", '"'],
+    // triggerCharacters: [" ", '"'],
+    triggerCharacters: ['"'],
     provideCompletionItems: (model, position) => {
       // find activeGroup
       const [activeGroup] = workspace.groups.filter((g) => g.id === workspace.activeGroupId);
@@ -185,6 +218,11 @@ export function suggestAttributeValue(workspace: WorkspaceObject) {
 const { simpleDebounce } = delay()
 
 // 🧩 agar suggestion Attribute Value dropdown muncul otomatis ketika user klik suggestion name, harus ada trigger
+/**
+ * @deprecated karena sudah diganti registerCommand insert.attribute.name
+ * @param xmlEditor 
+ * @returns 
+ */
 export function detectAttValueAfterInsertAttName(xmlEditor: EditorXMLClass) {
   let lastAttrInside: string | null = null;
   // const editor = xmlEditor.editor;

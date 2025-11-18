@@ -1,6 +1,7 @@
 import * as monaco from "monaco-editor";
 import { XmlEditorTrait } from "@/types/trait";
 import { WorkspaceObject } from "@/types/workspace";
+import { EditorXMLClass } from "@/types/editor";
 
 // 🧩 Suggestion element berdasarkan parent langsung
 export function suggestElement(workspace: WorkspaceObject) {
@@ -14,13 +15,15 @@ export function suggestElement(workspace: WorkspaceObject) {
       const activeTab = activeGroup.activeTab;
       if (!activeTab) return;
       // get xmlEditor. If no schmea return no suggestion
-      const xmlEditor = activeTab!.instance as unknown as XmlEditorTrait;
+      const xmlEditor = activeTab!.instance as EditorXMLClass;
       if (!xmlEditor.schema) return { suggestions: [] } as monaco.languages.CompletionList;
 
       // const range = getReplaceRange(model, position);
       const xmlText = model.getValue();
       const offset = model.getOffsetAt(position);
       const parent = getCurrentParentElement(xmlText, offset);
+      
+      console.log("💡 Value suggestion active for", `<${parent || xmlEditor.root}>`);
 
       let suggestions: monaco.languages.CompletionItem[] = [];
       if (!parent && xmlEditor.root) {
@@ -47,7 +50,6 @@ export function suggestElement(workspace: WorkspaceObject) {
           })) as monaco.languages.CompletionItem[];
         }
       }
-
       return { suggestions } as monaco.languages.CompletionList;
     },
   });

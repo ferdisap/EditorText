@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Workspace from "@/components/Workspace.vue";
 import { WSpaceDataProp } from "./core/Workspace";
+import { registerAction } from "./plugins/action.plugin";
+import { EditorClass } from "./types/editor";
 
 const data1 :WSpaceDataProp = {
   "groups": [{
@@ -123,6 +125,31 @@ const data4 :WSpaceDataProp = {
     }]
   }]
 }
+
+registerAction("save.doc", (editorInstance: EditorClass) => {
+  editorInstance.editor.addAction({
+    "id": "save.doc",
+    "contextMenuGroupId": "configuration",
+    "contextMenuOrder": 1.5,
+    "label": "Save",
+    "run": (ed) => {
+      const value = ed.getModel()?.getValue();
+      console.log(value);
+    }
+  })
+})
+registerAction("commit.doc", (editorInstance: EditorClass) => {
+  editorInstance.editor.addAction({
+    "id": "commit.doc",
+    "contextMenuGroupId": "configuration",
+    "contextMenuOrder": 1.6,
+    "label": "Commit",
+    "run": (ed) => {
+      const value = ed.getModel()?.getValue();
+      console.log(value);
+    }
+  })
+})
 
 </script>
 

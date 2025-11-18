@@ -13,33 +13,6 @@ import { useMarkerPanel } from "@/composables/useMarkerPanel";
 import { MARKER_VALIDATION_NS } from "./panel/Problem";
 import { executeOnBeforeDisposeModel } from "@/plugins/model.plugin";
 
-// 🧩 id: "toggle-theme"
-// ➡️ Ini adalah identifier unik untuk action tersebut.
-// Monaco menggunakan id ini sebagai referensi internal (misalnya saat memanggil editor.trigger('source', 'toggle-theme') secara manual).
-// Harus unik per editor instance.
-// Tidak tampil di UI, tapi digunakan untuk logika internal.
-// 📘 Analogi VSCode
-// Sama seperti command ID di VSCode (editor.action.commentLine misalnya).
-
-// 🧩 contextMenuGroupId: "navigation"
-// ➡️ Menentukan kelompok (group) tempat item ini muncul di context menu Monaco.
-// Monaco memecah menu jadi beberapa grup bawaan:
-// "navigation" →	biasanya bagian atas (misal: Go to Definition, Peek, dll). Perintah navigasi seperti Go to Definition, Go to References, Peek Definition, dsb.	Paling atas
-// "1_modification" →	bagian tengah (Copy, Cut, Paste). Aksi edit ringan seperti Change All Occurrences, Rename Symbol, dll.	Setelah navigation
-// "2_cutcopypaste" →	Aksi standar clipboard: Cut, Copy, Paste, Copy Path, dsb.	Tengah
-// "3_reveal" →	Aksi terkait tampilan seperti Reveal in Explorer, Open Containing Folder, dsb.	Tengah bawah
-// "4_compare" →	Aksi diff / compare (tergantung ekstensi Monaco).	Bawah
-// "5_correction" →	Quick Fix, Code Actions (ikon lampu kuning).	Biasanya muncul jika ada masalah (lint error).
-// "6_configuration" →	Aksi konfigurasi editor seperti Command Palette, Format Document, Toggle Word Wrap.	Paling bawah
-// "9_cutcopypaste" → bagian bawah
-// Kamu bisa juga pakai nama custom (misal "custom" atau "theme") untuk membuat grup sendiri.
-// 🧠 Gunanya: Menjaga posisi action di menu biar tidak campur dengan built-in actions.
-
-// 🧩 contextMenuOrder: 1.5
-// ➡️ Menentukan urutan action di dalam grup contextMenuGroupId.
-// Semakin kecil angkanya, semakin atas posisinya.
-// Kamu bisa pakai pecahan (1.1, 1.2, dst) untuk sisip di tengah-tengah action lain.
-
 export function getLineContentAndCursorIndex(editorInstance: EditorClass) {
   const editor = editorInstance.modifiedEditor || editorInstance.editor;
   const position = editor.getPosition()!;
