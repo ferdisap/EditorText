@@ -11,7 +11,7 @@ const items = [
 </script>
 
 <template>
-  <div class="nav-menu flex flex-col items-center py-2 gap-2">
+  <div class="nav-menu">
     <button
       v-for="item in items"
       :key="item.id"

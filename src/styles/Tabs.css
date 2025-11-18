@@ -8,7 +8,7 @@
   border-bottom: none;
   font-family: var(--vscode-font-family, Consolas, "Courier New", monospace);
   font-size: 12px;
-  overflow: hidden
+  overflow: auto
 }
 
 /* 🧩 Item tab */
@@ -20,7 +20,7 @@
 }
 
 .tab-item:hover {
-  background-color: var(--vscode-tab-hoverBackground, #ddd);
+  background-color: var(--vscode-tab-hoverBackground, #686868);
   color: var(--vscode-tab-hoverForeground, #000);
 }
 

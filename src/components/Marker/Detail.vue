@@ -13,7 +13,7 @@ import { MonacoModel } from "@/types/editor";
 import { ModelIndex } from "@/types/workspace";
 import { computed, reactive, watch } from "vue";
 
-defineProps<{ active: string }>();
+defineProps<{ activeNs: string }>();
 registerMarkerPanel(new MarkerDetail(MARKER_DETAIL_NS));
 
 const { panel } = useMarkerPanel<DetailResult, MarkerDetail>();
@@ -61,7 +61,7 @@ function toggleResult(modelId: string) {
 </script>
 
 <template>
-  <div class="marker-panel-wrapper" v-show="active === MARKER_DETAIL_NS">
+  <div class="marker-panel-wrapper" v-show="activeNs === MARKER_DETAIL_NS">
     <!-- untuk per model -->
     <div v-for="model in models" class="marker">
       <div v-if="getDetailResult(model.id)">

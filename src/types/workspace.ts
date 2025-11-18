@@ -1,7 +1,7 @@
 import { Ref } from "vue";
 import { GroupClass, TabClass } from "./editor";
 
-export type WorkspaceObject = {
+export type WorkspaceClass = {
   groups: GroupClass[];
   activeGroupId: string | null;
   activeGroup: GroupClass | null;

@@ -2,7 +2,7 @@ import * as monaco from "monaco-editor";
 import { useMarkerPanel } from "@/composables/useMarkerPanel";
 import { useWorker, ValidatePayload } from "@/composables/useWorker";
 import { MARKER_VALIDATION_NS } from "@/core/panel/Problem";
-import { EditorClass, MonacoCodeEditor, MonacoTextModel, TabClass } from "@/types/editor";
+import { EditorClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel, TabClass } from "@/types/editor";
 import { delay } from "@/util/time";
 import { ValidationInfo } from "xml-xsd-validator-browser";
 
@@ -116,11 +116,16 @@ export function detectLanguage(editorInstance: EditorClass, onDetected: (model: 
 
 export function detectErrorProcessor(editorInstance: EditorClass, beforeValidate: (textContent: string) => Record<string, any>) {
   const { simpleDebounce } = delay();
-  if (!editorInstance.isCodeEditor) return;
-  return (editorInstance.editor as MonacoCodeEditor).onDidChangeModelContent(() => {
+  let editor: MonacoCodeEditor;
+  if (editorInstance.isCodeEditor) {
+    editor = editorInstance.editor as MonacoCodeEditor;
+  } else {
+    editor = editorInstance.modifiedEditor;
+  }
+  return editor.onDidChangeModelContent(() => {
     simpleDebounce(
       async () => {
-        const model: MonacoTextModel = editorInstance.editor.getModel()! as MonacoTextModel;
+        const model: MonacoTextModel = editorInstance.model as MonacoTextModel;
         const language = model.getLanguageId(); // ← deteksi bahasa aktif        
         if (language === 'xml') {
           const { schemaUrl } = beforeValidate(model.getValue());

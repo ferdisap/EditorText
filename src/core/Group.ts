@@ -4,7 +4,6 @@ import { useWorkspace } from "@/composables/useWorkspace";
 import { getFilenameFromUri, randStr } from "@/util/string";
 import { useEditorContainer } from "@/composables/useEditorContainer";
 import { reactive } from "vue";
-import { usePrompt } from "@/composables/usePrompt";
 
 function calcDimension(totalGroupQty = 1, max = 100) :number{
   return (1 / totalGroupQty) * max;
@@ -59,7 +58,6 @@ export function Group(name: string): GroupClass {
       if(width){
         state.dimension.width.unit = width.unit;
         state.dimension.width.size = calcDimension(totalGroupQty, width.size);
-        console.log(totalGroupQty, state.dimension.width.size, state.dimension.width.unit);
       }
       if(height){
         state.dimension.height.unit = height.unit;

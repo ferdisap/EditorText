@@ -1,10 +1,20 @@
 import * as monaco from "monaco-editor";
 import { Group } from "./Group";
-import { ModelIndex, WorkspaceObject } from "@/types/workspace";
+import { ModelIndex, WorkspaceClass } from "@/types/workspace";
 import { GroupClass, TabClass } from "@/types/editor";
 import { reactive } from "vue";
 
-export function Workspace(): WorkspaceObject {
+export type WSpaceDataProp = {
+  groups: {
+    editors: {
+      type: "text" | "compare";
+      uri?: string;
+      originalUri?: string;
+    }[];
+  }[];
+};
+
+export function Workspace(): WorkspaceClass {
   const state = reactive({
     groups: <GroupClass[]>[],
     activeGroupId: <string | null>null,

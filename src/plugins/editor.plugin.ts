@@ -13,7 +13,6 @@ export function onBeforeCloseEditor(editorInstance: EditorClass, callback:() => 
   WmDisposeAbleEditorOnBeforeCloseRecord.set(edInst, callback)
 }
 
-/**  */
 export function executeOnBeforeCloseEditor(editorInstance: EditorClass) {
   const edInst = isProxy(editorInstance) ? toRaw(editorInstance) : editorInstance;
   const disposeableRecords = WmDisposeAbleEditorOnBeforeCloseRecord.get(edInst);

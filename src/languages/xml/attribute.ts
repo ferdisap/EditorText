@@ -6,7 +6,7 @@ import { AttributeDef } from "xsd-parser";
 import { matchingAttrInfo } from "@/worker/fn_attribute";
 import { useWorker } from "@/composables/useWorker";
 import { delay } from "@/util/time";
-import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoModel, MonacoTextModel } from "@/types/editor";
+import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoEditor, MonacoModel, MonacoTextModel } from "@/types/editor";
 import { WorkspaceObject } from "@/types/workspace";
 import { getLineContentAndCursorIndex } from "@/core/Editor";
 
@@ -187,63 +187,70 @@ const { simpleDebounce } = delay()
 // 🧩 agar suggestion Attribute Value dropdown muncul otomatis ketika user klik suggestion name, harus ada trigger
 export function detectAttValueAfterInsertAttName(xmlEditor: EditorXMLClass) {
   let lastAttrInside: string | null = null;
-  const editor = xmlEditor.editor;
+  // const editor = xmlEditor.editor;
   const { postToWorker } = useWorker('xml');
-  if(xmlEditor.isCodeEditor){
-    return (editor as MonacoCodeEditor).onDidChangeCursorSelection((e) => {
-      if (!(xmlEditor.hasOwnProperty('schema'))) return;
-      simpleDebounce(async () => {
-        const model = (editor as MonacoCodeEditor).getModel();
-        if (!model) return;
-        const workerResponse = await postToWorker("match-attr-info", getLineContentAndCursorIndex(xmlEditor));
-        const attrInfo = workerResponse.result as AttributeInfo;
-        if (!attrInfo?.insideValue) return;
-  
-        // Jika masih di dalam atribut yang sama → abaikan (supaya tidak looping)
-        if (lastAttrInside === attrInfo.name) return;
-        lastAttrInside = attrInfo.name;
-  
-        const position = e.selection.getStartPosition();
-        const xmlText = model.getValue();
-        const offset = model.getOffsetAt(position);
-        const parent = getCurrentParentElement(xmlText, offset);
-        const def =
-          xmlEditor.schema![parent!] ||
-          xmlEditor.schema![xmlEditor.schema![parent!]?.typeName!] ||
-          undefined;
-  
-        if (!def?.attributes?.[attrInfo.name]) return;
-  
-        // console.log("💡 Triggering autosuggest for value of", attrInfo.name);
-  
-        // 🪄 Trik: sisipkan karakter dummy agar Monaco tahu provider aktif
+
+  let editor: MonacoEditor;
+  if (xmlEditor.isCodeEditor) {
+    editor = xmlEditor.editor;
+  } else {
+    editor = xmlEditor.modifiedEditor;
+  }
+
+  return (editor as MonacoCodeEditor).onDidChangeCursorSelection((e) => {
+    if (!(xmlEditor.hasOwnProperty('schema'))) return;
+    simpleDebounce(async () => {
+      const model = (editor as MonacoCodeEditor).getModel();
+      if (!model) return;
+      const workerResponse = await postToWorker("match-attr-info", getLineContentAndCursorIndex(xmlEditor));
+      const attrInfo = workerResponse.result as AttributeInfo;
+      if (!attrInfo?.insideValue) return;
+
+      // Jika masih di dalam atribut yang sama → abaikan (supaya tidak looping)
+      if (lastAttrInside === attrInfo.name) return;
+      lastAttrInside = attrInfo.name;
+
+      const position = e.selection.getStartPosition();
+      const xmlText = model.getValue();
+      const offset = model.getOffsetAt(position);
+      const parent = getCurrentParentElement(xmlText, offset);
+      const def =
+        xmlEditor.schema![parent!] ||
+        xmlEditor.schema![xmlEditor.schema![parent!]?.typeName!] ||
+        undefined;
+
+      if (!def?.attributes?.[attrInfo.name]) return;
+
+      // console.log("💡 Triggering autosuggest for value of", attrInfo.name);
+
+      // 🪄 Trik: sisipkan karakter dummy agar Monaco tahu provider aktif
+      (editor as MonacoCodeEditor).executeEdits("dummy", [
+        {
+          range: new monaco.Range(
+            position.lineNumber,
+            position.column,
+            position.lineNumber,
+            position.column
+          ),
+          text: " ",
+        },
+      ]);
+
+      setTimeout(() => {
         (editor as MonacoCodeEditor).executeEdits("dummy", [
           {
             range: new monaco.Range(
               position.lineNumber,
               position.column,
               position.lineNumber,
-              position.column
+              position.column + 1
             ),
-            text: " ",
+            text: "",
           },
         ]);
-  
-        setTimeout(() => {
-          (editor as MonacoCodeEditor).executeEdits("dummy", [
-            {
-              range: new monaco.Range(
-                position.lineNumber,
-                position.column,
-                position.lineNumber,
-                position.column + 1
-              ),
-              text: "",
-            },
-          ]);
-          editor.trigger("autoSuggest", "editor.action.triggerSuggest", {});
-        }, 80);
-      }, 300)
-    });
-  }
+        editor.trigger("autoSuggest", "editor.action.triggerSuggest", {});
+      }, 80);
+    }, 300)
+  });
+  // if (xmlEditor.isCodeEditor) {}
 }

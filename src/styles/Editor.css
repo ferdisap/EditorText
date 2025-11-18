@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.editor-group-wrapper {
+  /* width: calc(100vw - var(--w-nav-menu)); */
+  width: calc(100vw - 48px);
+}
 
 .editor-group {
   width: 100%;

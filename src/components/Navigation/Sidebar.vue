@@ -6,6 +6,7 @@ import SearchPane from "./SearchPane.vue";
 import { useResizePanel } from "@/composables/useResizePanel";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { useHidden } from "@/composables/navigation/useHidden";
+import { EyeOff } from "lucide-vue-next";
 
 const props = defineProps<{ groupsData?: any }>();
 const emits = defineEmits(["openFile"]);
@@ -16,15 +17,15 @@ const tree = ref([
   { id: "1", name: "src", children: [{ id: "1-1", name: "main.ts" }] },
 ]);
 
-const panelEl = ref<HTMLElement | null>(null);
-const { startResize, stopResize } = useResizePanel(panelEl, 260);
-
+const { startResize, stopResize } = useResizePanel(navContent, 260);
 
 function onSelect(id: string) {
   if(active.value === id){
-    isHidden.value = !isHidden.value;
+    toggle();
   } else {    
-    if(isHidden.value) isHidden.value = false;
+    if(isHidden.value) {
+      toggle(false);
+    };
   }
   active.value = id;
 }
@@ -54,12 +55,6 @@ function openNode(node: any) {
   emits("openFile", node);
 }
 
-watch(isHidden, () => {
-  nextTick(() => {
-
-  })
-})
-
 onMounted(() => {
   window.addEventListener("mouseup", stopResize);
 });
@@ -75,15 +70,13 @@ onBeforeUnmount(() => {
       <Menu :active="active" @select="onSelect" class="nav-menu" />
 
       <div ref="navContent" :class="['nav-content', { hidden: isHidden }]">
-        <div
-          class="panel-header flex items-center justify-between px-3 py-2 border-b"
-        >
+        <div class="panel-header">
           <div class="flex items-center gap-2">
             <h4 class="text-sm font-medium">{{ currentTitle }}</h4>
           </div>
           <div class="flex items-center gap-1">
-            <button @click="toggle" class="px-2 py-1 text-xs">
-              {{ isHidden ? "Hide" : "Show" }}
+            <button @click="toggle()" class="px-2 py-1 text-xs cursor-pointer">
+              <EyeOff :size="16"/>
             </button>
             <button
               @mousedown.prevent.stop="startResize"
@@ -95,7 +88,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="panel-body p-2 overflow-auto h-[calc(100%-40px)]">
+        <div class="panel-body">
           <component :is="currentComponent" :tree="tree" @open="openNode" />
         </div>
       </div>

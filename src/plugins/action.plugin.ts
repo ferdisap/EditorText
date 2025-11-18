@@ -16,9 +16,6 @@ function getAction(namespace: string) {
   return MapAdditionalAction.get(namespace)
 }
 
-
-/** key is a action function, not disposable (added action), usualy contains editor.addAction() */
-// const WmRegisteredActionMarking: WeakMap<(editor: EditorClass) => IDisposable | void, boolean> = new WeakMap();
 /** key is Editor Class instanced, value is ID */
 const WmDisposeAbleActionRecord: WeakMap<EditorClass, Array<IDisposableRecord>> = new WeakMap();
 /** apply action on init editor class */

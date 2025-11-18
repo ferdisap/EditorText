@@ -1,4 +1,4 @@
-import { reactive, toRefs } from "vue";
+import { nextTick, reactive, toRefs } from "vue";
 import { Workspace } from "@/core/Workspace";
 import { Dimension } from "@/types/editor";
 
@@ -10,9 +10,11 @@ export function useWorkspace() {
     for(const group of workspace.groups){
       group.layout(width, height);
     }
-    for(const group of workspace.groups){
-      group.activeTab?.instance.layout();
-    }
+    nextTick(() => {
+      for(const group of workspace.groups){
+        group.activeTab?.instance.layout();
+      }
+    })
   }
   return {
     workspace, relayout

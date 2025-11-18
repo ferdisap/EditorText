@@ -15,7 +15,6 @@ export function setSchemaByUrl(this: EditorXMLClass, url: string): void {
         registerPlugin(getRootPlugin((r) => (root = r)));
         parseXsdSchema(schemaText)
           .then(schemaData => {
-            ;
             this.schema = schemaData;
             this.schemaUrl = url;
             this.root = root;

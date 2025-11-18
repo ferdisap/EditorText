@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MARKER_VALIDATION_NS } from '@/core/panel/Problem';
 
-// const props = defineProps<{ tab?: TabClass | undefined; groupId: string }>();
+defineProps<{activeNs: string}>()
 
 const emit = defineEmits(["active"])
 
@@ -11,7 +11,7 @@ const activate = () => {
 </script>
 
 <template>
-  <div class="tab-item" @click="activate">
+  <div :class="['tab-item', { active: activeNs === MARKER_VALIDATION_NS}]" @click="activate">
     <span class="tab-name">Problems</span>
   </div>
 </template>

@@ -22,6 +22,16 @@ html, body {
 }
 
 :root {
+  --vscode-w-nav-menu: 48px;
+  --vscode-w-nav-content: 260px;
+  --vscode-min-w-nav-content: 200px;
+  --vscode-max-w-nav-content: 480px;
+}
+:root {
+  --vscode-font-family: Consolas, "Courier New", monospace;
+}
+
+:root {
   /* Default (light) theme colors */
   --vscode-editor-background: #ffffff;
   --vscode-editor-foreground: #1e1e1e;
@@ -38,6 +48,9 @@ html, body {
   --vscode-panel-foreground: #252526;
   --vscode-list-focusBackground : #007acc;
   --vscode-list-focusBackground-main : #007acca7;
+
+  --vscode-tab-hoverBackground: #575757;
+  --vscode-tab-hoverForeground: #ffffff;
   
 }
 
@@ -57,4 +70,7 @@ html, body {
   --vscode-panel-foreground: #f3f3f3;
   --vscode-list-focusBackground : #094771;
   --vscode-list-focusBackground-main : #094771b1;
+
+  --vscode-tab-hoverBackground: #686868;
+  --vscode-tab-hoverForeground: #000;
 }

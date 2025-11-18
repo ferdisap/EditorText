@@ -54,6 +54,8 @@ export type EditorClass = {
   isCodeEditor: boolean,
   model: MonacoTextModel; // untuk MonacoTextModel, bukan DiffEditor
   originalModel: MonacoTextModel | undefined; // untuk MonacoTextModel, nukan DiffEditor
+  originalEditor: MonacoCodeEditor | undefined;
+  modifiedEditor: MonacoCodeEditor;
   init(): void;
   deInit(): void;
   changeLanguage(language: ModelLanguage): void

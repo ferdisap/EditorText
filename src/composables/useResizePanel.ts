@@ -1,3 +1,4 @@
+import { executeOnNavContentResized } from '@/plugins/sidebar.plugin';
 import { ref } from 'vue';
 
 
@@ -10,7 +11,7 @@ export function useResizePanel(panelRef: any, initial = 260) {
   let startX = 0;
   let startWidth = initial;
   let panelEl: HTMLElement | null = null;
-
+  let delta:number = 0;
 
   function startResize(e: PointerEvent | MouseEvent) {
     resizing.value = true;
@@ -24,7 +25,7 @@ export function useResizePanel(panelRef: any, initial = 260) {
 
   function onMove(e: MouseEvent) {
     if (!resizing.value || !panelEl) return;
-    const delta = (e.clientX - startX);
+    delta = (e.clientX - startX);
     const newWidth = Math.max(180, startWidth + delta);
     panelEl.style.width = `${newWidth}px`;
   }
@@ -35,6 +36,8 @@ export function useResizePanel(panelRef: any, initial = 260) {
     resizing.value = false;
     window.removeEventListener('mousemove', onMove);
     window.removeEventListener('mouseup', stopResize);
+
+    executeOnNavContentResized(delta);
   }
 
 

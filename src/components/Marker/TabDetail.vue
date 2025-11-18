@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { MARKER_DETAIL_NS } from '@/core/panel/Detail';
 
+defineProps<{activeNs: string}>()
+
 const emit = defineEmits(["active"])
 
 const activate = () => {
@@ -9,7 +11,7 @@ const activate = () => {
 </script>
 
 <template>
-  <div class="tab-item" @click="activate">
+  <div :class="['tab-item', { active: activeNs === MARKER_DETAIL_NS}]" @click="activate">
     <span class="tab-name">Detail</span>
   </div>
 </template>

@@ -12,7 +12,7 @@ import { registerMarkerPanel } from "@/plugins/marker.plugin";
 import { onBeforeDisposeModel } from "@/plugins/model.plugin";
 import { computed, reactive } from "vue";
 
-defineProps<{ active: string }>();
+defineProps<{ activeNs: string }>();
 
 registerMarkerPanel(new MarkerProblem(MARKER_VALIDATION_NS));
 
@@ -61,7 +61,7 @@ function toggleResult(modelId: string) {
 }
 </script>
 <template>
-  <div class="marker-panel-wrapper" v-show="active === MARKER_VALIDATION_NS">
+  <div class="marker-panel-wrapper" v-show="activeNs === MARKER_VALIDATION_NS">
     <!-- untuk per model -->
     <div v-for="model of models" class="marker">
       <div v-if="getValidationResult(model.id)?.data.length">
