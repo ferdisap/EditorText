@@ -33,6 +33,6 @@ const totalProblem = computed(() => {
 
 <template>
   <div :class="['tab-item', { active: activeNs === MARKER_VALIDATION_NS}]" @click="activate">
-    <span class="tab-name">Problems <span v-if="totalProblem > 0" class="rounded-full bg-blue-500 px-[5px] py-[2px]">{{ totalProblem }}</span></span>
+    <span class="tab-name">Problems <span v-if="totalProblem > 0" class="rounded-full bg-blue-500 px-[5px] py-[2px] text-white">{{ totalProblem }}</span></span>
   </div>
 </template>
