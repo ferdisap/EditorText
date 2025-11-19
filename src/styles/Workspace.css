@@ -129,29 +129,13 @@
   width: 100px
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ===========================
-         DARK THEME
-   =========================== */
-/* .dark .main-nav {
-  background-color: var(--vscode-sideBar-background, #252526);
+.ws-list-hovered-bg-main:hover {
+  background-color: var(--vscode-tab-hoverBackground, #c8c8c83d);
 }
-.dark .nav-menu {
-  background-color: var(--vscode-activityBar-background, #333);
+
+.ws-icon-xs {
+  font-size: 8px !important;
 }
-.dark .nav-content {
-  background-color: var(--vscode-sideBar-background, #252526);
-  border-color: var(--vscode-sideBar-border, #3c3c3c);
-} */
+.ws-icon-sm {
+  font-size: 10px !important;
+}

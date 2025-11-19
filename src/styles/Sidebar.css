@@ -1,3 +1,10 @@
+
+/* Explorer tree styles */
+@import './Navigation/TreeWorkspace.css';
+/* Search styles */
+@import './Navigation/SearchPane.css';
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,7 +16,6 @@
 .main-nav {
   @apply flex h-full;
 }
-
 
 .nav-menu {
   @apply flex flex-col items-center py-2 gap-2;
@@ -35,6 +41,9 @@
   color: var(--vscode-tab-activeForeground, #fff);
 }
 
+.nav-content * {
+  @apply text-xs
+}
 .nav-content {
   @apply h-full;
   background-color: var(--vscode-editor-background, #333);
@@ -49,6 +58,10 @@
   /* @apply w-0 overflow-hidden transition-all duration-200; */
   /* @apply hidden overflow-hidden transition-all duration-200; */
   @apply hidden overflow-hidden;
+}
+
+.nav-content-ident {
+  @apply flex cursor-pointer gap-1 mt-2 py-1 rounded-sm
 }
 
 .resize-handle {
@@ -69,38 +82,7 @@
    color: var(--vscode-editor-foreground, #333);
 }
 
-/* Explorer tree styles */
-.explorer-tree .tree-node {
-  @apply text-sm;
-}
-
-.explorer-tree .tree-node:hover {
-  background-color: color-mix(in srgb, white 6%, transparent);
-}
-
-.explorer-tree {
-  @apply text-sm font-mono;
-}
-
-.tree-node {
-  @apply flex items-center gap-2 p-1 cursor-pointer hover:bg-gray-100/5 rounded;
-}
-
-.tree-node-child {
-  @apply p-1 cursor-pointer hover:bg-gray-100/3 rounded;
-}
-
-/* Search styles */
-.icon-btn {
-  @apply w-7 h-7 flex items-center justify-center rounded hover:bg-[var(--vscode-toolbar-hoverBackground)];
-  font-size: 16px;
-}
-
-.search-pane {
-  background: var(--vscode-sideBar-background);
-  color: var(--vscode-sideBar-foreground);
-}
-
-.result-item {
-  border-color: var(--vscode-panel-border);
+.workspace-nav .active {
+  background-color: var(--vscode-list-focusBackground-main, #007acca7);
+  color: var(--vscode-tab-activeBackground);
 }

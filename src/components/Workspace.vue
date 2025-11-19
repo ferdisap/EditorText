@@ -16,6 +16,7 @@ import {
 } from "@/plugins/sidebar.plugin";
 import { WSpaceDataProp } from "@/core/Workspace";
 import { GroupClass } from "@/types/editor";
+import { unregisterAction } from "@/plugins/action.plugin";
 
 
 const props = defineProps<{
@@ -58,12 +59,11 @@ const onNavToggled = () => {
 };
 
 const onFirstRendered = () => {
-  const navContentWidth = navContent.value!.clientWidth; // 253
-  const sideBarWidth = navContentWidth + 48;
-  editorGroupWrapper.value!.style.width = `calc(100vw - ${(sideBarWidth)}px)`;
-  // const currentWidth = editorGroupWrapper.value?.clientWidth;
-  // const finalWidth = currentWidth! - 0;
-  // relayout({ size: finalWidth, unit: "px" });
+  if(navContent.value){
+    const navContentWidth = navContent.value!.clientWidth; // 253
+    const sideBarWidth = navContentWidth + 48;
+    editorGroupWrapper.value!.style.width = `calc(100vw - ${(sideBarWidth)}px)`;
+  }
 };
 
 onMounted(() => {
@@ -95,6 +95,14 @@ onMounted(() => {
     })
   }
   onFirstRendered()
+})
+
+
+onBeforeUnmount(() => {
+  unregisterAction('new.tab');
+  unregisterAction('toggle.theme');
+  unregisterAction('split.tab');
+  unregisterAction('compare.model');
 })
 // onMounted(() => {
 //   if (workspace.groups.length === 0) {

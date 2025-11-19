@@ -46,7 +46,7 @@ export function Workspace(): WorkspaceClass {
     },
     // 🧩 Tambah group baru
     addGroup(name?: string | null): GroupClass {
-      if (!name) name = "group " + (state.groups.length + 1);
+      if (!name) name = "Group " + (state.groups.length + 1);
       const group = Group(name);
       state.groups.push(group);
       state.activeGroupId = group.id;

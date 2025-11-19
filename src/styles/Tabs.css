@@ -17,11 +17,11 @@
   color: var(--vscode-tab-inactiveForeground, #999);
   background-color: var(--vscode-tab-inactiveBackground, #2d2d2d);
   border-color: rgba(255, 255, 255, 0.1);
+  justify-content: space-between;
 }
 
 .tab-item:hover {
-  background-color: var(--vscode-tab-hoverBackground, #686868);
-  color: var(--vscode-tab-hoverForeground, #000);
+  background-color: var(--vscode-tab-hoverBackground);
 }
 
 .tab-item.active {
@@ -36,12 +36,17 @@
 
 /* 🧩 Tombol close */
 .tab-close {
-  @apply ml-1 opacity-0 text-[14px] transition-opacity duration-200 cursor-pointer;
+  @apply ml-1 text-[14px] transition-opacity duration-200 cursor-pointer;
+  opacity: 0;
   color: var(--vscode-tab-unfocusedActiveForeground, #bbb);
 }
 
-.tab-item:hover .tab-close {
+.tab-close:hover {
   @apply opacity-100;
+}
+
+.tab-action {
+  display: flex;
 }
 
 .tab-close:hover {

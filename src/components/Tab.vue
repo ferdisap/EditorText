@@ -44,13 +44,15 @@ const select = (tabId:string) => {
     >
       <span class="tab-name">{{ tab.name }}</span>
       <!-- <span class="tab-uri">&nbsp;{{ tab.instance.editor.getModel()?.uri }}</span> -->
-      <button
-        class="tab-close"
-        @click.stop="close(tab.id)"
-        title="Close"
-      >
-        ×
-      </button>
+      <div class="tab-action">
+        <button
+          class="tab-close"
+          @click.stop="close(tab.id)"
+          title="Close"
+        >
+          ×
+        </button>
+      </div>
        <!-- <button class="close-btn" @click.stop="$emit('close', tab.id)">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 0 1 1.414 0L10 8.586l4.293-4.293a1 1 0 0 1 1.414 

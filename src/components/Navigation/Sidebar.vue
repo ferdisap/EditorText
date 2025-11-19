@@ -1,21 +1,15 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
 import Menu from "./Menu.vue";
-import ExplorerTree from "./ExplorerTree.vue";
+import ExplorerPane from "./ExplorerPane.vue";
 import SearchPane from "./SearchPane.vue";
 import { useResizePanel } from "@/composables/useResizePanel";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { useHidden } from "@/composables/navigation/useHidden";
 import { EyeOff } from "lucide-vue-next";
 
-const props = defineProps<{ groupsData?: any }>();
-const emits = defineEmits(["openFile"]);
-
 const { navContent, isHidden, toggle } = useHidden();
 const active = ref("explorer");
-const tree = ref([
-  { id: "1", name: "src", children: [{ id: "1-1", name: "main.ts" }] },
-]);
 
 const { startResize, stopResize } = useResizePanel(navContent, 260);
 
@@ -33,11 +27,11 @@ function onSelect(id: string) {
 const currentComponent = computed(() => {
   switch (active.value) {
     case "explorer":
-      return ExplorerTree;
+      return ExplorerPane;
     case "search":
       return SearchPane;
     default:
-      return ExplorerTree;
+      return ExplorerPane;
   }
 });
 const currentTitle = computed(() => {
@@ -50,10 +44,6 @@ const currentTitle = computed(() => {
       return "Explorer";
   }
 });
-
-function openNode(node: any) {
-  emits("openFile", node);
-}
 
 onMounted(() => {
   window.addEventListener("mouseup", stopResize);
@@ -89,7 +79,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="panel-body">
-          <component :is="currentComponent" :tree="tree" @open="openNode" />
+          <component :is="currentComponent" />
         </div>
       </div>
     </div>

@@ -49,8 +49,8 @@ html, body {
   --vscode-list-focusBackground : #007acc;
   --vscode-list-focusBackground-main : #007acca7;
 
-  --vscode-tab-hoverBackground: #575757;
-  --vscode-tab-hoverForeground: #ffffff;
+  --vscode-tab-hoverBackground: #c8c8c83d;
+  /* --vscode-tab-hoverForeground: #ffffff; */
   
 }
 
@@ -71,6 +71,6 @@ html, body {
   --vscode-list-focusBackground : #094771;
   --vscode-list-focusBackground-main : #094771b1;
 
-  --vscode-tab-hoverBackground: #686868;
-  --vscode-tab-hoverForeground: #000;
+  --vscode-tab-hoverBackground: #3e3e3e99;
+  /* --vscode-tab-hoverForeground: #000; */
 }

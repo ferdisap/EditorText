@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.icon-btn {
+  @apply w-7 h-7 flex items-center justify-center rounded hover:bg-[var(--vscode-toolbar-hoverBackground)];
+  font-size: 16px;
+}
+
+.search-pane {
+  background: var(--vscode-sideBar-background);
+  color: var(--vscode-sideBar-foreground);
+}
+
+.result-item {
+  border-color: var(--vscode-panel-border);
+}
