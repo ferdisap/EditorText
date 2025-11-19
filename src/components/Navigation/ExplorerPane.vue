@@ -1,12 +1,25 @@
 <script setup lang="ts">
 import GroupWorkspace from "./Explorer/GroupWorkspace.vue";
-import TreeWorkspace from "./Explorer/TreeWorkspace.vue";
+import FolderWorkspace from "./Explorer/FolderWorkspace.vue";
+import { useTreeFolder } from "@/composables/navigation/useTreeFolder";
+import { registerOnFetchTree } from "@/plugins/tree.plugin";
+import { TreeNode } from "@/types/tree";
+
+const { treeRoot, createRoot } = useTreeFolder();
+
+registerOnFetchTree("DUMMY WS", (node: TreeNode): string => {
+  return `inmemory://fufufafa.com?path=${node.path}`;
+});
+
+createRoot("DUMMY WS", "inmemory://fufufafa.com");
 
 </script>
 <template>
   <div class="explorer-pane">
-    <GroupWorkspace/>
-    <div class="mt-1 mb-1 border-b border-2 border-[var(--vscode-panel-border)]"></div>
-    <TreeWorkspace/>
+    <GroupWorkspace />
+    <div
+      class="mt-1 mb-1 border-b border-2 border-[var(--vscode-panel-border)]"
+    ></div>
+    <FolderWorkspace v-for="root in treeRoot" :key="root.uri" :root="root" />
   </div>
 </template>

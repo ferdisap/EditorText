@@ -45,6 +45,10 @@ const currentTitle = computed(() => {
   }
 });
 
+function addFolderWorkspace(){
+  
+}
+
 onMounted(() => {
   window.addEventListener("mouseup", stopResize);
 });
@@ -65,8 +69,11 @@ onBeforeUnmount(() => {
             <h4 class="text-sm font-medium">{{ currentTitle }}</h4>
           </div>
           <div class="flex items-center gap-1">
-            <button @click="toggle()" class="px-2 py-1 text-xs cursor-pointer">
-              <EyeOff :size="16"/>
+            <button @click="addFolderWorkspace()" class="px-2 py-1 text-xs cursor-pointer" title="Add workspace">
+               <i class="codicon codicon-root-folder"/>
+            </button>
+            <button @click="toggle()" class="px-2 py-1 text-xs cursor-pointer" title="Hide panel">
+               <i class="codicon codicon-eye-closed"/>
             </button>
             <button
               @mousedown.prevent.stop="startResize"

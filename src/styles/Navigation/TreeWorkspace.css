@@ -6,20 +6,19 @@
   @apply text-sm;
 }
 
-/* .ws-tree .tree-node:hover {
-  background-color: color-mix(in srgb, white 6%, transparent);
-} */
-
 .ws-tree {
   @apply text-sm font-mono;
 }
 
-.tree-node {
-  /* @apply flex items-center gap-1 py-1 px-2 cursor-pointer hover:bg-gray-100/5 rounded; */
-  @apply flex items-center gap-1 py-1 px-2 cursor-pointer rounded;
+.node-dir {
+  @apply flex items-center gap-1 py-[2px] px-2 cursor-pointer rounded;
+}
+
+.node-files {
+  @apply flex items-center gap-1 py-[2px] px-2 cursor-pointer rounded;
 }
 
 .tree-node-child {
-  @apply flex items-center gap-1 py-1 px-2 cursor-pointer rounded text-nowrap;
+  @apply gap-1 py-[2px] px-2 cursor-pointer rounded text-nowrap;
   width: fit-content;
 }

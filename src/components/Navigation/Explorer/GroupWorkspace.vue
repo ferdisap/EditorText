@@ -86,17 +86,8 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div class="ws-tree">
-    <div
-      class="nav-content-ident ws-list-hovered-bg-main"
-      @click.stop="toggleContent"
-    >
-      <i
-        class="codicon"
-        :class="[
-          'codicon',
-          isOpenContent ? 'codicon-chevron-down' : 'codicon-chevron-right',
-        ]"
-      ></i>
+    <div class="nav-content-ident ws-list-hovered-bg-main" @click.stop="toggleContent">
+      <i :class="['codicon', isOpenContent ? 'codicon-chevron-down' : 'codicon-chevron-right']"></i>
       <div class="w-full flex justify-between">
         <span class="tab-name font-bold">GROUPS</span>
         <div class="tab-action">
@@ -114,9 +105,9 @@ onBeforeUnmount(() => {
       </div>
     </div>
     <!-- Group number -->
-    <ul class="tree-root" v-show="isOpenContent">
+    <ul class="tree-node-child" v-show="isOpenContent">
       <li v-for="group in groups.value" :key="group.id">
-        <div class="tree-node ws-list-hovered-bg-main flex justify-between" @click="expandGroup(group)">
+        <div class="node-dir ws-list-hovered-bg-main flex justify-between" @click="expandGroup(group)">
           <div class="flex item-center">
             <i class="codicon" :class="group.expanded ? 'codicon-chevron-right' : 'codicon-chevron-down'"></i>
             <span class="tab-name ml-1" @dblclick.stop="expandGroup(group)">{{ group.name }}</span>
@@ -144,8 +135,10 @@ onBeforeUnmount(() => {
               group.activeTabId === tab.id ? 'active' : '',
             ]"
           >
+          <div class="node-files">
             <i class="codicon codicon-file" />
             <span @dblclick.stop="openTab(group.id, tab)">{{ tab.name }}</span>
+          </div>
           </li>
         </ul>
       </li>
