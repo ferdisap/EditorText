@@ -34,13 +34,13 @@ export function ModelStore(): ModelStoreClass {
       }
       else {
         const monacoUri = monaco.Uri.parse(uri);
+        if(!value) value = 'loading...'
         model = monaco.editor.createModel(value, language, monacoUri);
-        // set value
-        if(!value || value === ''){
-          fetch(uri).then(response => response.text()).then(text => {
-            model.setValue(text);
-          })
-        }
+        fetch(uri).then(response => response.text()).then(text => {
+          model.setValue(text);
+        }).catch(e => {
+          model.setValue(e.message);
+        })
       }
       _models.set(model.id, model);
       return model.id;
