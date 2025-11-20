@@ -6,6 +6,11 @@ import { isProxy, toRaw } from "vue";
 /** key is string namespace */
 const MapAdditionalPlugin: Map<string, (editor: EditorClass) => IDisposable | void> = new Map();
 /** SHOULD EXPORT TO index.ts */
+/**
+ * @deprecated tidak ada lagi di monaco terbaru (saat ini)
+ * @param namespace 
+ * @param action 
+ */
 export function registerPluginOnDidAcceptSuggestion(namespace: string, action: (editor: EditorClass) => IDisposable | void) {
   if (!MapAdditionalPlugin.has(namespace)) MapAdditionalPlugin.set(namespace, action);
 }

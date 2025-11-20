@@ -65,7 +65,7 @@ const dummyTreeRoot: TreeRoot = {
 
 const treeRoot = ref<TreeRoot[]>([]);
 
-top.treeRoot = treeRoot;
+// top.ws.treeRoot = treeRoot;
 
 function findOrCreateChild(
   list: TreeNode[],

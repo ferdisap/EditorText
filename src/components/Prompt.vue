@@ -2,9 +2,9 @@
 import { usePrompt } from "@/composables/usePrompt";
 import { onMounted, ref } from "vue";
 
-const { isOpen, vmodel, placeholder, input, post, onSubmit, onCancel } = usePrompt();
+const { vmodel, placeholder, input, post, onSubmit, onCancel } = usePrompt();
 
-top.post = post;
+// top.ws.post = post;
 
 </script>
 

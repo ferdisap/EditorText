@@ -3,7 +3,7 @@ import { GroupClass, TabClass, Dimension } from "@/types/editor";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { getFilenameFromUri, randStr } from "@/util/string";
 import { useEditorContainer } from "@/composables/useEditorContainer";
-import { reactive } from "vue";
+import { nextTick, reactive, ref } from "vue";
 
 function calcDimension(totalGroupQty = 1, max = 100) :number{
   return (1 / totalGroupQty) * max;
@@ -12,6 +12,7 @@ function calcDimension(totalGroupQty = 1, max = 100) :number{
 export function Group(name: string): GroupClass {
   const { workspace } = useWorkspace();
   const totalGroupQty = workspace.groups.length | 1;
+  const _container = ref<HTMLElement | null>(null);
   const state = reactive({
     id: randStr(10),
     name: name,
@@ -31,6 +32,9 @@ export function Group(name: string): GroupClass {
   return {
     get id() {
       return state.id
+    },
+    get container(){
+      return _container;
     },
     get dimension(){
       return state.dimension
@@ -58,10 +62,14 @@ export function Group(name: string): GroupClass {
       if(width){
         state.dimension.width.unit = width.unit;
         state.dimension.width.size = calcDimension(totalGroupQty, width.size);
+      } else {
+        state.dimension.width.size = calcDimension(totalGroupQty, _container.value?.clientWidth);
       }
       if(height){
         state.dimension.height.unit = height.unit;
         state.dimension.height.size = calcDimension(totalGroupQty, height.size);
+      } else {
+        state.dimension.width.size = calcDimension(totalGroupQty, _container.value?.clientHeight);
       }
     },
 
@@ -109,11 +117,12 @@ export function Group(name: string): GroupClass {
     },
 
     splitFile(modelUri: string, name: string | null = null): TabClass | void {
-      const { workspace } = useWorkspace();
-      const currentIndexGroup = workspace.groups.findIndex((group) => group === this);
+      const { workspace, relayout } = useWorkspace();
+      // const currentIndexGroup = workspace.groups.findIndex((group) => group === this);
+      const currentIndexGroup = workspace.groups.findIndex((group) => group.id === state.id);
       let group: GroupClass | undefined;
       // jika tidak bikin group baru, jika ada next group maka pakai group itu
-      if (!(group = workspace.groups[currentIndexGroup + 1])) {
+      if (!(group = workspace.groups[currentIndexGroup + 1] as unknown as GroupClass)) {
         group = workspace.addGroup();
         workspace.setActiveGroup(group.id);
       }
@@ -139,6 +148,8 @@ export function Group(name: string): GroupClass {
           // layouting and focus
           tab.instance.layout();
           tab.instance.focus();
+
+          relayout();
           return tab;
         }
       }, 10);

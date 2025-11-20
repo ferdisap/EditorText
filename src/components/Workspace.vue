@@ -78,8 +78,8 @@ onMounted(() => {
 });
 
 
-// top.relayout = relayout;
-// top.onFirstRendered = onFirstRendered;
+// top.ws.relayout = relayout;
+// top.ws.onFirstRendered = onFirstRendered;
 
 onMounted(() => {
   for(const group of props.data.groups) {

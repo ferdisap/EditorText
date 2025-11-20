@@ -2,6 +2,7 @@ import * as monaco from "monaco-editor";
 import { ParseContext } from "xsd-parser";
 import { ModelLanguage } from "./model";
 import { SchemaUrl } from "@/composables/useWorker";
+import { Ref } from "vue";
 
 export type Dimension = {
   unit: string,
@@ -14,6 +15,7 @@ export type GroupClass = {
   tabs: TabClass[];
   activeTabId: string | undefined;
   activeTab: TabClass | undefined;
+  container: Ref<HTMLElement | null>;
   dimension: {
     width: Dimension;
     height: Dimension;

@@ -1,7 +1,7 @@
 import { executeOnNavContentToggled } from "@/plugins/sidebar.plugin";
 import { ref } from "vue";
 
-const hide = ref(false);
+const hide = ref(true);
 
 const navContent = ref<HTMLElement | null>(null);
 

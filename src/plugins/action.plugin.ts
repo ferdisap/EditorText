@@ -52,7 +52,7 @@ function getAction(namespace: string) {
 const WmDisposeAbleActionRecord: WeakMap<EditorClass, Array<IDisposableRecord>> = new WeakMap();
 /** apply action on init editor class */
 
-top.WmDisposeAbleActionRecord = WmDisposeAbleActionRecord
+// top.ws.WmDisposeAbleActionRecord = WmDisposeAbleActionRecord
 
 export function applyAction(this: EditorClass) {
   const editorInstance = isProxy(this) ? toRaw(this) : this;  

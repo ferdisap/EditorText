@@ -16,10 +16,12 @@ const style = computed(() => {
   return `width: ${width}`;
 })
 
+const container = props.group.container;
+
 </script>
 
 <template>
-  <div class="editor-group" :style="style">
+  <div ref="container" class="editor-group" :style="style">
     <Tab :group="group" />
     <Path :group="group"/>
     <div class="editor-area">
