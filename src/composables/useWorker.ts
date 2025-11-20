@@ -10,7 +10,7 @@ import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker"
 
 // ===== Worker custom XML =====
 import xmlWorker from "../worker/xml.worker?worker";
-import { AttributeInfo, ValidationErrorInfo } from "@/types/xml";
+import { AttributeInfo } from "@/types/xml.type";
 import { ValidationInfo } from "xml-xsd-validator-browser";
 
 /* ---------------------------------------------------------

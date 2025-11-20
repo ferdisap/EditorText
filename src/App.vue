@@ -2,7 +2,7 @@
 import Workspace from "@/components/Workspace.vue";
 import { WSpaceDataProp } from "./core/Workspace";
 import { registerAction } from "./plugins/action.plugin";
-import { EditorClass } from "./types/editor";
+import { EditorClass } from "./types/editor.type";
 
 const data1 :WSpaceDataProp = {
   "groups": [{

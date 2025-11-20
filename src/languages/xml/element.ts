@@ -1,15 +1,15 @@
 import * as monaco from "monaco-editor";
-import { XmlEditorTrait } from "@/types/trait";
-import { WorkspaceObject } from "@/types/workspace";
-import { EditorXMLClass } from "@/types/editor";
+import { XmlEditorTrait } from "@/types/trait.type";
+import { WorkspaceClass } from "@/types/workspace.type";
+import { EditorXMLClass, GroupClass } from "@/types/editor.type";
 
 // 🧩 Suggestion element berdasarkan parent langsung
-export function suggestElement(workspace: WorkspaceObject) {
+export function suggestElement(workspace: WorkspaceClass) {
   monaco.languages.registerCompletionItemProvider("xml", {
     triggerCharacters: ["<"],
     provideCompletionItems: (model, position) => {
       // find activeGroup
-      const [activeGroup] = workspace.groups.filter((g) => g.id === workspace.activeGroupId);
+      const [activeGroup] = workspace.groups.filter((g: GroupClass) => g.id === workspace.activeGroupId);
       if (!activeGroup) return;
       // find active Tab
       const activeTab = activeGroup.activeTab;

@@ -15,7 +15,7 @@ import {
   onNavContentToggled,
 } from "@/plugins/sidebar.plugin";
 import { WSpaceDataProp } from "@/core/Workspace";
-import { GroupClass } from "@/types/editor";
+import { GroupClass } from "@/types/editor.type";
 import { unregisterAction } from "@/plugins/action.plugin";
 
 

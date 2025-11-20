@@ -1,13 +1,13 @@
-import { AttributeInfo } from "@/types/xml";
+import { AttributeInfo } from "@/types/xml.type";
 import * as monaco from "monaco-editor";
-import { XmlEditorTrait } from "@/types/trait";
+import { XmlEditorTrait } from "@/types/trait.type";
 import { getCurrentParentElement } from "./element";
 import { AttributeDef } from "xsd-parser";
 import { matchingAttrInfo } from "@/worker/fn_attribute";
 import { useWorker } from "@/composables/useWorker";
 import { delay } from "@/util/time";
-import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoEditor, MonacoModel, MonacoTextModel } from "@/types/editor";
-import { WorkspaceClass } from "@/types/workspace";
+import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoEditor, MonacoModel, MonacoTextModel } from "@/types/editor.type";
+import { WorkspaceClass } from "@/types/workspace.type";
 import { getLineContentAndCursorIndex } from "@/core/Editor";
 
 

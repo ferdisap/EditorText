@@ -1,9 +1,9 @@
 import * as monaco from "monaco-editor";
-import { GroupClass, TabClass, Dimension } from "@/types/editor";
+import { GroupClass, TabClass, Dimension } from "@/types/editor.type";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { getFilenameFromUri, randStr } from "@/util/string";
 import { useEditorContainer } from "@/composables/useEditorContainer";
-import { nextTick, reactive, ref } from "vue";
+import { nextTick, reactive, Ref, ref } from "vue";
 
 function calcDimension(totalGroupQty = 1, max = 100) :number{
   return (1 / totalGroupQty) * max;
@@ -12,7 +12,7 @@ function calcDimension(totalGroupQty = 1, max = 100) :number{
 export function Group(name: string): GroupClass {
   const { workspace } = useWorkspace();
   const totalGroupQty = workspace.groups.length | 1;
-  const _container = ref<HTMLElement | null>(null);
+  const _container :Ref<HTMLElement | null> = ref<HTMLElement | null>(null);
   const state = reactive({
     id: randStr(10),
     name: name,
@@ -33,7 +33,7 @@ export function Group(name: string): GroupClass {
     get id() {
       return state.id
     },
-    get container(){
+    get container() :Ref<HTMLElement | null>{
       return _container;
     },
     get dimension(){
@@ -91,7 +91,7 @@ export function Group(name: string): GroupClass {
       let closedTabsIndex: number = state.tabs.indexOf(tab);
       state.tabs.splice(closedTabsIndex, 1)
       if (state.activeTabId === tabId) {
-        state.activeTabId = state.tabs.at(-1)?.id ?? undefined;
+        state.activeTabId = state.tabs[state.tabs.length - 1]?.id ?? undefined;
       }
     },
 

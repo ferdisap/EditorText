@@ -1,7 +1,7 @@
 import * as monaco from "monaco-editor";
 import { Group } from "./Group";
-import { ModelIndex, WorkspaceClass } from "@/types/workspace";
-import { GroupClass, TabClass } from "@/types/editor";
+import { ModelIndex, WorkspaceClass } from "@/types/workspace.type";
+import { GroupClass, TabClass } from "@/types/editor.type";
 import { reactive } from "vue";
 
 export type WSpaceDataProp = {
@@ -16,7 +16,7 @@ export type WSpaceDataProp = {
 
 export function Workspace(): WorkspaceClass {
   const state = reactive({
-    groups: <GroupClass[]>[],
+    groups: <any[]>[],
     activeGroupId: <string | null>null,
   });
 
@@ -34,7 +34,7 @@ export function Workspace(): WorkspaceClass {
       const modelsId:string[] = []
       return state.groups.map(group => {
         const tabs = group.tabs
-        return tabs.map(tab => {
+        return tabs.map((tab:TabClass) => {
           const id = (tab.instance.model as monaco.editor.ITextModel).id || "";
           if(modelsId.find((i) => i === id)){
             return null;
@@ -77,7 +77,7 @@ export function Workspace(): WorkspaceClass {
 
       state.groups = state.groups.filter((g) => g.id !== groupId);
       if (state.activeGroupId === groupId) {
-        state.activeGroupId = state.groups.at(-1)?.id ?? null;
+        state.activeGroupId = state.groups[state.groups.length - 1]?.id ?? null;
       }
     }
   }

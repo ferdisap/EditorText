@@ -1,5 +1,5 @@
 import type * as monaco from "monaco-editor";
-import { MonacoTextModel } from "./editor";
+import { MonacoTextModel } from "./editor.type";
 
 export type MapModelEditor = { id: string, editorsInstancesId: string[] };
 

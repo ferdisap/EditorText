@@ -1,7 +1,7 @@
 import * as monaco from "monaco-editor";
 import { Workspace } from "./core/Workspace";
 
-const workspace = new Workspace();
+const workspace = Workspace();
 const group1 = workspace.addGroup("Main");
 
 // buat monaco editor

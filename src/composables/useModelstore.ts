@@ -1,5 +1,5 @@
 import { ModelStore } from "@/core/ModelStore";
-import { MapModelEditor } from "@/types/model";
+import { MapModelEditor } from "@/types/model.type";
 
 const modelStore = ModelStore();
 // top.ws.ms = modelStore;

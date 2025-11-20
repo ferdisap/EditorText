@@ -1,5 +1,5 @@
 import { onFetchRootTree } from "@/plugins/tree.plugin";
-import { TreeFlat, TreeNode, TreeRoot } from "@/types/tree";
+import { TreeFlat, TreeNode, TreeRoot } from "@/types/tree.type";
 import { getFilenameFromUri } from "@/util/string";
 import { ref } from "vue";
 

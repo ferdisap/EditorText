@@ -1,5 +1,5 @@
 import { useModelStore } from "@/composables/useModelstore";
-import { MonacoTextModel } from "@/types/editor";
+import { MonacoTextModel } from "@/types/editor.type";
 import { IMarkerInfo, IMarkerPanel } from "@/types/marker.type";
 import { isProxy, toRaw } from "vue";
 

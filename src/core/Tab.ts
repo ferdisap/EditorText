@@ -1,4 +1,4 @@
-import { EditorClass, MonacoDiffEditor, MonacoTextModel, TabClass } from "@/types/editor";
+import { EditorClass, MonacoDiffEditor, MonacoTextModel, TabClass } from "@/types/editor.type";
 import { useModelStore } from "@/composables/useModelstore";
 import { terminateWorker } from "@/composables/useWorker";
 import { executeOnBeforeCloseEditor } from "@/plugins/editor.plugin";

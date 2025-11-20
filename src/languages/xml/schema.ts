@@ -1,7 +1,7 @@
 import { delay } from "@/util/time";
 import { DetectSchemaLocationPayload, MatchingAttrInfoPayload, SchemaUrl, WorkerResponse, useWorker } from "@/composables/useWorker";
-import { AttributeInfo } from "@/types/xml";
-import { EditorXMLClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel } from "@/types/editor";
+import { AttributeInfo } from "@/types/xml.type";
+import { EditorXMLClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel } from "@/types/editor.type";
 import { getLineContentAndCursorIndex } from "@/core/Editor";
 
 export function detectAndSetSchema(xmlEditor: EditorXMLClass) {

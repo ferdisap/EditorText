@@ -9,8 +9,8 @@ import {
 } from "@/core/panel/Detail";
 import { registerMarkerPanel } from "@/plugins/marker.plugin";
 import { onBeforeDisposeModel } from "@/plugins/model.plugin";
-import { MonacoModel } from "@/types/editor";
-import { ModelIndex } from "@/types/workspace";
+import { MonacoModel } from "@/types/editor.type";
+import { ModelIndex } from "@/types/workspace.type";
 import { computed, reactive, watch } from "vue";
 
 defineProps<{ activeNs: string }>();

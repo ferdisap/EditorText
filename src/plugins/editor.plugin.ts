@@ -1,4 +1,4 @@
-import { EditorClass } from "@/types/editor";
+import { EditorClass } from "@/types/editor.type";
 import { IDisposableRecord } from "@/types/plugins.type";
 import { IDisposable } from "monaco-editor";
 import { isProxy, toRaw } from "vue";

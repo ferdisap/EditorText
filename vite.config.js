@@ -30,4 +30,7 @@ export default defineConfig({
   test: {
     environment: 'node', // ⬅️ gunakan Node environment
   },
+  build: {
+    outDir: "dist/built"
+  }
 });

@@ -1,4 +1,4 @@
-import { ValidationErrorInfo } from "@/types/xml";
+import { ValidationErrorInfo } from "@/types/xml.type";
 import { loadXmllint } from "./xmllintLoader";
 
 /**

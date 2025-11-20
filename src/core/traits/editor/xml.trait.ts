@@ -1,7 +1,7 @@
 import { detectAndSetSchema } from "@/languages/xml/schema";
 import { getRootPlugin, parseXsdSchema, registerPlugin } from "xsd-parser";
 import { detectAttValueAfterInsertAttName } from "@/languages/xml/attribute";
-import { EditorClass, EditorXMLClass } from "@/types/editor";
+import { EditorClass, EditorXMLClass } from "@/types/editor.type";
 import { detectErrorProcessor } from "@/languages/detection";
 import { applyPluginOnDidChangeCursorSelection, deApplyPluginOnDidChangeCursorSelection, registerPluginOnDidChangeCursorSelection } from "@/plugins/onDidChangeCursorSelection.plugin";
 import { applyPluginOnDidAcceptSuggestion, deApplyPluginOnDidAcceptSuggestion, registerPluginOnDidAcceptSuggestion } from "@/plugins/onDidAcceptSuggestion.plugin";

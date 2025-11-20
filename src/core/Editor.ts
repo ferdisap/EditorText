@@ -1,11 +1,11 @@
 // import { useMarker } from "@/composables/useMarker";
 import { useModelStore } from "@/composables/useModelstore";
 import { useTheme } from "@/composables/useTheme";
-import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoDiffEditor, MonacoDiffEditorOptions, MonacoEditor, MonacoEditorOptions, MonacoModel, MonacoTextModel } from "@/types/editor";
+import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoDiffEditor, MonacoDiffEditorOptions, MonacoEditor, MonacoEditorOptions, MonacoModel, MonacoTextModel } from "@/types/editor.type";
 import * as monaco from "monaco-editor"
 import { init as initGeneral, deInit as deInitGeneral } from "./traits/editor/general.trait";
 import { init as initXml, deInit as deInitXml } from "./traits/editor/xml.trait";
-import { ModelLanguage } from "@/types/model";
+import { ModelLanguage } from "@/types/model.type";
 import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "./traits/apply";
 import { hasMethod } from "@/util/function";
 import { isValidUri } from "@/util/string";

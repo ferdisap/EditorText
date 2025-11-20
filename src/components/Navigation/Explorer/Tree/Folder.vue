@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TreeNode } from "@/types/tree";
+import { TreeNode } from "@/types/tree.type";
 import Files from "./Files.vue";
 
 const props = defineProps<{

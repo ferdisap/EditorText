@@ -1,5 +1,5 @@
 import * as monaco from "monaco-editor";
-import type { ModelStoreClass } from "@/types/model";
+import type { ModelStoreClass } from "@/types/model.type";
 
 export function ModelStore(): ModelStoreClass {
   const _models = <Map<string, monaco.editor.ITextModel>>(new Map());

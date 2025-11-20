@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import Tab from "./Tab.vue";
 import Editor from "./Editor.vue";
-import { GroupClass } from "@/types/editor";
+import { GroupClass } from "@/types/editor.type";
 import { useWorkspace } from "@/composables/useWorkspace";
 import Path from "./Path.vue";
 

@@ -1,4 +1,4 @@
-import { AttributeInfo } from "@/types/xml";
+import { AttributeInfo } from "@/types/xml.type";
 
 /**
  * Matching the line content by regex

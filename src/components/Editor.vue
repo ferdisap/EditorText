@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { EDITOR_MAIN_CONTAINER_CSS_CLASS, useEditorContainer } from "@/composables/useEditorContainer";
 import { useWorkspace } from "@/composables/useWorkspace";
-import { TabClass } from "@/types/editor";
+import { TabClass } from "@/types/editor.type";
 import {  nextTick, watch } from "vue";
 
 const props = defineProps<{ tab?: TabClass | undefined; groupId: string }>();
