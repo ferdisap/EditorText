@@ -3,7 +3,7 @@ import { Workspace } from "@/core/Workspace";
 import { Dimension } from "@/types/editor";
 
 const workspace = reactive(Workspace());
-top.ws.workspace = workspace;
+// top.ws.workspace = workspace;
 export function useWorkspace() {
 
   function relayout(width?:Dimension, height?:Dimension){

@@ -18,7 +18,7 @@ registerMarkerPanel(new MarkerProblem(MARKER_VALIDATION_NS));
 
 const { panel } = useMarkerPanel<ProblemResult, IMarkerProblem>();
 
-top.ws.mpanel = panel
+// top.ws.mpanel = panel
 
 const { workspace } = useWorkspace();
 const panelvalidation = computed(() => panel(MARKER_VALIDATION_NS));
