@@ -1,27 +1,26 @@
 import { ref, onMounted } from "vue";
 import * as monaco from "monaco-editor";
+import { useStorage } from "./useStorage";
 
-// const isDark = ref(false);
-const storageName = 'ferdi-editor-theme';
-const isDark = ref(localStorage.getItem(storageName) === "dark");
-
+const {get, set} = useStorage("theme");
+const isDark = ref(get() === "dark");
 export function useTheme() {
 
   function toggleTheme() {
     isDark.value = !isDark.value
-    localStorage.setItem(storageName, isDark.value ? "dark" : "light")
+    set("theme", isDark.value ? "dark" : "light");
     applyTheme()
   }
 
   function applyDarkTheme(){
     isDark.value = true;
-    localStorage.setItem(storageName, isDark.value ? "dark" : "light")
+    set("theme", isDark.value ? "dark" : "light");
     applyTheme();
   }
 
   function applyLightTheme(){
     isDark.value = false;
-    localStorage.setItem(storageName, isDark.value ? "dark" : "light")
+    set("theme", isDark.value ? "dark" : "light");
     applyTheme();
   }
 
