@@ -14,7 +14,8 @@
 }
 
 .marker-tabs {
-  @apply flex items-center overflow-x-auto whitespace-nowrap select-none border-b transition-colors duration-300;
+  @apply flex items-center overflow-x-auto whitespace-nowrap select-none transition-colors duration-300;
+  border-bottom: 1px solid var(--vscode-tab-border) !important;
   background-color: var(--vscode-tab-inactiveBackground, #2d2d2d);
   border-color: var(--vscode-tab-border, #1e1e1e);
   border-bottom: none;
@@ -60,7 +61,7 @@
 /* error marker panel */
 /* 📂 Setiap file (model) dalam panel */
 .marker {
-  @apply border-b border-gray-200 dark:border-[#21262d] px-2 py-1;
+  @apply border-gray-200 dark:border-[#21262d] px-2 py-1;
 }
 
 /* 🧾 Identitas file (nama + URI) */
