@@ -18,6 +18,8 @@ registerMarkerPanel(new MarkerProblem(MARKER_VALIDATION_NS));
 
 const { panel } = useMarkerPanel<ProblemResult, IMarkerProblem>();
 
+top.ws.mpanel = panel
+
 const { workspace } = useWorkspace();
 const panelvalidation = computed(() => panel(MARKER_VALIDATION_NS));
 
@@ -61,7 +63,6 @@ function toggleResult(modelId: string) {
 }
 </script>
 <template>
-  <!-- {{ workspace.models }} -->
   <div class="marker-panel-wrapper" v-show="activeNs === MARKER_VALIDATION_NS">
     <!-- untuk per model -->
     <div v-for="model of models" class="marker">

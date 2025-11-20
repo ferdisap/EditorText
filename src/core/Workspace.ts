@@ -22,27 +22,35 @@ export function Workspace(): WorkspaceClass {
 
   return {
     get groups() {
-      return state.groups;
+      return state.groups as unknown as GroupClass[];
     },
     get activeGroupId() {
       return state.activeGroupId;
     },
     get activeGroup(): GroupClass | null {
-      return state.groups.find((t) => t.id === state.activeGroupId) ?? null;
+      return (state.groups.find((t) => t.id === state.activeGroupId) as unknown as GroupClass)  ?? null;
     },
     get models(): ModelIndex[] {
+      const modelsId:string[] = []
       return state.groups.map(group => {
         const tabs = group.tabs
         return tabs.map(tab => {
-          return {
-            uri: tab.instance.model.uri.toString(),
-            originalUri: tab.instance.originalModel?.uri.toString(),
-            name: tab.instance.name,
-            id: (tab.instance.model as monaco.editor.ITextModel).id || "",
-            originalId: (tab.instance.originalModel)?.id || "",
+          const id = (tab.instance.model as monaco.editor.ITextModel).id || "";
+          if(modelsId.find((i) => i === id)){
+            return null;
+          }
+          else {
+            modelsId.push(id)
+            return {
+              uri: tab.instance.model.uri.toString(),
+              originalUri: tab.instance.originalModel?.uri.toString(),
+              name: tab.instance.name,
+              id,
+              originalId: (tab.instance.originalModel)?.id || "",
+            }
           }
         })
-      }).flat()
+      }).flat().filter(v => v) as ModelIndex[];
     },
     // 🧩 Tambah group baru
     addGroup(name?: string | null): GroupClass {
