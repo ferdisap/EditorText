@@ -2,16 +2,17 @@ import { reactive, onBeforeUnmount } from "vue";
 import * as monaco from "monaco-editor";
 
 // ===== Worker bawaan Monaco =====
-import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
-import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
-import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
-import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
-import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
+// import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
+// import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
+// import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
+// import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
+// import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 
 // ===== Worker custom XML =====
-import xmlWorker from "../worker/xml.worker?worker";
-import { AttributeInfo } from "@/types/xml.type";
-import { ValidationInfo } from "xml-xsd-validator-browser";
+// import xmlWorker from "../worker/xml.worker?worker";
+import { type AttributeInfo } from "@/types/xml.type";
+import { type ValidationInfo } from "xml-xsd-validator-browser";
+// import { createXmlWorker } from "@/worker";
 
 /* ---------------------------------------------------------
    0️⃣ DEFINISI INTERFACE DAN TYPE
@@ -76,27 +77,35 @@ const pendingRequests = new Map<string,
 const defWorkerResponseTimeout = 5000;
 
 
+function createXmlWorker() {
+  return new Worker(new URL("../worker/xml.worker", import.meta.url), {
+    type: "module"
+  });
+  // return new Worker("/")
+}
+
 /** Buat instance worker baru berdasarkan bahasa */
 function createWorker(label: string): Worker {
-  switch (label) {
-    case "json":
-      return new jsonWorker();
-    case "css":
-    case "scss":
-    case "less":
-      return new cssWorker();
-    case "html":
-    case "handlebars":
-    case "razor":
-      return new htmlWorker();
-    case "typescript":
-    case "javascript":
-      return new tsWorker();
-    case "xml":
-      return new xmlWorker();
-    default:
-      return new editorWorker();
-  }
+  return createXmlWorker();
+  // switch (label) {
+    // case "json":
+    //   return new jsonWorker();
+    // case "css":
+    // case "scss":
+    // case "less":
+    //   return new cssWorker();
+    // case "html":
+    // case "handlebars":
+    // case "razor":
+    //   return new htmlWorker();
+    // case "typescript":
+    // case "javascript":
+    //   return new tsWorker();
+    // case "xml":
+    //   return new xmlWorker();
+    // default:
+    //   return new editorWorker();
+  // }
 }
 
 /** Gunakan worker bersama (shared singleton) */

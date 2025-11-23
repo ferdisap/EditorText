@@ -1,6 +1,6 @@
 import { setSchemaByUrl } from "./editor/xml.trait";
-import { EditorClass } from "@/types/editor.type";
-import { ModelLanguage } from "@/types/model.type";
+import { type EditorClass } from "@/types/editor.type";
+import { type ModelLanguage } from "@/types/model.type";
 
 function ifLanguageXml() {
   // const { schemaUrl, root, schema } = setSchemaByUrl(null);

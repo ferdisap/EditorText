@@ -1,16 +1,16 @@
 
 // component
-export * from "./components/Workspace.vue";
-export * from "./components/Group.vue";
-export * from "./components/Editor.vue";
-export * from "./components/Marker.vue";
-export * from "./components/Prompt.vue";
-export * from "./components/Tab.vue";
-export * from "./components/Path.vue";
-export * from "./components/Marker/Detail.vue";
-export * from "./components/Marker/Problem.vue";
-export * from "./components/Marker/TabDetail.vue";
-export * from "./components/Marker/TabProblem.vue";
+export { default as Workspace } from "./components/Workspace.vue";
+export { default as Group } from "./components/Group.vue";
+export { default as Editor } from "./components/Editor.vue";
+export { default as Marker } from "./components/Marker.vue";
+export { default as Prompt } from "./components/Prompt.vue";
+export { default as Tab } from "./components/Tab.vue";
+export { default as Path } from "./components/Path.vue";
+export { default as Detail } from "./components/Marker/Detail.vue";
+export { default as Problem } from "./components/Marker/Problem.vue";
+export { default as TabDetail } from "./components/Marker/TabDetail.vue";
+export { default as TabProblem } from "./components/Marker/TabProblem.vue";
 
 // composeable
 export * from "./composables/useEditorContainer";
@@ -65,7 +65,6 @@ export * from "./types/editor.type";
 export * from "./types/marker.type";
 export * from "./types/model.type";
 export * from "./types/plugins.type";
-export * from "./types/trait.type";
 export * from "./types/tree.type";
 export * from "./types/workspace.type";
 export * from "./types/xml.type";
@@ -79,5 +78,6 @@ export * from "./util/time";
 export * from "./util/xml";
 
 // worker
+// export * from "./worker/index";
 export * from "./worker/fn_attribute";
 export * from "./worker/xml.worker";

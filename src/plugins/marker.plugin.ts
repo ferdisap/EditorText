@@ -1,4 +1,4 @@
-import { IMarkerInfo, IMarkerPanel } from "@/types/marker.type";
+import { type IMarkerInfo, type IMarkerPanel } from "@/types/marker.type";
 import { Reactive, reactive, ref, Ref } from "vue";
 
 /** 

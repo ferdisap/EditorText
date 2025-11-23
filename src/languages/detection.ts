@@ -1,8 +1,8 @@
 import * as monaco from "monaco-editor";
 import { useMarkerPanel } from "@/composables/useMarkerPanel";
-import { useWorker, ValidatePayload } from "@/composables/useWorker";
+import { useWorker, type ValidatePayload } from "@/composables/useWorker";
 import { MARKER_VALIDATION_NS } from "@/core/panel/Problem";
-import { EditorClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel, TabClass } from "@/types/editor.type";
+import { type EditorClass, type MonacoCodeEditor, type MonacoEditor, type MonacoTextModel, type TabClass } from "@/types/editor.type";
 import { delay } from "@/util/time";
 import { ValidationInfo } from "xml-xsd-validator-browser";
 

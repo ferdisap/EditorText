@@ -1,13 +1,12 @@
-import { AttributeInfo } from "@/types/xml.type";
+import { type AttributeInfo } from "@/types/xml.type";
 import * as monaco from "monaco-editor";
-import { XmlEditorTrait } from "@/types/trait.type";
 import { getCurrentParentElement } from "./element";
 import { AttributeDef } from "xsd-parser";
 import { matchingAttrInfo } from "@/worker/fn_attribute";
 import { useWorker } from "@/composables/useWorker";
 import { delay } from "@/util/time";
-import { EditorClass, EditorXMLClass, MonacoCodeEditor, MonacoEditor, MonacoModel, MonacoTextModel } from "@/types/editor.type";
-import { WorkspaceClass } from "@/types/workspace.type";
+import { type EditorClass, type EditorXMLClass, type MonacoCodeEditor, type MonacoEditor, type MonacoModel, type MonacoTextModel } from "@/types/editor.type";
+import { type WorkspaceClass } from "@/types/workspace.type";
 import { getLineContentAndCursorIndex } from "@/core/Editor";
 
 
@@ -107,7 +106,7 @@ export function suggestAttributeValue(workspace: WorkspaceClass) {
       const activeTab = activeGroup.activeTab;
       if (!activeTab) return;
       // get xmlEditor. If no schmea return no suggestion
-      const xmlEditor = activeTab!.instance as unknown as XmlEditorTrait;
+      const xmlEditor = activeTab!.instance as unknown as EditorXMLClass;
 
       if (!xmlEditor.schema) return { suggestions: [] } as monaco.languages.CompletionList;
       // const xmlText = model.getValue();

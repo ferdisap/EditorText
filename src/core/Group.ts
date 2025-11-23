@@ -1,5 +1,5 @@
 import * as monaco from "monaco-editor";
-import { GroupClass, TabClass, Dimension } from "@/types/editor.type";
+import { type GroupClass, type TabClass, type Dimension } from "@/types/editor.type";
 import { useWorkspace } from "@/composables/useWorkspace";
 import { getFilenameFromUri, randStr } from "@/util/string";
 import { useEditorContainer } from "@/composables/useEditorContainer";

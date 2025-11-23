@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GroupClass } from "@/types/editor.type";
+import { type GroupClass } from "@/types/editor.type";
 import { computed } from "vue";
 
 const props = defineProps<{
@@ -10,7 +10,7 @@ const path = computed(() => {
   if (props.group.activeTab?.instance.isCodeEditor) {
     return props.group.activeTab?.instance.model.uri.toString();
   } else {
-    return props.group.activeTab?.instance.originalModel.uri.toString() + ' ———> ' + props.group.activeTab?.instance.model.uri.toString();
+    return props.group.activeTab?.instance.originalModel!.uri.toString() + ' ———> ' + props.group.activeTab?.instance.model.uri.toString();
   }
 });
 </script>

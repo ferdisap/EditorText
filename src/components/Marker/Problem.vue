@@ -3,10 +3,10 @@ import { useMarkerPanel } from "@/composables/useMarkerPanel";
 import { useModelStore } from "@/composables/useModelstore";
 import { useWorkspace } from "@/composables/useWorkspace";
 import {
-  IMarkerProblem,
+  type IMarkerProblem,
   MARKER_VALIDATION_NS,
   MarkerProblem,
-  ProblemResult,
+  type ProblemResult,
 } from "@/core/panel/Problem";
 import { registerMarkerPanel } from "@/plugins/marker.plugin";
 import { onBeforeDisposeModel } from "@/plugins/model.plugin";

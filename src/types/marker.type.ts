@@ -1,5 +1,5 @@
-import { ValidationInfo } from "xml-xsd-validator-browser";
-import { MonacoModel, MonacoTextModel } from "./editor.type";
+import { type ValidationInfo } from "xml-xsd-validator-browser";
+import { type MonacoModel, type MonacoTextModel } from "./editor.type";
 
 export type MarkerResult = ValidationInfo;
 

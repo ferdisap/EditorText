@@ -3,7 +3,7 @@ import GroupWorkspace from "./Explorer/GroupWorkspace.vue";
 import FolderWorkspace from "./Explorer/FolderWorkspace.vue";
 import { useTreeFolder } from "@/composables/navigation/useTreeFolder";
 import { registerOnFetchTree } from "@/plugins/tree.plugin";
-import { TreeNode } from "@/types/tree.type";
+import { type TreeNode } from "@/types/tree.type";
 
 const { treeRoot, createRoot } = useTreeFolder();
 

@@ -1,8 +1,8 @@
 import * as monaco from "monaco-editor";
 import { getCurrentParentElement } from "./element";
 import { AttributeDef } from "xsd-parser";
-import { WorkspaceClass } from "@/types/workspace.type";
-import { EditorXMLClass } from "@/types/editor.type";
+import { type WorkspaceClass } from "@/types/workspace.type";
+import { type EditorXMLClass } from "@/types/editor.type";
 
 // 🧩 Tooltip (hover) untuk attribute
 export function tooltip(workspace: WorkspaceClass) {

@@ -1,5 +1,5 @@
 import { useTreeFolder } from "@/composables/navigation/useTreeFolder";
-import { TreeNode, TreeRoot } from "@/types/tree.type";
+import { type TreeNode, type TreeRoot } from "@/types/tree.type";
 
 
 interface FetchOption extends RequestInit {

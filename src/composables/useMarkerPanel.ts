@@ -1,4 +1,4 @@
-import { IMarkerPanel } from "@/types/marker.type";
+import { type IMarkerPanel } from "@/types/marker.type";
 import { mapMarkerPanel } from "@/plugins/marker.plugin";
 
 export function useMarkerPanel<

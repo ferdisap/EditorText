@@ -1,4 +1,4 @@
-import { WorkspaceClass } from "@/types/workspace.type";
+import { type WorkspaceClass } from "@/types/workspace.type";
 import { suggestAttributeName, suggestAttributeValue } from "./attribute";
 import { suggestElement } from "./element";
 import { tooltip } from "./tooltip";

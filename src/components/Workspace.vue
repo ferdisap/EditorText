@@ -14,9 +14,10 @@ import {
   onNavContentResized,
   onNavContentToggled,
 } from "@/plugins/sidebar.plugin";
-import { WSpaceDataProp } from "@/core/Workspace";
-import { GroupClass } from "@/types/editor.type";
+import { type WSpaceDataProp } from "@/core/Workspace";
+import { type GroupClass } from "@/types/editor.type";
 import { unregisterAction } from "@/plugins/action.plugin";
+import { type WorkspaceClass } from "@/types/workspace.type";
 
 
 const props = defineProps<{
@@ -24,12 +25,12 @@ const props = defineProps<{
 }>();
 
 const { workspace, relayout } = useWorkspace();
-registerCompletionItemProvider(workspace);
+registerCompletionItemProvider(workspace as unknown as WorkspaceClass);
 
 const { applyTheme } = useTheme();
 applyTheme();
 
-const groups = computed(() => workspace.groups);
+const groups = computed(() => workspace.groups as unknown as GroupClass[]);
 
 const editorGroupWrapper = ref<HTMLElement | null>(null);
 

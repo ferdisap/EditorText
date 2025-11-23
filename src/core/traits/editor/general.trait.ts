@@ -2,15 +2,15 @@ import * as monaco from "monaco-editor";
 import { useTheme } from "@/composables/useTheme";
 import { createEditorContainer, getEditorContainer } from "@/composables/useEditorContainer";
 import { useWorkspace } from "@/composables/useWorkspace";
-import { EditorClass, MonacoCodeEditor, MonacoEditor, MonacoTextModel, TabClass } from "@/types/editor.type";
+import { type EditorClass, type MonacoCodeEditor, type MonacoEditor, type MonacoTextModel, type TabClass } from "@/types/editor.type";
 import { detectLanguage } from "@/languages/detection";
 import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "../apply";
-import { ModelLanguage } from "@/types/model.type";
+import { type ModelLanguage } from "@/types/model.type";
 import { applyAction, deApplyAction, registerAction } from "@/plugins/action.plugin";
 import { applyPluginOnDidChangeModelContent, deApplyPluginOnDidChangeModelContent, registerPluginOnDidChangeModelContent } from "@/plugins/onDidChangeModelContent.plugin";
 import { getShortCut } from "@/config/shortcut";
 import { usePrompt } from "@/composables/usePrompt";
-import { DetailResult, MARKER_DETAIL_NS } from "@/core/panel/Detail";
+import { type DetailResult, MARKER_DETAIL_NS } from "@/core/panel/Detail";
 import { useMarkerPanel } from "@/composables/useMarkerPanel";
 
 

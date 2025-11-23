@@ -1,5 +1,5 @@
 import { Ref } from "vue";
-import { GroupClass, TabClass } from "./editor.type";
+import { type GroupClass, type TabClass } from "./editor.type";
 
 export type WorkspaceClass = {
   groups: GroupClass[];

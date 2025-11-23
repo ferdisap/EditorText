@@ -2,7 +2,7 @@
 import { useMarkerPanel } from '@/composables/useMarkerPanel';
 import { useModelStore } from '@/composables/useModelstore';
 import { useWorkspace } from '@/composables/useWorkspace';
-import { IMarkerProblem, MARKER_VALIDATION_NS, ProblemResult } from '@/core/panel/Problem';
+import { type IMarkerProblem, MARKER_VALIDATION_NS, type ProblemResult } from '@/core/panel/Problem';
 import { computed } from 'vue';
 
 defineProps<{activeNs: string}>()
