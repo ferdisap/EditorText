@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Container utama */
+.context-menu {
+  @apply absolute z-[9999] py-1 rounded-md shadow-xl 
+    bg-[var(--vscode-menu-background,#252526)]
+    border border-[var(--vscode-menu-border,#454545)]
+    text-[13px]
+    min-w-[180px]
+    select-none;
+}
+
+/* Item */
+.context-item {
+  @apply flex items-center justify-between px-3 py-1.5 cursor-pointer text-[var(--vscode-foreground,#ccc)]
+    transition-colors duration-100 relative whitespace-nowrap;
+}
+
+.context-item:hover:not(.disabled) {
+  @apply bg-[var(--vscode-menu-selectionBackground,#094771)] text-white;
+}
+
+.context-item.disabled {
+  @apply opacity-40 cursor-not-allowed;
+}
+
+/* Divider */
+.context-divider {
+  @apply my-1 border-t border-[var(--vscode-menu-separatorForeground,#3c3c3c)];
+}
+
+/* Submenu */
+.context-submenu {
+  @apply absolute top-0 left-full ml-[2px] py-1 rounded-md shadow-lg 
+    bg-[var(--vscode-menu-background,#252526)]
+    border border-[var(--vscode-menu-border,#454545)]
+    min-w-[180px]
+    z-[9999];
+}
+
+/* Arrow → */
+.submenu-arrow {
+  @apply text-xs ml-4 text-[var(--vscode-foreground,#ccc)];
+}
+
+/* Codicon default style (if user not loading codicon) */
+.codicon {
+  font-family: codicon !important;
+}

@@ -78,7 +78,14 @@ const defWorkerResponseTimeout = 5000;
 
 
 function createXmlWorker() {
+  // console.log(window.location.port);
+  // http://127.0.0.1:5173/@fs/D:/data_ferdi/application/js-editor/src/worker/xml.worker.ts?worker_file&type=module
+  // http://127.0.0.1:8000/resources/js-editor/src/worker/xml.worker.ts?worker_file&type=module
+  // if(window.location.port)
+  // const url = "../worker/xml.worker";
+  // const url = "http://127.0.0.1:8000/worker?path=/resources/js-editor/src/worker/xml.worker.ts?worker_file&type=module";
   return new Worker(new URL("../worker/xml.worker", import.meta.url), {
+  // return new Worker(new URL(url, import.meta.url), {
     type: "module"
   });
   // return new Worker("/")

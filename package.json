@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "copy": "cpx \"src/**/*\" dist/src",
     "build:lib": "tsc"
   },
   "devDependencies": {
@@ -14,13 +15,13 @@
     "@vitejs/plugin-vue": "^6.0.2",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.22",
+    "cpx": "^1.5.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-monaco-editor": "^1.1.0",
-    "vite-plugin-static-copy": "^3.1.4",
     "vue-tsc": "^3.1.4"
   },
   "dependencies": {

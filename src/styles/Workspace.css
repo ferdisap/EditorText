@@ -1,3 +1,6 @@
+/* Explorer tree styles */
+@import './ContextMenu/ContextMenu.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
