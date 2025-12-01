@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type GroupClass } from "@/types/editor.type";
+import { type GroupClass } from "@js-editor/types/editor.type";
 import { computed } from "vue";
 
 const props = defineProps<{

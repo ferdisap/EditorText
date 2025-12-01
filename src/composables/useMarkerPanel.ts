@@ -1,5 +1,5 @@
-import { type IMarkerPanel } from "@/types/marker.type";
-import { mapMarkerPanel } from "@/plugins/marker.plugin";
+import { type IMarkerPanel } from "@js-editor/types/marker.type";
+import { mapMarkerPanel } from "@js-editor/plugins/marker.plugin";
 
 export function useMarkerPanel<
   TData = unknown,

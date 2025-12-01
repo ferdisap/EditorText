@@ -1,4 +1,4 @@
-import { MarkerClass, MarkerData, MarkerInfo } from "@/types/marker.type";
+import { MarkerClass, MarkerData, MarkerInfo } from "@js-editor/types/marker.type";
 
 // export const MARKER_VALIDATION_NS = "marker.validate.panel.container";
 

@@ -1,7 +1,7 @@
-import { useModelStore } from "@/composables/useModelstore";
-import { useWorkspace } from "@/composables/useWorkspace";
-import { type MonacoTextModel } from "@/types/editor.type";
-import { type IMarkerInfo, type IMarkerPanel } from "@/types/marker.type";
+import { useModelStore } from "@js-editor/composables/useModelstore";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
+import { type MonacoTextModel } from "@js-editor/types/editor.type";
+import { type IMarkerInfo, type IMarkerPanel } from "@js-editor/types/marker.type";
 import { isProxy, toRaw } from "vue";
 import { ValidationInfo } from "xml-xsd-validator-browser";
 

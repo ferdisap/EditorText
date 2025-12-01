@@ -1,5 +1,5 @@
 // import { ParseContext } from "xsd-parser"
-// import { SchemaUrl } from "@/composables/useWorker"
+// import { SchemaUrl } from "@js-editor/composables/useWorker"
 
 // /**
 //  * @deprecated

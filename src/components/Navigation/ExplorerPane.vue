@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import GroupWorkspace from "./Explorer/GroupWorkspace.vue";
 import FolderWorkspace from "./Explorer/FolderWorkspace.vue";
-import { useTreeFolder } from "@/composables/navigation/useTreeFolder";
-import { registerOnFetchTree } from "@/plugins/tree.plugin";
-import { type TreeNode } from "@/types/tree.type";
+import { useTreeFolder } from "@js-editor/composables/navigation/useTreeFolder";
+import { registerOnFetchTree } from "@js-editor/plugins/tree.plugin";
+import { type TreeNode } from "@js-editor/types/tree.type";
 
 const { treeRoot, createRoot } = useTreeFolder();
 

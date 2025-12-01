@@ -1,6 +1,6 @@
-import { useModelStore } from "@/composables/useModelstore";
-import { type MonacoTextModel } from "@/types/editor.type";
-import { type IMarkerInfo, type IMarkerPanel } from "@/types/marker.type";
+import { useModelStore } from "@js-editor/composables/useModelstore";
+import { type MonacoTextModel } from "@js-editor/types/editor.type";
+import { type IMarkerInfo, type IMarkerPanel } from "@js-editor/types/marker.type";
 import { isProxy, toRaw } from "vue";
 
 export const MARKER_DETAIL_NS = "marker.detail.panel.container";

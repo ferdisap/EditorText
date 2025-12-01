@@ -10,9 +10,9 @@ import * as monaco from "monaco-editor";
 
 // ===== Worker custom XML =====
 // import xmlWorker from "../worker/xml.worker?worker";
-import { type AttributeInfo } from "@/types/xml.type";
+import { type AttributeInfo } from "@js-editor/types/xml.type";
 import { type ValidationInfo } from "xml-xsd-validator-browser";
-// import { createXmlWorker } from "@/worker";
+// import { createXmlWorker } from "@js-editor/worker";
 
 /* ---------------------------------------------------------
    0️⃣ DEFINISI INTERFACE DAN TYPE
@@ -84,7 +84,9 @@ function createXmlWorker() {
   // if(window.location.port)
   // const url = "../worker/xml.worker";
   // const url = "http://127.0.0.1:8000/worker?path=/resources/js-editor/src/worker/xml.worker.ts?worker_file&type=module";
-  return new Worker(new URL("../worker/xml.worker", import.meta.url), {
+  const url = new URL("../worker/xml.worker", import.meta.url)
+  console.log(url.toString());
+  return new Worker(url.toString(), {
   // return new Worker(new URL(url, import.meta.url), {
     type: "module"
   });

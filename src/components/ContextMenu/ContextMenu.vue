@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import { defineProps, defineEmits, ref, computed, nextTick } from "vue";
 	import ContextMenuItem from "./ContextMenuItem.vue";
-	import { searchMenuItemNested, useMenu, useMenuPosition } from "@/composables/navigation/useMenu";
+	import { searchMenuItemNested, useMenu, useMenuPosition } from "@js-editor/composables/navigation/useMenu";
 
 	const props = defineProps<{
 		menuNs: string;

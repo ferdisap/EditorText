@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usePrompt } from "@/composables/usePrompt";
-import { useWorkspace } from "@/composables/useWorkspace";
+import { usePrompt } from "@js-editor/composables/usePrompt";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
 import { computed, nextTick, onBeforeUnmount, ref } from "vue";
 
 type tabData = {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMenu } from '@/composables/navigation/useMenu';
+import { useMenu } from '@js-editor/composables/navigation/useMenu';
 
 	const props = defineProps<{ active?: string }>();
 	const emits = defineEmits(["select"]);

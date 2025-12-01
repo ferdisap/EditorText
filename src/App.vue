@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Workspace from "@/components/Workspace.vue";
+import Workspace from "@js-editor/components/Workspace.vue";
 import { WSpaceDataProp } from "./core/Workspace";
 import { registerAction } from "./plugins/action.plugin";
 import { EditorClass } from "./types/editor.type";

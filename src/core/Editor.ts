@@ -1,17 +1,17 @@
-// import { useMarker } from "@/composables/useMarker";
-import { useModelStore } from "@/composables/useModelstore";
-import { useTheme } from "@/composables/useTheme";
-import { type EditorClass, type EditorXMLClass, type MonacoCodeEditor, type MonacoDiffEditor, type MonacoDiffEditorOptions, type MonacoEditor, type MonacoEditorOptions, type MonacoModel, type MonacoTextModel } from "@/types/editor.type";
+// import { useMarker } from "@js-editor/composables/useMarker";
+import { useModelStore } from "@js-editor/composables/useModelstore";
+import { useTheme } from "@js-editor/composables/useTheme";
+import { type EditorClass, type EditorXMLClass, type MonacoCodeEditor, type MonacoDiffEditor, type MonacoDiffEditorOptions, type MonacoEditor, type MonacoEditorOptions, type MonacoModel, type MonacoTextModel } from "@js-editor/types/editor.type";
 import * as monaco from "monaco-editor"
 import { init as initGeneral, deInit as deInitGeneral } from "./traits/editor/general.trait";
 import { init as initXml, deInit as deInitXml } from "./traits/editor/xml.trait";
-import { type ModelLanguage } from "@/types/model.type";
+import { type ModelLanguage } from "@js-editor/types/model.type";
 import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "./traits/apply";
-import { hasMethod } from "@/util/function";
-import { isValidUri } from "@/util/string";
-import { useMarkerPanel } from "@/composables/useMarkerPanel";
+import { hasMethod } from "@js-editor/util/function";
+import { isValidUri } from "@js-editor/util/string";
+import { useMarkerPanel } from "@js-editor/composables/useMarkerPanel";
 import { MARKER_VALIDATION_NS } from "./panel/Problem";
-import { executeOnBeforeDisposeModel } from "@/plugins/model.plugin";
+import { executeOnBeforeDisposeModel } from "@js-editor/plugins/model.plugin";
 
 export function getLineContentAndCursorIndex(editorInstance: EditorClass) {
   const editor = editorInstance.modifiedEditor || editorInstance.editor;

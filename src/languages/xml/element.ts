@@ -1,6 +1,6 @@
 import * as monaco from "monaco-editor";
-import { type WorkspaceClass } from "@/types/workspace.type";
-import { type EditorXMLClass, type GroupClass } from "@/types/editor.type";
+import { type WorkspaceClass } from "@js-editor/types/workspace.type";
+import { type EditorXMLClass, type GroupClass } from "@js-editor/types/editor.type";
 
 // 🧩 Suggestion element berdasarkan parent langsung
 export function suggestElement(workspace: WorkspaceClass) {

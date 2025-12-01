@@ -1,4 +1,4 @@
-import { useHidden } from "@/composables/navigation/useHidden";
+import { useHidden } from "@js-editor/composables/navigation/useHidden";
 import { isProxy, toRaw } from "vue";
 
 /**

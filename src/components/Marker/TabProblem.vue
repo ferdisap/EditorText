@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useMarkerPanel } from '@/composables/useMarkerPanel';
-import { useModelStore } from '@/composables/useModelstore';
-import { useWorkspace } from '@/composables/useWorkspace';
-import { type IMarkerProblem, MARKER_VALIDATION_NS, type ProblemResult } from '@/core/panel/Problem';
+import { useMarkerPanel } from '@js-editor/composables/useMarkerPanel';
+import { useModelStore } from '@js-editor/composables/useModelstore';
+import { useWorkspace } from '@js-editor/composables/useWorkspace';
+import { type IMarkerProblem, MARKER_VALIDATION_NS, type ProblemResult } from '@js-editor/core/panel/Problem';
 import { computed } from 'vue';
 
 defineProps<{activeNs: string}>()

@@ -1,4 +1,4 @@
-import { executeOnNavContentResized } from '@/plugins/sidebar.plugin';
+import { executeOnNavContentResized } from '@js-editor/plugins/sidebar.plugin';
 import { ref } from 'vue';
 
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useWorkspace } from "@/composables/useWorkspace";
-import { type GroupClass } from "@/types/editor.type";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
+import { type GroupClass } from "@js-editor/types/editor.type";
 import { computed, onMounted, watch } from "vue";
 
 const props = defineProps<{ group: GroupClass }>();

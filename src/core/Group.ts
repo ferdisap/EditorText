@@ -1,8 +1,8 @@
 import * as monaco from "monaco-editor";
-import { type GroupClass, type TabClass, type Dimension } from "@/types/editor.type";
-import { useWorkspace } from "@/composables/useWorkspace";
-import { getFilenameFromUri, randStr } from "@/util/string";
-import { useEditorContainer } from "@/composables/useEditorContainer";
+import { type GroupClass, type TabClass, type Dimension } from "@js-editor/types/editor.type";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
+import { getFilenameFromUri, randStr } from "@js-editor/util/string";
+import { useEditorContainer } from "@js-editor/composables/useEditorContainer";
 import { nextTick, reactive, Ref, ref } from "vue";
 
 function calcDimension(totalGroupQty = 1, max = 100) :number{

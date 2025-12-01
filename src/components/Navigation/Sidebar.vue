@@ -3,9 +3,9 @@ import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from "vue"
 import Menu from "./Menu.vue";
 import ExplorerPane from "./ExplorerPane.vue";
 import SearchPane from "./SearchPane.vue";
-import { useResizePanel } from "@/composables/useResizePanel";
-import { useWorkspace } from "@/composables/useWorkspace";
-import { useHidden } from "@/composables/navigation/useHidden";
+import { useResizePanel } from "@js-editor/composables/useResizePanel";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
+import { useHidden } from "@js-editor/composables/navigation/useHidden";
 import { EyeOff } from "lucide-vue-next";
 
 const { navContent, isHidden, toggle } = useHidden();

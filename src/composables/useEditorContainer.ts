@@ -1,11 +1,11 @@
 import { Ref, ref } from "vue";
 import { useModelStore } from "./useModelstore";
-import { getFilenameFromUri, randStr } from "@/util/string";
+import { getFilenameFromUri, randStr } from "@js-editor/util/string";
 import * as monaco from "monaco-editor";
-import { type EditorClass, type MonacoCodeEditor, type MonacoTextModel, type TabClass } from "@/types/editor.type";
-import { Tab } from "@/core/Tab";
-import { Editor } from "@/core/Editor";
-import { type MapModelEditor } from "@/types/model.type";
+import { type EditorClass, type MonacoCodeEditor, type MonacoTextModel, type TabClass } from "@js-editor/types/editor.type";
+import { Tab } from "@js-editor/core/Tab";
+import { Editor } from "@js-editor/core/Editor";
+import { type MapModelEditor } from "@js-editor/types/model.type";
 import { useWorkspace } from "./useWorkspace";
 
 // 1. Define Golbal Worker management

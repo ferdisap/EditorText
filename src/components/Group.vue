@@ -2,8 +2,8 @@
 import { computed } from "vue";
 import Tab from "./Tab.vue";
 import Editor from "./Editor.vue";
-import { type GroupClass } from "@/types/editor.type";
-import { useWorkspace } from "@/composables/useWorkspace";
+import { type GroupClass } from "@js-editor/types/editor.type";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
 import Path from "./Path.vue";
 
 const props = defineProps<{ 

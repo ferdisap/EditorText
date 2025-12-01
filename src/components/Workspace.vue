@@ -1,25 +1,25 @@
 <script setup lang="ts">
 	import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
-	import { useWorkspace } from "@/composables/useWorkspace";
+	import { useWorkspace } from "@js-editor/composables/useWorkspace";
 	import Group from "./Group.vue";
-	import { registerCompletionItemProvider } from "@/languages/xml/init";
-	import { useTheme } from "@/composables/useTheme";
-	import { terminateWorker } from "@/composables/useWorker";
+	import { registerCompletionItemProvider } from "@js-editor/languages/xml/init";
+	import { useTheme } from "@js-editor/composables/useTheme";
+	import { terminateWorker } from "@js-editor/composables/useWorker";
 	import Marker from "./Marker.vue";
 	import Prompt from "./Prompt.vue";
-	import { usePrompt } from "@/composables/usePrompt";
+	import { usePrompt } from "@js-editor/composables/usePrompt";
 	import Sidebar from "./Navigation/Sidebar.vue";
-	import { useHidden } from "@/composables/navigation/useHidden";
+	import { useHidden } from "@js-editor/composables/navigation/useHidden";
 	import {
 		onNavContentResized,
 		onNavContentToggled,
-	} from "@/plugins/sidebar.plugin";
-	import { type WSpaceDataProp } from "@/core/Workspace";
-	import { type GroupClass } from "@/types/editor.type";
-	import { unregisterAction } from "@/plugins/action.plugin";
-	import { type WorkspaceClass } from "@/types/workspace.type";
+	} from "@js-editor/plugins/sidebar.plugin";
+	import { type WSpaceDataProp } from "@js-editor/core/Workspace";
+	import { type GroupClass } from "@js-editor/types/editor.type";
+	import { unregisterAction } from "@js-editor/plugins/action.plugin";
+	import { type WorkspaceClass } from "@js-editor/types/workspace.type";
 	import ContextMenu from "./ContextMenu/ContextMenu.vue";
-  import { MenuItemNested, useMenu, useMenuPosition } from "@/composables/navigation/useMenu";
+  import { MenuItemNested, useMenu, useMenuPosition } from "@js-editor/composables/navigation/useMenu";
 
 	const props = defineProps<{
 		data: WSpaceDataProp,

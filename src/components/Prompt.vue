@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { usePrompt } from "@/composables/usePrompt";
+import { usePrompt } from "@js-editor/composables/usePrompt";
 import { onMounted, ref } from "vue";
 
 const { vmodel, placeholder, input, post, onSubmit, onCancel } = usePrompt();

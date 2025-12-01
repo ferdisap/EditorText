@@ -1,10 +1,10 @@
-import { detectAndSetSchema } from "@/languages/xml/schema";
+import { detectAndSetSchema } from "@js-editor/languages/xml/schema";
 import { getRootPlugin, parseXsdSchema, registerPlugin } from "xsd-parser";
-import { detectAttValueAfterInsertAttName } from "@/languages/xml/attribute";
-import { type EditorClass, type EditorXMLClass } from "@/types/editor.type";
-import { detectErrorProcessor } from "@/languages/detection";
-import { applyPluginOnDidChangeCursorSelection, deApplyPluginOnDidChangeCursorSelection, registerPluginOnDidChangeCursorSelection } from "@/plugins/onDidChangeCursorSelection.plugin";
-import { applyPluginOnDidAcceptSuggestion, deApplyPluginOnDidAcceptSuggestion, registerPluginOnDidAcceptSuggestion } from "@/plugins/onDidAcceptSuggestion.plugin";
+import { detectAttValueAfterInsertAttName } from "@js-editor/languages/xml/attribute";
+import { type EditorClass, type EditorXMLClass } from "@js-editor/types/editor.type";
+import { detectErrorProcessor } from "@js-editor/languages/detection";
+import { applyPluginOnDidChangeCursorSelection, deApplyPluginOnDidChangeCursorSelection, registerPluginOnDidChangeCursorSelection } from "@js-editor/plugins/onDidChangeCursorSelection.plugin";
+import { applyPluginOnDidAcceptSuggestion, deApplyPluginOnDidAcceptSuggestion, registerPluginOnDidAcceptSuggestion } from "@js-editor/plugins/onDidAcceptSuggestion.plugin";
 
 // Then access its members like xmllint.validate()
 

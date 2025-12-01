@@ -1,17 +1,17 @@
 import * as monaco from "monaco-editor";
-import { useTheme } from "@/composables/useTheme";
-import { createEditorContainer, getEditorContainer } from "@/composables/useEditorContainer";
-import { useWorkspace } from "@/composables/useWorkspace";
-import { type EditorClass, type MonacoCodeEditor, type MonacoEditor, type MonacoTextModel, type TabClass } from "@/types/editor.type";
-import { detectLanguage } from "@/languages/detection";
+import { useTheme } from "@js-editor/composables/useTheme";
+import { createEditorContainer, getEditorContainer } from "@js-editor/composables/useEditorContainer";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
+import { type EditorClass, type MonacoCodeEditor, type MonacoEditor, type MonacoTextModel, type TabClass } from "@js-editor/types/editor.type";
+import { detectLanguage } from "@js-editor/languages/detection";
 import { applyTraitOnInstanced, deApplyTraitOnInstanced } from "../apply";
-import { type ModelLanguage } from "@/types/model.type";
-import { applyAction, deApplyAction, registerAction } from "@/plugins/action.plugin";
-import { applyPluginOnDidChangeModelContent, deApplyPluginOnDidChangeModelContent, registerPluginOnDidChangeModelContent } from "@/plugins/onDidChangeModelContent.plugin";
-import { getShortCut } from "@/config/shortcut";
-import { usePrompt } from "@/composables/usePrompt";
-import { type DetailResult, MARKER_DETAIL_NS } from "@/core/panel/Detail";
-import { useMarkerPanel } from "@/composables/useMarkerPanel";
+import { type ModelLanguage } from "@js-editor/types/model.type";
+import { applyAction, deApplyAction, registerAction } from "@js-editor/plugins/action.plugin";
+import { applyPluginOnDidChangeModelContent, deApplyPluginOnDidChangeModelContent, registerPluginOnDidChangeModelContent } from "@js-editor/plugins/onDidChangeModelContent.plugin";
+import { getShortCut } from "@js-editor/config/shortcut";
+import { usePrompt } from "@js-editor/composables/usePrompt";
+import { type DetailResult, MARKER_DETAIL_NS } from "@js-editor/core/panel/Detail";
+import { useMarkerPanel } from "@js-editor/composables/useMarkerPanel";
 
 
 function actionThemeContextMenu(editorInstance: EditorClass) {

@@ -1,4 +1,4 @@
-import { type AttributeInfo } from "@/types/xml.type";
+import { type AttributeInfo } from "@js-editor/types/xml.type";
 
 /**
  * Matching the line content by regex

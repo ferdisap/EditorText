@@ -1,7 +1,7 @@
 import * as monaco from "monaco-editor";
 import { Group } from "./Group";
-import { type ModelIndex, type WorkspaceClass } from "@/types/workspace.type";
-import { type GroupClass, type TabClass } from "@/types/editor.type";
+import { type ModelIndex, type WorkspaceClass } from "@js-editor/types/workspace.type";
+import { type GroupClass, type TabClass } from "@js-editor/types/editor.type";
 import { reactive } from "vue";
 
 export type WSpaceDataProp = {

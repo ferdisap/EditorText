@@ -1,9 +1,9 @@
 import * as monaco from "monaco-editor";
-import { useMarkerPanel } from "@/composables/useMarkerPanel";
-import { useWorker, type ValidatePayload } from "@/composables/useWorker";
-import { MARKER_VALIDATION_NS } from "@/core/panel/Problem";
-import { type EditorClass, type MonacoCodeEditor, type MonacoEditor, type MonacoTextModel, type TabClass } from "@/types/editor.type";
-import { delay } from "@/util/time";
+import { useMarkerPanel } from "@js-editor/composables/useMarkerPanel";
+import { useWorker, type ValidatePayload } from "@js-editor/composables/useWorker";
+import { MARKER_VALIDATION_NS } from "@js-editor/core/panel/Problem";
+import { type EditorClass, type MonacoCodeEditor, type MonacoEditor, type MonacoTextModel, type TabClass } from "@js-editor/types/editor.type";
+import { delay } from "@js-editor/util/time";
 import { ValidationInfo } from "xml-xsd-validator-browser";
 
 function defPatterns(): Record<string, RegExp[]> {

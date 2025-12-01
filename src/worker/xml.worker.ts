@@ -1,5 +1,4 @@
-import { DetectSchemaLocationPayload, MatchingAttrInfoPayload, ReadyPayload, SchemaUrl, ValidatePayload, WorkerResponse, WorkerResult } from "@/composables/useWorker";
-import { AttributeInfo } from "@/types/xml.type";
+import { DetectSchemaLocationPayload, MatchingAttrInfoPayload, ReadyPayload, SchemaUrl, ValidatePayload, WorkerResponse} from "@js-editor/composables/useWorker";
 import { detectSchemaLocation, validateXml, ValidationInfo, baseUri } from "xml-xsd-validator-browser";
 import { matchingAttrInfo } from "./fn_attribute";
 

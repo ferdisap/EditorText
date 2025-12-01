@@ -1,8 +1,8 @@
-import { delay } from "@/util/time";
-import { type DetectSchemaLocationPayload, type MatchingAttrInfoPayload, type SchemaUrl, type WorkerResponse, useWorker } from "@/composables/useWorker";
-import { type AttributeInfo } from "@/types/xml.type";
-import { type EditorXMLClass, type MonacoCodeEditor, type MonacoEditor, type MonacoTextModel } from "@/types/editor.type";
-import { getLineContentAndCursorIndex } from "@/core/Editor";
+import { delay } from "@js-editor/util/time";
+import { type DetectSchemaLocationPayload, type MatchingAttrInfoPayload, type SchemaUrl, type WorkerResponse, useWorker } from "@js-editor/composables/useWorker";
+import { type AttributeInfo } from "@js-editor/types/xml.type";
+import { type EditorXMLClass, type MonacoCodeEditor, type MonacoEditor, type MonacoTextModel } from "@js-editor/types/editor.type";
+import { getLineContentAndCursorIndex } from "@js-editor/core/Editor";
 
 export function detectAndSetSchema(xmlEditor: EditorXMLClass) {
   const { postToWorker } = useWorker('xml');

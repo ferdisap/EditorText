@@ -1,13 +1,13 @@
-import { type AttributeInfo } from "@/types/xml.type";
+import { type AttributeInfo } from "@js-editor/types/xml.type";
 import * as monaco from "monaco-editor";
 import { getCurrentParentElement } from "./element";
 import { AttributeDef } from "xsd-parser";
-import { matchingAttrInfo } from "@/worker/fn_attribute";
-import { useWorker } from "@/composables/useWorker";
-import { delay } from "@/util/time";
-import { type EditorClass, type EditorXMLClass, type MonacoCodeEditor, type MonacoEditor, type MonacoModel, type MonacoTextModel } from "@/types/editor.type";
-import { type WorkspaceClass } from "@/types/workspace.type";
-import { getLineContentAndCursorIndex } from "@/core/Editor";
+import { matchingAttrInfo } from "@js-editor/worker/fn_attribute";
+import { useWorker } from "@js-editor/composables/useWorker";
+import { delay } from "@js-editor/util/time";
+import { type EditorClass, type EditorXMLClass, type MonacoCodeEditor, type MonacoEditor, type MonacoModel, type MonacoTextModel } from "@js-editor/types/editor.type";
+import { type WorkspaceClass } from "@js-editor/types/workspace.type";
+import { getLineContentAndCursorIndex } from "@js-editor/core/Editor";
 
 
 // 🧩 Suggestion attribute (nama attribute)

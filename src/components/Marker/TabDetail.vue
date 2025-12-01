@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MARKER_DETAIL_NS } from '@/core/panel/Detail';
+import { MARKER_DETAIL_NS } from '@js-editor/core/panel/Detail';
 
 defineProps<{activeNs: string}>()
 

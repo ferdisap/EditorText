@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@js-editor/composables/useTheme';
 import { HTMLAttributes } from 'vue';
 
 const { applyLightTheme, applyDarkTheme, isDark, toggleTheme } = useTheme();

@@ -1,5 +1,5 @@
-import { type EditorClass } from "@/types/editor.type";
-import { type IDisposableRecord } from "@/types/plugins.type";
+import { type EditorClass } from "@js-editor/types/editor.type";
+import { type IDisposableRecord } from "@js-editor/types/plugins.type";
 import { IDisposable } from "monaco-editor";
 import { isProxy, toRaw } from "vue";
 
@@ -109,8 +109,8 @@ export function deApplyAction(this: EditorClass, namespace: string | null, unreg
   }
 }
 
-// import { EditorClass } from "@/types/editor";
-// import { IDisposableRecord } from "@/types/plugins.type";
+// import { EditorClass } from "@js-editor/types/editor";
+// import { IDisposableRecord } from "@js-editor/types/plugins.type";
 // import { IDisposable } from "monaco-editor";
 
 // /** key is string namespace */

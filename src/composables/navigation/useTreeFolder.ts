@@ -1,6 +1,6 @@
-import { onFetchRootTree } from "@/plugins/tree.plugin";
-import { type TreeFlat, type TreeNode, type TreeRoot } from "@/types/tree.type";
-import { getFilenameFromUri } from "@/util/string";
+import { onFetchRootTree } from "@js-editor/plugins/tree.plugin";
+import { type TreeFlat, type TreeNode, type TreeRoot } from "@js-editor/types/tree.type";
+import { getFilenameFromUri } from "@js-editor/util/string";
 import { ref } from "vue";
 
 const dummyTreeRootFlat: TreeFlat[] = [

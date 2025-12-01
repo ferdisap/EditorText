@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useMarkerPanel } from "@/composables/useMarkerPanel";
-import { useModelStore } from "@/composables/useModelstore";
-import { useWorkspace } from "@/composables/useWorkspace";
+import { useMarkerPanel } from "@js-editor/composables/useMarkerPanel";
+import { useModelStore } from "@js-editor/composables/useModelstore";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
 import {
   type IMarkerProblem,
   MARKER_VALIDATION_NS,
   MarkerProblem,
   type ProblemResult,
-} from "@/core/panel/Problem";
-import { registerMarkerPanel } from "@/plugins/marker.plugin";
-import { onBeforeDisposeModel } from "@/plugins/model.plugin";
+} from "@js-editor/core/panel/Problem";
+import { registerMarkerPanel } from "@js-editor/plugins/marker.plugin";
+import { onBeforeDisposeModel } from "@js-editor/plugins/model.plugin";
 import { computed, reactive } from "vue";
 
 defineProps<{ activeNs: string }>();

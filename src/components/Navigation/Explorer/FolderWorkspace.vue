@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type TreeNode, type TreeRoot } from "@/types/tree.type";
+import { type TreeNode, type TreeRoot } from "@js-editor/types/tree.type";
 import { reactive, ref } from "vue";
 import Folder from "./Tree/Folder.vue";
 import Files from "./Tree/Files.vue";

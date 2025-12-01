@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useWorkspace } from "@/composables/useWorkspace";
+import { useWorkspace } from "@js-editor/composables/useWorkspace";
 import { nextTick, ref } from "vue";
 import TabProblem from "./Marker/TabProblem.vue";
 import Problem from "./Marker/Problem.vue";
-import { MARKER_VALIDATION_NS } from "@/core/panel/Problem";
+import { MARKER_VALIDATION_NS } from "@js-editor/core/panel/Problem";
 import TabDetail from "./Marker/TabDetail.vue";
 import Detail from "./Marker/Detail.vue";
-import { MARKER_DETAIL_NS } from "@/core/panel/Detail";
+import { MARKER_DETAIL_NS } from "@js-editor/core/panel/Detail";
 
 let activeMarkerNamespace = ref(MARKER_VALIDATION_NS);
 // let activeMarkerNamespace = ref(MARKER_DETAIL_NS);

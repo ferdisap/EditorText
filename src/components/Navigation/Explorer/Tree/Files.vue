@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TreeNode } from "@/types/tree.type";
+import type { TreeNode } from "@js-editor/types/tree.type";
 
 const props = defineProps<{
   node: TreeNode;

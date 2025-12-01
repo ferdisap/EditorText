@@ -1,7 +1,7 @@
-import { type EditorClass, type MonacoDiffEditor, type MonacoTextModel, type TabClass } from "@/types/editor.type";
-import { useModelStore } from "@/composables/useModelstore";
-import { terminateWorker } from "@/composables/useWorker";
-import { executeOnBeforeCloseEditor } from "@/plugins/editor.plugin";
+import { type EditorClass, type MonacoDiffEditor, type MonacoTextModel, type TabClass } from "@js-editor/types/editor.type";
+import { useModelStore } from "@js-editor/composables/useModelstore";
+import { terminateWorker } from "@js-editor/composables/useWorker";
+import { executeOnBeforeCloseEditor } from "@js-editor/plugins/editor.plugin";
 
 export function Tab(instace: EditorClass): TabClass {
   const _id: string = instace.id;

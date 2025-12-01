@@ -1,6 +1,6 @@
 import { nextTick, reactive, toRefs } from "vue";
-import { Workspace } from "@/core/Workspace";
-import { type Dimension } from "@/types/editor.type";
+import { Workspace } from "@js-editor/core/Workspace";
+import { type Dimension } from "@js-editor/types/editor.type";
 
 const workspace = reactive(Workspace());
 // top.ws.workspace = workspace;

@@ -1,4 +1,4 @@
-import { executeOnNavContentToggled } from "@/plugins/sidebar.plugin";
+import { executeOnNavContentToggled } from "@js-editor/plugins/sidebar.plugin";
 import { ref } from "vue";
 import { useStorage } from "../useStorage";
 

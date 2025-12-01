@@ -1,7 +1,7 @@
 import * as monaco from "monaco-editor";
 import { ParseContext } from "xsd-parser";
 import { type ModelLanguage } from "./model.type";
-import { type SchemaUrl } from "@/composables/useWorker";
+import { type SchemaUrl } from "@js-editor/composables/useWorker";
 import { Ref } from "vue";
 
 export type Dimension = {
